@@ -1,0 +1,155 @@
+@import 'var.scss';
+.AppHeader
+{
+    border-bottom: 1px solid #ccc;
+    .AppHeader_Row
+    {
+        padding: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        .AppHeader_List
+        {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            .AppHeader_Item
+            {
+                padding: 10px 15px;
+                font-size: 16rem;
+                display: flex;
+                align-items: center;
+                .AppHeader_Text
+                {
+                    padding: 5px 0;
+                    .AppHeader_Link
+                    {
+                        text-decoration: none;
+                        font-size: 16rem;
+                        color: $light-text-color;
+                        font-weight: 600;
+                        display: block;
+                    }
+                }
+                .AppHeader_Logo
+                {
+                    .AppHeader_Link
+                    {
+                        display: flex;
+                        align-items: center;
+                        img 
+                        {
+                            height: 20rem;
+                        }
+                    }
+                }
+                .AppHeader_BellIcon, .AppHeader_AvarIcon
+                {
+                    position: relative;
+                    cursor: pointer;
+                    color: $light-text-color;
+                }
+                .AppHeader_BellIcon .AppHeader_Dropdown
+                {
+                    width: 450px;
+                }
+                .AppHeader_AvarIcon:hover .AppHeader_Dropdown
+                {
+                    transform: scale(1);
+                }
+                .AppHeader_BellIcon:hover .AppHeader_Dropdown
+                {
+                    transform: scale(1);
+                }
+                .AppHeader_Dropdown
+                {
+                    position: absolute;
+                    right: -20px;
+                    top: 170%;
+                    width: 250px;
+                    padding: 10px 0;
+                    box-shadow: 0 0 5px #63636394;
+                    border-radius: 5px;
+                    background-color: $white-color;
+                    transform: scale(0);
+                    transform-origin: 90% 0;
+                    transition: all 0.2s ease-in;
+                    z-index: 1;
+                    .AppHeader_Dropdown_List
+                    {
+                        list-style: none;
+                        padding: 0;
+                        .AppHeader_Dropdown_Item
+                        {
+                            font-size: 16px;
+                            padding: 10px;
+                            .AppHeader_Dropdown_Link
+                            {
+                                text-decoration: none;
+                                color: #636363de;
+                                width: 100%;
+                                display: block;
+                                .AppHeader_Dropdown_Icon
+                                {
+                                    padding: 0 10px;
+                                }
+                                .AppHeader_NotiText
+                                {
+                                    font-size: 14px;
+                                    margin: 0;
+                                    padding-left: 10px;
+                                    color: rgba(0, 0, 0, 0.7);
+                                }
+                            }
+                        }
+                        .AppHeader_Dropdown_Item:hover .AppHeader_Dropdown_Link
+                        {
+                            color: $dark-color;
+                        }
+                        .AppHeader_Dropdown_Item:hover
+                        {
+                            background-color: rgba(204, 204, 204, 0.267);
+                        }
+                    }
+                }
+                .AppHeader_Dropdown::after
+                {
+                    content: "";
+                    width: 100%;
+                    height: 15px;
+                    position: absolute;
+                    top: -15px;
+                    right: 0;
+                }
+            }
+            .AppHeader_Item:first-child
+            {
+                padding-left: 0;
+            }
+            .AppHeader_Item:last-child
+            {
+                padding-right: 0;
+            }
+            .AppHeader_Item:hover .AppHeader_Link
+            {
+                color: #2d8cf0;
+            }
+            .AppHeader_Item--active
+            {
+                border-bottom: 2px solid $dark-color;
+            }
+            .AppHeader_Item--active .AppHeader_Text
+            {
+                .AppHeader_Link
+                {
+                    cursor: default;
+                    color: $dark-color;
+                }
+            }
+        }
+    }
+}
+.list_problem_table
+{
+    font-size: 20px;
+}

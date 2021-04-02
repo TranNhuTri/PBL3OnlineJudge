@@ -1,0 +1,103 @@
+@import 'var.scss';
+.ListProblemsPage
+{
+    padding: 40px 0;
+    min-height: 100vh;
+    .ProblemPage_Header
+    {
+        font-size: 18px;
+        font-weight: normal;
+        margin: 0 0 20px 0;
+    }
+    .ListProblemTable
+    {
+        width: 100%;
+        font-size: 14rem;
+        box-shadow: 0 0 8px $border-color;
+        background-color: $white-color;
+        th
+        {
+            padding: 10px;
+            font-weight: 100;
+            border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+        }
+        tr:nth-child(even)
+        {
+            background-color: $light-gray-color;
+        }
+        .Number, .ProblemNumber
+        {
+            width: 10%;
+        }
+        .Title, .ProblemTitle
+        {
+            text-align: left;
+            width: 50%;
+        }
+        td
+        {
+            padding: 20px 10px;
+            text-align: center;
+        }
+    }
+}
+.ProblemFilter
+{
+    background-color: $white-color;
+    box-shadow: 0 0 8px $border-color;
+    padding: 10px 15px;
+    margin: 35px 0;
+    font-size: 14rem;
+    line-height: 20rem;
+    .ProblemFillter_Header
+    {
+        font-weight: normal;
+        font-size: 16rem;
+        margin: 10px 0;
+    }
+    .ProblemNameFillter
+    {
+        padding: 10px 0;
+        #ProblemName
+        {
+            font-size: 14rem;
+            width: 100%;
+            padding: 5px;
+        }
+    }
+    .ProblemUnsolvedFillter
+    {
+        padding: 10px 0;
+        #HideSolvedProblem
+        {
+            margin: 0 5px;
+        }
+    }
+    .ProblemCategoryFillter
+    {
+        #ProblemCategory
+        {
+            font-size: 14rem;
+            width: 100%;
+            margin: 10px 0;
+            padding: 4px;
+        }
+    }
+    .ProblemDifficultFillter
+    {
+        padding: 10px 0;
+        #MinDifficult, #MaxDifficult
+        {
+            width: 30%;
+            padding: 2px;
+            margin: 0 5px;
+            font-size: 14rem;
+        }
+    }
+    .ProblemFillterSubmit
+    {
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+    }
+}

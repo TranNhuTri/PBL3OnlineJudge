@@ -1,0 +1,106 @@
+.ProblemPage {
+  padding: 30px 0;
+  font-size: 18rem;
+  font-family: "Merriweather",serif;
+  line-height: 30rem;
+  background-color: #eeeeee;
+}
+
+.ProblemPage .ProblemContent {
+  padding: 20px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
+  border-radius: 4px;
+}
+
+.ProblemPage .ProblemContent .ProblemPageHeader {
+  font-size: 30px;
+  font-weight: normal;
+  margin: 20px 0;
+}
+
+.ProblemPage .ProblemContent li {
+  font-size: 18rem;
+}
+
+.ProblemPage .ProblemContent h1 {
+  font-size: 22rem;
+}
+
+.ProblemPage .ProblemContent h2 {
+  font-size: 20rem;
+}
+
+.ProblemPage .ProblemContent h3 {
+  font-size: 18rem;
+}
+
+.ProblemPage .ProblemContent h4 {
+  font-size: 16rem;
+}
+
+.ProblemPage .ProblemMenu {
+  font-family: "Arial",serif;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link {
+  text-decoration: none;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton {
+  border: none;
+  color: #fff;
+  -webkit-transition: all 0.05s ease-in;
+  transition: all 0.05s ease-in;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton i, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton i {
+  padding: 0 5px;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton:hover, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton:hover {
+  -webkit-transform: scale(1.04);
+          transform: scale(1.04);
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton {
+  background-color: #52bb50;
+  border-bottom: 3px solid #53a152;
+}
+
+.ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton {
+  background-color: #00b1bc;
+  border-bottom: 3px solid #099ca7;
+}
+
+.ProblemPage .ProblemMenu .ProblemPropertyContainer {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.ProblemPage .ProblemMenu .ProblemPropertyContainer .ProblemProperty {
+  margin: 5px 0;
+}
+
+code {
+  padding: 20px !important;
+  font-size: 16rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/*# sourceMappingURL=ProblemPage.css.map */

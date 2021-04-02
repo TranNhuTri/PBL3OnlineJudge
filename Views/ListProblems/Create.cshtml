@@ -1,0 +1,74 @@
+@{
+    ViewData["Title"] = "Tạo bài mới";
+}
+@model Problem
+<div class="CreateProblemPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="CreateProblemPage_Input">
+                    <h1 class="CreateProblemPage_Header">Tạo bài mới</h1>
+                    <form asp-action = "create">
+                        <div class="FormGroup">
+                            <label for="ID">Mã bài :</label>
+                            <input type="text" asp-for = "ID">
+                        </div>
+                        <div class="FormGroup">
+                            <label for="Tilte">Tên bài :</label>
+                            <input type="text" asp-for = "Title">
+                        </div>
+                        <div class="FormGroup">
+                            <label>Đề bài :</label>
+                            <div class="Editor">
+                                <textarea name="Content" id="editor" rows="10" cols="80">
+                                </textarea>
+                            </div>
+                            <div class="Preview">
+                                <div class="PreviewButton" id = "PreviewButton">
+                                    Update Preview
+                                </div>
+                                <div class="PreviewContent">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="FormGroup">
+                            <label for="Difficulity">Độ khó :</label>
+                            <input type="text" asp-for = "Difficulty">
+                        </div>
+                        <div class="FormSubmit">
+                            <input type="submit" value = "Submit" id = "Submit" class="CreateProblemSubmit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        CKEDITOR.replace('editor');
+        var previewBtn = document.getElementById("PreviewButton");
+        previewBtn.addEventListener('click', function(e)
+        {
+            var html = CKEDITOR.instances.editor.getData();
+
+            html = String(html);
+            html = html.replaceAll("~", "$");
+
+            var previewContent = document.getElementsByClassName("PreviewContent")[0];
+            
+            previewContent.innerHTML = html;
+
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+
+            CKEDITOR.instances.editor.setData("", function()
+            {
+                CKEDITOR.instances.editor.insertHtml(html);
+            });
+                
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        });
+    </script>
+}

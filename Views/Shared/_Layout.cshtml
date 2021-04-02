@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/jpg" href="/img/favicon.jpg"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+    <link rel="stylesheet" href="/css/HomePage.css">
+    <link rel="stylesheet" href="/css/ListProblemsPage.css">
+    <link rel="stylesheet" href="/css/ProblemPage.css">
+    <link rel="stylesheet" href="/css/Layout.css">
+    <link rel="stylesheet" href="/css/CreateProblemPage.css">
+    <link rel="stylesheet" href="/css/SubmitProblemPage.css">
+    <link rel="stylesheet" href="/css/Base.css">
+    <script src="/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="/codemirror-5.60.0/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="/codemirror-5.60.0/lib/codemirror.css">
+    <script src="/codemirror-5.60.0/mode/clike/clike.js"></script>
+    <script src="/codemirror-5.60.0/addon/edit/closebrackets.js"></script>
+    <script src = "/codemirror-5.60.0/addon/fold/foldcode.js"></script>
+    <script src = "/codemirror-5.60.0/addon/fold/foldgutter.js"></script>
+    <script src = "/codemirror-5.60.0/addon/fold/brace-fold.js"></script>
+    <link rel="stylesheet" href="/codemirror-5.60.0/addon/fold/foldgutter.css">
+</head>
+<body>
+    <div class="AppContainer">
+        <header class = "AppHeader">
+            <div class="grid ">
+                <div class="AppHeader_Row grid_row">
+                    <ul class="AppHeader_List">
+                        <li class="AppHeader_Item">
+                            <div class="AppHeader_Logo">
+                                <a asp-action = "Index" asp-controller = "Home" class ="AppHeader_Link" ><img src="/img/logo.png" alt=""></a>
+                            </div>
+                        </li>
+                        <li class="AppHeader_Item">
+                            <div class="AppHeader_Text">
+                                <a href="/" class ="AppHeader_Link" >Trang Chủ</a>
+                            </div>
+                        </li>
+                        <li class="AppHeader_Item">
+                            <div class="AppHeader_Text">
+                                <a href="/ListProblems" class ="AppHeader_Link" >Bài Tập</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="AppHeader_List">
+                        <li class="AppHeader_Item">
+                            <div class="AppHeader_BellIcon">
+                                <i class="fas fa-bell"></i>
+                                <div class="AppHeader_Dropdown">
+                                    <ul class="AppHeader_Dropdown_List">
+                                        <li class="AppHeader_Dropdown_Item">
+                                            <a class="AppHeader_Dropdown_Link" href="">
+                                                <p class="AppHeader_NotiText">Alo alo alo alo</p>
+                                            </a>
+                                        </li>
+                                        <li class="AppHeader_Dropdown_Item">
+                                            <a class="AppHeader_Dropdown_Link" href="">
+                                                <p class="AppHeader_NotiText">Alo alo alo alo</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="AppHeader_Item">
+                            <div class="AppHeader_AvarIcon">
+                                <i class="fas fa-user-circle"></i>
+                                <div class="AppHeader_Dropdown">
+                                    <ul class="AppHeader_Dropdown_List">
+                                        <li class="AppHeader_Dropdown_Item">
+                                            <a class="AppHeader_Dropdown_Link" href="/">
+                                                <i class="AppHeader_Dropdown_Icon far fa-clock"></i>
+                                                Lịch sử nộp bài
+                                            </a>
+                                        </li>
+                                        <li class="AppHeader_Dropdown_Item">
+                                            <a class="AppHeader_Dropdown_Link" asp-controller = "ListProblems" asp-action = "Create">
+                                                <i class="AppHeader_Dropdown_Icon far fa-edit"></i>
+                                                Đăng bài
+                                            </a>
+                                        </li>
+                                        <li class="AppHeader_Dropdown_Item">
+                                            <a class="AppHeader_Dropdown_Link" href="/">
+                                                <i class="AppHeader_Dropdown_Icon fas fa-sign-out-alt"></i>
+                                                Đăng xuất
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <div class="AppBody">
+            @RenderBody()
+        </div>
+    </div>
+    <script>
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+            window.addEventListener('load', (event) => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    if(block.classList == "")
+                        block.classList.add("plaintext");
+                    hljs.highlightBlock(block);
+                });
+            });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,105 @@
+.ListProblemsPage {
+  padding: 40px 0;
+  min-height: 100vh;
+}
+
+.ListProblemsPage .ProblemPage_Header {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0 0 20px 0;
+}
+
+.ListProblemsPage .ListProblemTable {
+  width: 100%;
+  font-size: 14rem;
+  -webkit-box-shadow: 0 0 8px #afafaf;
+          box-shadow: 0 0 8px #afafaf;
+  background-color: #fff;
+}
+
+.ListProblemsPage .ListProblemTable th {
+  padding: 10px;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.ListProblemsPage .ListProblemTable tr:nth-child(even) {
+  background-color: #ccc3;
+}
+
+.ListProblemsPage .ListProblemTable .Number, .ListProblemsPage .ListProblemTable .ProblemNumber {
+  width: 10%;
+}
+
+.ListProblemsPage .ListProblemTable .Title, .ListProblemsPage .ListProblemTable .ProblemTitle {
+  text-align: left;
+  width: 50%;
+}
+
+.ListProblemsPage .ListProblemTable td {
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.ProblemFilter {
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 8px #afafaf;
+          box-shadow: 0 0 8px #afafaf;
+  padding: 10px 15px;
+  margin: 35px 0;
+  font-size: 14rem;
+  line-height: 20rem;
+}
+
+.ProblemFilter .ProblemFillter_Header {
+  font-weight: normal;
+  font-size: 16rem;
+  margin: 10px 0;
+}
+
+.ProblemFilter .ProblemNameFillter {
+  padding: 10px 0;
+}
+
+.ProblemFilter .ProblemNameFillter #ProblemName {
+  font-size: 14rem;
+  width: 100%;
+  padding: 5px;
+}
+
+.ProblemFilter .ProblemUnsolvedFillter {
+  padding: 10px 0;
+}
+
+.ProblemFilter .ProblemUnsolvedFillter #HideSolvedProblem {
+  margin: 0 5px;
+}
+
+.ProblemFilter .ProblemCategoryFillter #ProblemCategory {
+  font-size: 14rem;
+  width: 100%;
+  margin: 10px 0;
+  padding: 4px;
+}
+
+.ProblemFilter .ProblemDifficultFillter {
+  padding: 10px 0;
+}
+
+.ProblemFilter .ProblemDifficultFillter #MinDifficult, .ProblemFilter .ProblemDifficultFillter #MaxDifficult {
+  width: 30%;
+  padding: 2px;
+  margin: 0 5px;
+  font-size: 14rem;
+}
+
+.ProblemFilter .ProblemFillterSubmit {
+  padding: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+/*# sourceMappingURL=ListProblemsPage.css.map */

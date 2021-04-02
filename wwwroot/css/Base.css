@@ -1,0 +1,37 @@
+input 
+{
+    outline: none;
+    border: 1px solid #afafaf;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14rem;
+}
+input:focus
+{
+    outline: none;
+    border: 1px solid #52a8eccc;
+    box-shadow: 0 0 5px #52a8eccc;
+}
+#Submit
+{
+    cursor: pointer;
+    padding: 6px 40px;
+    background: linear-gradient(0deg, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%);
+}
+#Submit:hover
+{
+    background: none;
+    background-color: #eeeeee;
+}
+.button
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 10px 0;
+    width: 120px;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+}

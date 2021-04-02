@@ -1,0 +1,55 @@
+.SubmitProblemPage {
+  background-color: #eeeeee;
+  min-height: 100vh;
+}
+
+.SubmitProblemPage .SubmitProblemForm {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px 0;
+  -webkit-box-shadow: 0 0 5px #ccc;
+          box-shadow: 0 0 5px #ccc;
+  border-radius: 4px;
+  font-size: 16rem;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblemPage_Header {
+  font-size: 20rem;
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.SubmitProblemPage .SubmitProblemForm .CodeMirror {
+  border: 1px solid #ccc;
+  font-size: 16rem;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs {
+  padding-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs #LanguageSubmit {
+  width: 150px;
+  outline: none;
+  padding: 2px 5px;
+  border: 1px solid #afafaf;
+  border-radius: 4px;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs #LanguageSubmit option {
+  font-size: 15rem;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs #LanguageSubmit:focus {
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 0 0 5px #52a8eccc;
+          box-shadow: 0 0 5px #52a8eccc;
+}
+/*# sourceMappingURL=SubmitProblemPage.css.map */

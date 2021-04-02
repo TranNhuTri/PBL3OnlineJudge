@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "Danh sách bài tập";
+}
+@model List<Problem>;
+<div class="ListProblemsPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column-9">
+                <h1 class="ProblemPage_Header">Danh Sách Bài Tập</h1>
+                <table cellspacing="0" cellpadding="0" class="ListProblemTable">
+                    <thead>
+                        <tr>
+                            <th class = "Number">#</th>
+                            <th class = "Title">
+                                Tên Bài
+                            </th>
+                            <th class = "Status">
+                                Trạng Thái
+                            </th>
+                            <th class = "Points">
+                                Độ Khó
+                            </th>
+                            <th class = "SuccessRate">
+                                Tỉ Lệ AC
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            string status = Model[i].Status ? "Đã hoàn thành" : "Chưa hoàn thành";
+                            <tr class= "ListProblemRow">
+                            <td class = "ProblemNumber">@(i + 1)</td>
+                            <td class = "ProblemTitle">
+                                <a asp-action = "Problem" asp-route-id = "@Model[i].ID">@Model[i].Title</a>
+                            </td>
+                            <td class = "ProblemStatus">
+                                @status
+                            </td>
+                            <td class = "ProblemDifficullity">@Model[i].Difficulty</td>
+                            <td class = "ProblemSuccessRate">@Model[i].SuccessRate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid_column-3">
+                <form action="Fill" method="GET">
+                    <div class="ProblemFilter">
+                        <h1 class="ProblemFillter_Header">Tìm Kiếm Bài Tập</h1>
+                        <div class="ProblemNameFillter">
+                            <input type="text" name = "ProblemName" id = "ProblemName" placeholder="Nhập tên bài">
+                        </div>
+                        <div class = "ProblemUnsolvedFillter">
+                            <input type="checkbox" name="HideSolvedProblem" id="HideSolvedProblem">
+                            <label for="HideSolvedProblem">Ẩn bài đã hoàn thành</label>
+                        </div>
+                        <div class="ProblemCategoryFillter">
+                            <label for="ProblemCategory">Dạng bài</label><br>
+                            <select id="ProblemCategory" name = "ProblemCategory">
+                                <option value="" selected disabled hidden>Tất cả</option>
+                                <option value="">DFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                                <option value="">BFS</option>
+                            </select>
+                        </div>
+                        <div class = "ProblemDifficultFillter">
+                            <label for="MinDifficult">Độ khó</label>
+                            <input type="text" name="MinDifficult" id="MinDifficult">
+                            -
+                            <input type="text" name="MaxDifficult" id="MaxDifficult">
+                        </div>
+                        <div class = "ProblemFillterSubmit">
+                            <input type="submit" value="Lọc" id = "Submit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

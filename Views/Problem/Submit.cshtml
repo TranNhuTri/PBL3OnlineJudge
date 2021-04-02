@@ -1,0 +1,43 @@
+@model Problem
+@{
+    ViewData["Title"] = "Nộp bài " + Model.Title;
+}
+<div class="SubmitProblemPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="SubmitProblemForm">
+                    <form action="">
+                        <h1 class = "SubmitProblemPage_Header">Nộp bài @Model.Title</h1>
+                        <textarea name="ProblemSolution" id="codemirror" cols="30" rows="10" class = "ProblemSolution"></textarea>
+                        <div class="SubmitProblem_Inputs">
+                            <div class="LanguageSubmit">
+                                <label for="LanguageSubmit">Language: </label>
+                                <select name="Language" id="LanguageSubmit">
+                                    <option value="C++">C++</option>
+                                    <option value="Python">Python</option>
+                                    <option value="C#">C#</option>
+                                    <option value="Java">Java</option>
+                                </select>
+                        </div>
+                        <input type="submit" id = "Submit" value="Nộp bài">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var codemirror = CodeMirror.fromTextArea(document.getElementById("codemirror"),
+        {
+            mode: "text/x-csrc",
+            lineNumbers: true,
+            lineWrapping: true,
+            autocapitalize: true,
+            autoCloseBrackets: true,
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        })
+    </script>
+}

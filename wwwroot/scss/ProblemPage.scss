@@ -1,0 +1,99 @@
+@import 'var.scss';
+.ProblemPage
+{
+    padding: 30px 0;
+    font-size: 18rem;
+    font-family: "Merriweather",serif;
+    line-height: 30rem;
+    background-color: #eeeeee;
+    .ProblemContent
+    {
+        padding: 20px;
+        background-color: $white-color;
+        box-shadow: 0 0 4px #ccc;
+        border-radius: 4px;
+        .ProblemPageHeader
+        {
+            font-size: 30px;
+            font-weight: normal;
+            margin: 20px 0;
+        }
+        li 
+        {
+            font-size: 18rem;
+        }
+        h1
+        {
+            font-size: 22rem;
+        }
+        h2
+        {
+            font-size: 20rem;
+        }
+        h3
+        {
+            font-size: 18rem;
+        }
+        h4
+        {
+            font-size: 16rem;
+        }
+    }
+    .ProblemMenu
+    {
+        font-family: "Arial",serif;
+        background-color: $white-color;
+        box-shadow: 0 0 4px #ccc;
+        border-radius: 4px;
+        padding: 15px;
+        .ProblemMenu_Buttons
+        {
+            display: flex;
+            justify-content: space-between;
+            .ProblemMenu_Link
+            {
+                text-decoration: none;
+                .ProblemSubmitButton, .ProblemStatistictButton
+                {
+                    border: none;
+                    color: $white-color;
+                    transition: all 0.05s ease-in;
+                    i 
+                    {
+                        padding: 0 5px;
+                    }
+                }
+                .ProblemSubmitButton:hover, .ProblemStatistictButton:hover
+                {
+                    transform: scale(1.04);
+                }
+                .ProblemSubmitButton
+                {
+                    background-color: #52bb50;
+                    border-bottom: 3px solid #53a152;
+                }
+                .ProblemStatistictButton
+                {
+                    background-color: #00b1bc;
+                    border-bottom: 3px solid #099ca7;
+                }
+            }
+        }
+        .ProblemPropertyContainer
+        {
+            margin-top: 20px;
+            font-size: 14px;
+            .ProblemProperty
+            {
+                margin: 5px 0;
+            }
+        }
+    }
+}
+code 
+{
+    padding: 20px !important;
+    font-size: 16rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
