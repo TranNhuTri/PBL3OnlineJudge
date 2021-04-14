@@ -32,7 +32,7 @@
                             <tr class= "ListProblemRow">
                             <td class = "ProblemNumber">@(i + 1)</td>
                             <td class = "ProblemTitle">
-                                <a asp-action = "Problem" asp-route-id = "@Model[i].ID">@Model[i].Title</a>
+                                <a asp-action = "Problem" asp-route-id = "@Model[i].ID" class = "ProblemTitle_Link">@Model[i].Title</a>
                             </td>
                             <td class = "ProblemStatus">
                                 @status

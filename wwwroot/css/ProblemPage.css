@@ -15,7 +15,7 @@
 }
 
 .ProblemPage .ProblemContent .ProblemPageHeader {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: normal;
   margin: 20px 0;
 }
@@ -25,19 +25,19 @@
 }
 
 .ProblemPage .ProblemContent h1 {
-  font-size: 22rem;
-}
-
-.ProblemPage .ProblemContent h2 {
   font-size: 20rem;
 }
 
-.ProblemPage .ProblemContent h3 {
+.ProblemPage .ProblemContent h2 {
   font-size: 18rem;
 }
 
-.ProblemPage .ProblemContent h4 {
+.ProblemPage .ProblemContent h3 {
   font-size: 16rem;
+}
+
+.ProblemPage .ProblemContent h4 {
+  font-size: 14rem;
 }
 
 .ProblemPage .ProblemMenu {
@@ -67,6 +67,8 @@
   color: #fff;
   -webkit-transition: all 0.05s ease-in;
   transition: all 0.05s ease-in;
+  width: 120px;
+  padding: 10px 0;
 }
 
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton i, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton i {

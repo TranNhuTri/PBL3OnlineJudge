@@ -44,6 +44,23 @@
   display: block;
 }
 
+.AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .Login_Link, .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .Register_Link {
+  position: relative;
+  text-decoration: none;
+  color: #008eff;
+  font-size: 14rem;
+}
+
+.AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .Login_Link::before {
+  content: "";
+  height: 20px;
+  width: 1px;
+  background-color: #636363bf;
+  position: absolute;
+  top: -20%;
+  right: -24%;
+}
+
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_Logo .AppHeader_Link {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -164,5 +181,21 @@
 
 .list_problem_table {
   font-size: 20px;
+}
+
+.AppBody {
+  min-height: 100vh;
+}
+
+.AppFooter {
+  text-align: center;
+  font-size: 14rem;
+  border-top: 1px solid #afafaf;
+  padding: 5px 0;
+}
+
+.AppFooter .AppFooter_Link {
+  text-decoration: none;
+  color: #008eff;
 }
 /*# sourceMappingURL=HomePage.css.map */

@@ -1,0 +1,120 @@
+@import 'var.scss';
+.Login
+{
+    width:360px;
+	margin: 30px auto;
+	box-sizing: border-box;
+	box-shadow: 0 1px 10px $shadow-color;
+	text-align: center;
+    border-radius: 4px;
+	padding:24px;
+    font-size: 14rem;
+    .Login_Title
+    {
+        font-weight: normal;
+	    font-size: 26rem;
+    }
+    .Login_Disc
+    {
+        margin-top: 20px;
+        font-size: 15rem;
+        line-height: 20rem;
+        color:$light-text-color;
+    }
+    .OR 
+    {
+        color: $light-text-color;
+        position: relative;
+        margin: 10px 0;
+        .OR_Text
+        {
+            background-color: $white-color; 
+            padding: 2px 8px;
+        }
+    }
+    .OR::before
+    {
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        left: 0;
+        border-top: 1px solid #e1e6eb;
+        transform: translateY(-50%);
+        z-index: -1;
+    }
+    .LoginButton
+    {
+        cursor: pointer;
+        padding: 10px;
+        margin-bottom: 10px;
+        .LoginButton_Icon
+        {
+            border-radius: 2px;
+            width: 18px;
+            height: 18px;
+        }
+        .LoginButton_Text
+        {
+            margin: 0;
+            margin-left: 10px;
+        }
+    }
+    .LoginButton:hover
+    {
+        background-color: rgb(239,239,239);
+	    border: 1px solid #1dbfaf;
+    }
+    .Login_Input
+    {
+        text-align: left;
+        margin-bottom: 24px;
+        .Login_Input_Title
+        {
+            display: block;
+            font-size: 16rem;
+            margin-top:10px;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        #email, #password
+        {
+            width: 100%;
+            padding: 10px 15px;
+        }
+    }
+    #LoginSubmitButton
+    {
+        cursor: pointer;
+        width:100%;
+        height: 36px;
+        border:none;
+        color:white;
+        font-size: 16px;
+        background-color: #1dbfaf;
+        border-radius: 8px;
+    }
+    #LoginSubmitButton:hover
+    {
+        background-color: #05af9e;
+    }
+    .ForgotPass
+    {
+        display: block;
+        margin:25px auto;
+        color:$light-text-color;
+        font-size: 14px;
+    }
+    .Question
+    {
+        color:$light-text-color;
+	    font-size: 16px;
+        margin: 5px 0;
+    }
+    .Register
+    {
+        color:#1dbfaf;
+        text-decoration: none;
+        font-size: 16px;
+    }
+}

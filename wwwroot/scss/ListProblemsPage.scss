@@ -15,6 +15,7 @@
         font-size: 14rem;
         box-shadow: 0 0 8px $border-color;
         background-color: $white-color;
+        border-radius: 4px;
         th
         {
             padding: 10px;
@@ -38,6 +39,11 @@
         {
             padding: 20px 10px;
             text-align: center;
+            .ProblemTitle_Link
+            {
+                text-decoration: none;
+                color: #006bbf;
+            }
         }
     }
 }
@@ -45,6 +51,7 @@
 {
     background-color: $white-color;
     box-shadow: 0 0 8px $border-color;
+    border-radius: 4px;
     padding: 10px 15px;
     margin: 35px 0;
     font-size: 14rem;
@@ -81,6 +88,14 @@
             width: 100%;
             margin: 10px 0;
             padding: 4px;
+            border: 1px solid $border-color;
+            border-radius: 4px;
+            outline: none;
+        }
+        #ProblemCategory:focus
+        {
+            border: 1px solid $light-blue-color;
+            box-shadow: 0 0 5px $light-blue-color;
         }
     }
     .ProblemDifficultFillter

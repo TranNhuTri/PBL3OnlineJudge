@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/CreateProblemPage.css">
     <link rel="stylesheet" href="/css/SubmitProblemPage.css">
     <link rel="stylesheet" href="/css/Base.css">
+    <link rel="stylesheet" href="/css/LoginPage.css">
     <script src="/ckeditor/ckeditor.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
@@ -51,52 +52,64 @@
                         </li>
                     </ul>
                     <ul class="AppHeader_List">
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_BellIcon">
-                                <i class="fas fa-bell"></i>
-                                <div class="AppHeader_Dropdown">
-                                    <ul class="AppHeader_Dropdown_List">
-                                        <li class="AppHeader_Dropdown_Item">
-                                            <a class="AppHeader_Dropdown_Link" href="">
-                                                <p class="AppHeader_NotiText">Alo alo alo alo</p>
-                                            </a>
-                                        </li>
-                                        <li class="AppHeader_Dropdown_Item">
-                                            <a class="AppHeader_Dropdown_Link" href="">
-                                                <p class="AppHeader_NotiText">Alo alo alo alo</p>
-                                            </a>
-                                        </li>
-                                    </ul>
+                        @if(string.IsNullOrEmpty(Context.Session.GetString("accountName")) == false)
+                        {
+                            <li class="AppHeader_Item">
+                                <div class="AppHeader_BellIcon">
+                                    <i class="fas fa-bell"></i>
+                                    <div class="AppHeader_Dropdown">
+                                        <ul class="AppHeader_Dropdown_List">
+                                            <li class="AppHeader_Dropdown_Item">
+                                                <a class="AppHeader_Dropdown_Link" href="">
+                                                    <p class="AppHeader_NotiText">Alo alo alo alo</p>
+                                                </a>
+                                            </li>
+                                            <li class="AppHeader_Dropdown_Item">
+                                                <a class="AppHeader_Dropdown_Link" href="">
+                                                    <p class="AppHeader_NotiText">Alo alo alo alo</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_AvarIcon">
-                                <i class="fas fa-user-circle"></i>
-                                <div class="AppHeader_Dropdown">
-                                    <ul class="AppHeader_Dropdown_List">
-                                        <li class="AppHeader_Dropdown_Item">
-                                            <a class="AppHeader_Dropdown_Link" href="/">
-                                                <i class="AppHeader_Dropdown_Icon far fa-clock"></i>
-                                                Lịch sử nộp bài
-                                            </a>
-                                        </li>
-                                        <li class="AppHeader_Dropdown_Item">
-                                            <a class="AppHeader_Dropdown_Link" asp-controller = "ListProblems" asp-action = "Create">
-                                                <i class="AppHeader_Dropdown_Icon far fa-edit"></i>
-                                                Đăng bài
-                                            </a>
-                                        </li>
-                                        <li class="AppHeader_Dropdown_Item">
-                                            <a class="AppHeader_Dropdown_Link" href="/">
-                                                <i class="AppHeader_Dropdown_Icon fas fa-sign-out-alt"></i>
-                                                Đăng xuất
-                                            </a>
-                                        </li>
-                                    </ul>
+                            </li>
+                            <li class="AppHeader_Item">
+                                <div class="AppHeader_AvarIcon">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div class="AppHeader_Dropdown">
+                                        <ul class="AppHeader_Dropdown_List">
+                                            <li class="AppHeader_Dropdown_Item">
+                                                <a class="AppHeader_Dropdown_Link" href="/">
+                                                    <i class="AppHeader_Dropdown_Icon far fa-clock"></i>
+                                                    @Context.Session.GetString("accountName")
+                                                </a>
+                                            </li>
+                                            <li class="AppHeader_Dropdown_Item">
+                                                <a class="AppHeader_Dropdown_Link" asp-controller = "ListProblems" asp-action = "Create">
+                                                    <i class="AppHeader_Dropdown_Icon far fa-edit"></i>
+                                                    Đăng bài
+                                                </a>
+                                            </li>
+                                            <li class="AppHeader_Dropdown_Item">
+                                                <a class="AppHeader_Dropdown_Link" href="/Account/Logout">
+                                                    <i class="AppHeader_Dropdown_Icon fas fa-sign-out-alt"></i>
+                                                    Đăng xuất
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="AppHeader_Item">
+                                <a href="/Account/Login" class = "Login_Link">Đăng nhập</a>
+                            </li>
+                            <li class="AppHeader_Item">
+                                <a href="" class = "Register_Link">Đăng ký</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -104,6 +117,19 @@
         <div class="AppBody">
             @RenderBody()
         </div>
+        <footer>
+            <div class="grid">
+                <div class="grid_row">
+                    <div class="grid_column">
+                        <div class="AppFooter">
+                            <p><a href="/" class="AppFooter_Link">CodeTop1</a> (c) Based on DOMjudge 5.1.3</p>
+                            <p>Developed by Tran Nhu Tri - Phan Dinh Khoi - Le Huynh Nhat Long - Do Tan Truong Sanh</p>
+                            <p>University of Science and Technology - University of Danang</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
     <script>
             MathJax.Hub.Config({

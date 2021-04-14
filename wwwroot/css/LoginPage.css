@@ -1,0 +1,122 @@
+.Login {
+  width: 360px;
+  margin: 30px auto;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 0 1px 10px #ccc;
+          box-shadow: 0 1px 10px #ccc;
+  text-align: center;
+  border-radius: 4px;
+  padding: 24px;
+  font-size: 14rem;
+}
+
+.Login .Login_Title {
+  font-weight: normal;
+  font-size: 26rem;
+}
+
+.Login .Login_Disc {
+  margin-top: 20px;
+  font-size: 15rem;
+  line-height: 20rem;
+  color: #636363bf;
+}
+
+.Login .OR {
+  color: #636363bf;
+  position: relative;
+  margin: 10px 0;
+}
+
+.Login .OR .OR_Text {
+  background-color: #fff;
+  padding: 2px 8px;
+}
+
+.Login .OR::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  border-top: 1px solid #e1e6eb;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  z-index: -1;
+}
+
+.Login .LoginButton {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.Login .LoginButton .LoginButton_Icon {
+  border-radius: 2px;
+  width: 18px;
+  height: 18px;
+}
+
+.Login .LoginButton .LoginButton_Text {
+  margin: 0;
+  margin-left: 10px;
+}
+
+.Login .LoginButton:hover {
+  background-color: #efefef;
+  border: 1px solid #1dbfaf;
+}
+
+.Login .Login_Input {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.Login .Login_Input .Login_Input_Title {
+  display: block;
+  font-size: 16rem;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: normal;
+}
+
+.Login .Login_Input #email, .Login .Login_Input #password {
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.Login #LoginSubmitButton {
+  cursor: pointer;
+  width: 100%;
+  height: 36px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  background-color: #1dbfaf;
+  border-radius: 8px;
+}
+
+.Login #LoginSubmitButton:hover {
+  background-color: #05af9e;
+}
+
+.Login .ForgotPass {
+  display: block;
+  margin: 25px auto;
+  color: #636363bf;
+  font-size: 14px;
+}
+
+.Login .Question {
+  color: #636363bf;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.Login .Register {
+  color: #1dbfaf;
+  text-decoration: none;
+  font-size: 16px;
+}
+/*# sourceMappingURL=LoginPage.css.map */

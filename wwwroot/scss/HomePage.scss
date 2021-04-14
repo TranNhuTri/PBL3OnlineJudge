@@ -31,6 +31,23 @@
                         display: block;
                     }
                 }
+                .Login_Link, .Register_Link
+                {
+                    position: relative;
+                    text-decoration: none;
+                    color: #008eff;
+                    font-size: 14rem;
+                }
+                .Login_Link::before
+                {
+                    content: "";
+                    height: 20px;
+                    width: 1px;
+                    background-color: $light-text-color;
+                    position: absolute;
+                    top: -20%;
+                    right: -24%;
+                }
                 .AppHeader_Logo
                 {
                     .AppHeader_Link
@@ -152,4 +169,20 @@
 .list_problem_table
 {
     font-size: 20px;
+}
+.AppBody
+{
+    min-height: 100vh;
+}
+.AppFooter
+{
+    text-align: center;
+    font-size: 14rem;
+    border-top: 1px solid $border-color;
+    padding: 5px 0;
+    .AppFooter_Link
+    {
+        text-decoration: none;
+        color: $blue-color;
+    }
 }

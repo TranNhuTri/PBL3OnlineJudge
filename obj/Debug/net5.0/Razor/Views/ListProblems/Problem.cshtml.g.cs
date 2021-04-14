@@ -5,7 +5,6 @@
 namespace AspNetCore
 {
     #line hidden
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -26,8 +25,29 @@ using PBL3.Models;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+using Microsoft.AspNetCore.Http;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+using System.Web;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+using System;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"759eba0a5b7f1386bcf204156629fa2a492980d5", @"/Views/ListProblems/Problem.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"adb2a463fea4ac878f90a60766ade8e19dd5ce53", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"ac635efc7416b8ad0f0feeab92b905167e22d41e", @"/Views/_ViewImports.cshtml")]
     public class Views_ListProblems_Problem : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Problem>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-controller", "Problem", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -82,7 +102,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("\r\n                </div>\r\n            </div>\r\n            <div class=\"grid_column-3\">\r\n                <div class=\"ProblemMenu\">\r\n                    <div class=\"ProblemMenu_Buttons\">\r\n                        ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "759eba0a5b7f1386bcf204156629fa2a492980d55033", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "759eba0a5b7f1386bcf204156629fa2a492980d55436", async() => {
                 WriteLiteral("\r\n                            <div class=\"ProblemSubmitButton button\">\r\n                                <i class=\"fas fa-upload\"> </i>\r\n                                Nộp bài\r\n                            </div>\r\n                        ");
             }
             );

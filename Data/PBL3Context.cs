@@ -11,5 +11,6 @@ namespace PBL3.Data
         }
 
         public DbSet<Problem> Problems { get; set; }
+        public DbSet<Account> Accounts { get; set; }
     }
 }

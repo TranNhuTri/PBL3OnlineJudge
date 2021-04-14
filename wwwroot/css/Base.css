@@ -30,8 +30,6 @@ input:focus
     align-items: center;
     font-size: 14px;
     line-height: 18px;
-    padding: 10px 0;
-    width: 120px;
     border: 1px solid #afafaf;
     border-radius: 5px;
 }

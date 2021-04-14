@@ -14,7 +14,7 @@
         border-radius: 4px;
         .ProblemPageHeader
         {
-            font-size: 30px;
+            font-size: 26px;
             font-weight: normal;
             margin: 20px 0;
         }
@@ -24,19 +24,19 @@
         }
         h1
         {
-            font-size: 22rem;
+            font-size: 20rem;
         }
         h2
         {
-            font-size: 20rem;
+            font-size: 18rem;
         }
         h3
         {
-            font-size: 18rem;
+            font-size: 16rem;
         }
         h4
         {
-            font-size: 16rem;
+            font-size: 14rem;
         }
     }
     .ProblemMenu
@@ -58,7 +58,9 @@
                     border: none;
                     color: $white-color;
                     transition: all 0.05s ease-in;
-                    i 
+                    width: 120px;
+                    padding: 10px 0;
+                    i
                     {
                         padding: 0 5px;
                     }

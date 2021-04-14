@@ -15,6 +15,7 @@
   -webkit-box-shadow: 0 0 8px #afafaf;
           box-shadow: 0 0 8px #afafaf;
   background-color: #fff;
+  border-radius: 4px;
 }
 
 .ListProblemsPage .ListProblemTable th {
@@ -41,10 +42,16 @@
   text-align: center;
 }
 
+.ListProblemsPage .ListProblemTable td .ProblemTitle_Link {
+  text-decoration: none;
+  color: #006bbf;
+}
+
 .ProblemFilter {
   background-color: #fff;
   -webkit-box-shadow: 0 0 8px #afafaf;
           box-shadow: 0 0 8px #afafaf;
+  border-radius: 4px;
   padding: 10px 15px;
   margin: 35px 0;
   font-size: 14rem;
@@ -80,6 +87,15 @@
   width: 100%;
   margin: 10px 0;
   padding: 4px;
+  border: 1px solid #afafaf;
+  border-radius: 4px;
+  outline: none;
+}
+
+.ProblemFilter .ProblemCategoryFillter #ProblemCategory:focus {
+  border: 1px solid #52a8eccc;
+  -webkit-box-shadow: 0 0 5px #52a8eccc;
+          box-shadow: 0 0 5px #52a8eccc;
 }
 
 .ProblemFilter .ProblemDifficultFillter {

@@ -170,3 +170,4 @@ D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Problem.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Create.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Submit.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Index.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
