@@ -1,21 +1,23 @@
-@{
-    ViewData["Title"] = "Tạo bài mới";
-}
 @model Problem
+@{
+    ViewData["Title"] = "Sửa đề bài";
+    if(!String.IsNullOrEmpty(Model.Content))
+        Model.Content = Model.Content.Replace("$", "~");
+}
 <div class="Create-EditProblemPage">
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
                 <div class="Create-EditProblemPage_Input">
-                    <h1 class="Create-EditProblemPage_Header">Tạo bài mới</h1>
-                    <form asp-action = "create">
+                    <h1 class="Create-EditProblemPage_Header">Sửa đề bài @Model.Title</h1>
+                    <form asp-action="edit">
                         <div class="FormGroup">
                             <label for="ID">Mã bài :</label>
                             <input type="text" asp-for = "ID">
                         </div>
                         <div class="FormGroup">
                             <label for="Tilte">Tên bài :</label>
-                            <input type="text" asp-for = "Title">
+                            <input type="text" asp-for = "Title" value= "@Model.Title">
                         </div>
                         <div class="FormGroup">
                             <label>Đề bài :</label>
@@ -29,14 +31,20 @@
                                 </div>
                                 <div class="PreviewContent">
                                 </div>
+                                <div class="PreviewContent--Hidden" style="display: none;">
+                                    @Model.Content
+                                </div>
                             </div>
                         </div>
+                        <script>
+                            
+                        </script>
                         <div class="FormGroup">
                             <label for="Difficulity">Độ khó :</label>
-                            <input type="text" asp-for = "Difficulty">
+                            <input type="text" asp-for = "Difficulty" value="@Model.Difficulty">
                         </div>
                         <div class="FormSubmit">
-                            <input type="submit" value = "Tạo đề bài" class="CreateProblemSubmit button">
+                            <input type="submit" value = "Lưu" class="button EditProblemSubmit">
                         </div>
                     </form>
                 </div>
@@ -45,29 +53,41 @@
     </div>
 </div>
 @section Scripts {
-    <script>
-        CKEDITOR.replace('editor');
+    <script type="text/javascript" charset="utf-8">
         var previewBtn = document.getElementById("PreviewButton");
+
+        var previewContent = document.getElementsByClassName("PreviewContent")[0];
+        var content = document.getElementsByClassName("PreviewContent--Hidden")[0].innerHTML.replaceAll("~", "$");
+        var div = document.createElement("div");
+        div.innerHTML = content;
+
+        CKEDITOR.replace('editor');
         previewBtn.addEventListener('click', function(e)
         {
             var html = CKEDITOR.instances.editor.getData();
 
             html = html.replaceAll("~", "$");
 
-            var previewContent = document.getElementsByClassName("PreviewContent")[0];
-            
             previewContent.innerHTML = html;
 
             document.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightBlock(block);
             });
-            
+
             CKEDITOR.instances.editor.setData("", function()
             {
                 CKEDITOR.instances.editor.insertHtml(html);
             });
                 
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        });
+        CKEDITOR.on("instanceReady", function(event)
+        {
+            CKEDITOR.instances.editor.setData("", function()
+            {
+                CKEDITOR.instances.editor.insertHtml(div.innerText);
+                previewBtn.click();
+            });
         });
     </script>
 }

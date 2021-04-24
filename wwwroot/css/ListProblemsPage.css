@@ -104,18 +104,23 @@
 
 .ProblemFilter .ProblemDifficultFillter #MinDifficult, .ProblemFilter .ProblemDifficultFillter #MaxDifficult {
   width: 30%;
-  padding: 2px;
+  padding: 3px 2px;
   margin: 0 5px;
   font-size: 14rem;
 }
 
 .ProblemFilter .ProblemFillterSubmit {
-  padding: 10px 0;
+  margin: 10px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.ProblemFilter .ProblemFillterSubmit .ProblemFillterSubmit_Button {
+  padding: 8px 40px;
+  border: none;
 }
 /*# sourceMappingURL=ListProblemsPage.css.map */

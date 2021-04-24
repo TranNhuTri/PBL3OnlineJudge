@@ -48,6 +48,9 @@
         cursor: pointer;
         padding: 10px;
         margin-bottom: 10px;
+        background-color: $white-color;
+        border: 1px solid $border-color;
+        color: $black-color;
         .LoginButton_Icon
         {
             border-radius: 2px;
@@ -63,7 +66,7 @@
     .LoginButton:hover
     {
         background-color: rgb(239,239,239);
-	    border: 1px solid #1dbfaf;
+	    border: 1px solid $primary-color;
     }
     .Login_Input
     {
@@ -91,12 +94,12 @@
         border:none;
         color:white;
         font-size: 16px;
-        background-color: #1dbfaf;
+        background-color: $primary-color;
         border-radius: 8px;
     }
     #LoginSubmitButton:hover
     {
-        background-color: #05af9e;
+        opacity: 0.8;
     }
     .ForgotPass
     {
@@ -113,7 +116,7 @@
     }
     .Register
     {
-        color:#1dbfaf;
+        color:$primary-color;
         text-decoration: none;
         font-size: 16px;
     }

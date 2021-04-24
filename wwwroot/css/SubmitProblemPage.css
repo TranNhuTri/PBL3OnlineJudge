@@ -22,7 +22,7 @@
 
 .SubmitProblemPage .SubmitProblemForm .CodeMirror {
   border: 1px solid #ccc;
-  font-size: 16rem;
+  font-size: 14rem;
 }
 
 .SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs {
@@ -52,5 +52,10 @@
   border: 1px solid #ccc;
   -webkit-box-shadow: 0 0 5px #52a8eccc;
           box-shadow: 0 0 5px #52a8eccc;
+}
+
+.SubmitProblemPage .SubmitProblemForm .SubmitProblemButton {
+  border: none;
+  padding: 8px 40px;
 }
 /*# sourceMappingURL=SubmitProblemPage.css.map */

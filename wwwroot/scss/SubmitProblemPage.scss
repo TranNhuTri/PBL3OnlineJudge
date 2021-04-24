@@ -21,7 +21,7 @@
         .CodeMirror
         {
             border: 1px solid #ccc;
-            font-size: 16rem;
+            font-size: 14rem;
         }
         .SubmitProblem_Inputs
         {
@@ -46,6 +46,11 @@
                 border: 1px solid #ccc;
                 box-shadow: 0 0 5px #52a8eccc;
             }
+        }
+        .SubmitProblemButton
+        {
+            border: none;
+            padding: 8px 40px;
         }
     }
 }

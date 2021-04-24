@@ -104,15 +104,20 @@
         #MinDifficult, #MaxDifficult
         {
             width: 30%;
-            padding: 2px;
+            padding: 3px 2px;
             margin: 0 5px;
             font-size: 14rem;
         }
     }
     .ProblemFillterSubmit
     {
-        padding: 10px 0;
+        margin: 10px 0;
         display: flex;
         justify-content: center;
+        .ProblemFillterSubmit_Button
+        {
+            padding: 8px 40px;
+            border: none;
+        }
     }
 }

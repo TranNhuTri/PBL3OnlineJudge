@@ -1,0 +1,102 @@
+.Create_EditProblemPage {
+  background-color: #eeeeee;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input {
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
+  border-radius: 5px;
+  padding: 15px 20px;
+  margin: 20px 0;
+  font-size: 16rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .Create_EditProblemPage_Header {
+  font-size: 20rem;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup {
+  margin: 15px 0;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup label {
+  width: 80px;
+  display: inline-block;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup input {
+  width: 300px;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup #Difficulty {
+  width: 150px;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Editor {
+  padding: 10px 0;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewButton {
+  height: 50px;
+  background-color: #ccc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent {
+  min-height: 100px;
+  padding: 0 20px;
+  overflow-y: auto;
+  font-family: "Merriweather",serif;
+  line-height: 30rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent li {
+  font-size: 16rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent h1 {
+  font-size: 20rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent h2 {
+  font-size: 18rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent h3 {
+  font-size: 16rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormGroup .Preview .PreviewContent h4 {
+  font-size: 14rem;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .FormSubmit {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.Create_EditProblemPage .Create_EditProblemPage_Input .CreateProblemSubmit {
+  padding: 10px 40px !important;
+}
+/*# sourceMappingURL=Create_EditProblemPage.css.map */

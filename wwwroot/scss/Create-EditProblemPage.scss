@@ -1,8 +1,8 @@
 @import 'var.scss';
-.CreateProblemPage
+.Create-EditProblemPage
 {
     background-color: #eeeeee;
-    .CreateProblemPage_Input
+    .Create-EditProblemPage_Input
     {
         background-color: $white-color;
         box-shadow: 0 0 4px #ccc;
@@ -10,7 +10,7 @@
         padding: 15px 20px;
         margin: 20px 0;
         font-size: 16rem;
-        .CreateProblemPage_Header
+        .Create-EditProblemPage_Header
         {
             font-size: 20rem;
             font-weight: normal;
@@ -84,9 +84,10 @@
             display: flex;
             justify-content: center;
         }
-        .CreateProblemSubmit
+        .CreateProblemSubmit, .EditProblemSubmit
         {
-            padding: 10px 40px !important;
+            padding: 10px 40px;
+            border: none;
         }
     }
 }

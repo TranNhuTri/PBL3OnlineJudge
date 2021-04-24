@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="/css/ListProblemsPage.css">
     <link rel="stylesheet" href="/css/ProblemPage.css">
     <link rel="stylesheet" href="/css/Layout.css">
-    <link rel="stylesheet" href="/css/CreateProblemPage.css">
+    <link rel="stylesheet" href="/css/Create-EditProblemPage.css">
     <link rel="stylesheet" href="/css/SubmitProblemPage.css">
     <link rel="stylesheet" href="/css/Base.css">
     <link rel="stylesheet" href="/css/LoginPage.css">
-    <script src="/ckeditor/ckeditor.js"></script>
+    <link rel="stylesheet" href="/css/SignUpPage.css">
+    <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -80,7 +81,7 @@
                                         <ul class="AppHeader_Dropdown_List">
                                             <li class="AppHeader_Dropdown_Item">
                                                 <a class="AppHeader_Dropdown_Link" href="/">
-                                                    <i class="AppHeader_Dropdown_Icon far fa-clock"></i>
+                                                    <i class="AppHeader_Dropdown_Icon fas fa-user"></i>
                                                     @Context.Session.GetString("accountName")
                                                 </a>
                                             </li>
@@ -107,7 +108,7 @@
                                 <a href="/Account/Login" class = "Login_Link">Đăng nhập</a>
                             </li>
                             <li class="AppHeader_Item">
-                                <a href="" class = "Register_Link">Đăng ký</a>
+                                <a href="/Account/SignUp" class = "Register_Link">Đăng ký</a>
                             </li>
                         }
                     </ul>

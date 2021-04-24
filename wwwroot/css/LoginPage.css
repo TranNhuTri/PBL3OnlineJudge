@@ -50,6 +50,9 @@
   cursor: pointer;
   padding: 10px;
   margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #afafaf;
+  color: #000;
 }
 
 .Login .LoginButton .LoginButton_Icon {
@@ -98,7 +101,7 @@
 }
 
 .Login #LoginSubmitButton:hover {
-  background-color: #05af9e;
+  opacity: 0.8;
 }
 
 .Login .ForgotPass {

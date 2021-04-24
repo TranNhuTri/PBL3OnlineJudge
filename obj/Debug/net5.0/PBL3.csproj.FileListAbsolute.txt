@@ -37,7 +37,6 @@ D:\Web\PBL3\obj\Debug\net5.0\ref\PBL3.dll
 D:\Web\PBL3\obj\Debug\net5.0\PBL3.pdb
 D:\Web\PBL3\obj\Debug\net5.0\PBL3.genruntimeconfig.cache
 D:\Web\PBL3\obj\Debug\net5.0\PBL3.csproj.CopyComplete
-D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Index.cshtml.g.cs
 D:\Web\PBL3\bin\Debug\net5.0\Humanizer.dll
 D:\Web\PBL3\bin\Debug\net5.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 D:\Web\PBL3\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll
@@ -171,3 +170,6 @@ D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Create.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Submit.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Index.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Edit.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Index.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\SignUp.cshtml.g.cs

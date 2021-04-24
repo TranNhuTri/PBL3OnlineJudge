@@ -1,6 +1,7 @@
 @import 'var.scss';
 .ProblemPage
 {
+    min-height: 100vh;
     padding: 30px 0;
     font-size: 18rem;
     font-family: "Merriweather",serif;
@@ -52,6 +53,7 @@
             justify-content: space-between;
             .ProblemMenu_Link
             {
+                margin-top: 10px;
                 text-decoration: none;
                 .ProblemSubmitButton, .ProblemStatistictButton
                 {
@@ -88,6 +90,11 @@
             .ProblemProperty
             {
                 margin: 5px 0;
+            }
+            .CUDProblem
+            {
+                text-decoration: none;
+                color: $blue-color;
             }
         }
     }

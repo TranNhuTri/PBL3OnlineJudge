@@ -45,14 +45,14 @@
                 </table>
             </div>
             <div class="grid_column-3">
-                <form action="Fill" method="GET">
+                <form asp-controller = "ListProblems" asp-action = "Index" method="GET">
                     <div class="ProblemFilter">
                         <h1 class="ProblemFillter_Header">Tìm Kiếm Bài Tập</h1>
                         <div class="ProblemNameFillter">
                             <input type="text" name = "ProblemName" id = "ProblemName" placeholder="Nhập tên bài">
                         </div>
                         <div class = "ProblemUnsolvedFillter">
-                            <input type="checkbox" name="HideSolvedProblem" id="HideSolvedProblem">
+                            <input type="checkbox" name="HideSolvedProblem" id="HideSolvedProblem" value = "true">
                             <label for="HideSolvedProblem">Ẩn bài đã hoàn thành</label>
                         </div>
                         <div class="ProblemCategoryFillter">
@@ -89,7 +89,7 @@
                             <input type="text" name="MaxDifficult" id="MaxDifficult">
                         </div>
                         <div class = "ProblemFillterSubmit">
-                            <input type="submit" value="Lọc" id = "Submit">
+                            <input type="submit" value="Lọc" class = "button ProblemFillterSubmit_Button">
                         </div>
                     </div>
                 </form>
