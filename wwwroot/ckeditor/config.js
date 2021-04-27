@@ -36,6 +36,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'About';
 	// config.removeButtons = 'Source';
 	config.extraPlugins = 'codesnippet';
-	config.codeSnippet_theme = 'default';
+	config.codeSnippet_theme = 'vs';
 	config.height = 350;
 };

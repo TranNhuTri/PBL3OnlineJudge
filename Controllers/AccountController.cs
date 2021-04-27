@@ -17,7 +17,7 @@ namespace PBL3.Controllers
 {
     public class AccountController : Controller
     {
-        static string key { get; set; } = "trannhutri@0703phandinhkhoi$2312nhatlong%2509dosanh#0804";
+        static string key { get; set; } = "trannhutri0703phandinhkhoi2312nhatlong2509dosanh0804";
         private readonly PBL3Context _context;
         public AccountController(PBL3Context context)
         {
@@ -118,7 +118,7 @@ namespace PBL3.Controllers
                 {
                     From = new MailAddress("CodeTop1.Net@gmail.com"),
                     Subject = "Wellcome to CodeTop1",
-                    Body = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link bên dưới để xác thực email ! \n https://localhost:5001/Account/VerifyMail?token=" + Encrypt(Account.AccountName),
+                    Body = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + Encrypt(Account.AccountName),
                 };
                 mailMessage.To.Add(Email);
                 smtpClient.Send(mailMessage);

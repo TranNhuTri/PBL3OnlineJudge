@@ -2,7 +2,7 @@
 
 namespace PBL3.Migrations
 {
-    public partial class CreateDatabase : Migration
+    public partial class Initalize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,12 +36,41 @@ namespace PBL3.Migrations
                 {
                     table.PrimaryKey("PK_Problems", x => x.ID);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TestCases",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Input = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Output = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProblemID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestCases", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_TestCases_Problems_ProblemID",
+                        column: x => x.ProblemID,
+                        principalTable: "Problems",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestCases_ProblemID",
+                table: "TestCases",
+                column: "ProblemID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "TestCases");
 
             migrationBuilder.DropTable(
                 name: "Problems");

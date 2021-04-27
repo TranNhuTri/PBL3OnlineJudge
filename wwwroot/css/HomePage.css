@@ -1,20 +1,19 @@
+.AppContainer--isCovered {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .AppHeader {
   border-bottom: 1px solid #ccc;
 }
 
 .AppHeader .AppHeader_Row {
   padding: 0 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   list-style: none;
   padding: 0;
@@ -24,12 +23,8 @@
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item {
   padding: 10px 15px;
   font-size: 16rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_Text {
@@ -62,12 +57,8 @@
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_Logo .AppHeader_Link {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_Logo .AppHeader_Link img {
@@ -85,13 +76,11 @@
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_AvarIcon:hover .AppHeader_Dropdown {
-  -webkit-transform: scale(1);
-          transform: scale(1);
+  transform: scale(1);
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_BellIcon:hover .AppHeader_Dropdown {
-  -webkit-transform: scale(1);
-          transform: scale(1);
+  transform: scale(1);
 }
 
 .AppHeader .AppHeader_Row .AppHeader_List .AppHeader_Item .AppHeader_Dropdown {
@@ -100,15 +89,11 @@
   top: 170%;
   width: 250px;
   padding: 10px 0;
-  -webkit-box-shadow: 0 0 5px #63636394;
-          box-shadow: 0 0 5px #63636394;
+  box-shadow: 0 0 5px #63636394;
   border-radius: 5px;
   background-color: #fff;
-  -webkit-transform: scale(0);
-          transform: scale(0);
-  -webkit-transform-origin: 90% 0;
-          transform-origin: 90% 0;
-  -webkit-transition: all 0.2s ease-in;
+  transform: scale(0);
+  transform-origin: 90% 0;
   transition: all 0.2s ease-in;
   z-index: 1;
 }
@@ -197,5 +182,25 @@
 .AppFooter .AppFooter_Link {
   text-decoration: none;
   color: #008eff;
+}
+
+.Overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 5s ease-in;
+  display: none;
+}
+
+.Overlay--active {
+  display: block;
 }
 /*# sourceMappingURL=HomePage.css.map */

@@ -95,6 +95,9 @@
             {
                 text-decoration: none;
                 color: $blue-color;
+                display: block;
+                cursor: pointer;
+                margin: 0;
             }
         }
     }
@@ -105,4 +108,38 @@ code
     font-size: 16rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #f0f0f029 !important;
+}
+.ConfirmDeleteProblem
+{
+    position: absolute;
+    min-width: 30%;
+    max-width: 50%;
+    min-height: 20%;
+    background-color: $white-color;
+    border-radius: 10px;
+    .ConfirmDeleteProblem_Header
+    {
+        font-size: 20rem;
+        font-weight: normal;
+        padding: 5px 20px;
+    }
+    .ConfirmDeleteProblem_Warning
+    {
+        font-size: 14rem;
+        padding: 5px 20px;
+        color: $red-color;
+    }
+    .ConfirmDeleteProblem_Buttons
+    {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        .DeleteProblem_Button
+        {
+            padding: 10px 40px;
+            margin: 0 20px;
+            border: none;
+        }
+    }
 }

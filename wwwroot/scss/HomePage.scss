@@ -1,4 +1,9 @@
 @import 'var.scss';
+.AppContainer--isCovered
+{
+    height: 100vh;
+    overflow: hidden;
+}
 .AppHeader
 {
     border-bottom: 1px solid #ccc;
@@ -185,4 +190,24 @@
         text-decoration: none;
         color: $blue-color;
     }
+}
+.Overlay
+{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba($color: #000, $alpha: 0.2);
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 5s ease-in;
+    display: none;
+}
+.Overlay--active
+{
+    display: block;
 }

@@ -10,8 +10,7 @@
 .ProblemPage .ProblemContent {
   padding: 20px;
   background-color: #fff;
-  -webkit-box-shadow: 0 0 4px #ccc;
-          box-shadow: 0 0 4px #ccc;
+  box-shadow: 0 0 4px #ccc;
   border-radius: 4px;
 }
 
@@ -44,19 +43,14 @@
 .ProblemPage .ProblemMenu {
   font-family: "Arial",serif;
   background-color: #fff;
-  -webkit-box-shadow: 0 0 4px #ccc;
-          box-shadow: 0 0 4px #ccc;
+  box-shadow: 0 0 4px #ccc;
   border-radius: 4px;
   padding: 15px;
 }
 
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link {
@@ -67,7 +61,6 @@
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton {
   border: none;
   color: #fff;
-  -webkit-transition: all 0.05s ease-in;
   transition: all 0.05s ease-in;
   width: 120px;
   padding: 10px 0;
@@ -78,8 +71,7 @@
 }
 
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton:hover, .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemStatistictButton:hover {
-  -webkit-transform: scale(1.04);
-          transform: scale(1.04);
+  transform: scale(1.04);
 }
 
 .ProblemPage .ProblemMenu .ProblemMenu_Buttons .ProblemMenu_Link .ProblemSubmitButton {
@@ -104,6 +96,9 @@
 .ProblemPage .ProblemMenu .ProblemPropertyContainer .CUDProblem {
   text-decoration: none;
   color: #008eff;
+  display: block;
+  cursor: pointer;
+  margin: 0;
 }
 
 code {
@@ -111,5 +106,39 @@ code {
   font-size: 16rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #f0f0f029 !important;
+}
+
+.ConfirmDeleteProblem {
+  position: absolute;
+  min-width: 30%;
+  max-width: 50%;
+  min-height: 20%;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.ConfirmDeleteProblem .ConfirmDeleteProblem_Header {
+  font-size: 20rem;
+  font-weight: normal;
+  padding: 5px 20px;
+}
+
+.ConfirmDeleteProblem .ConfirmDeleteProblem_Warning {
+  font-size: 14rem;
+  padding: 5px 20px;
+  color: #dc3545;
+}
+
+.ConfirmDeleteProblem .ConfirmDeleteProblem_Buttons {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.ConfirmDeleteProblem .ConfirmDeleteProblem_Buttons .DeleteProblem_Button {
+  padding: 10px 40px;
+  margin: 0 20px;
+  border: none;
 }
 /*# sourceMappingURL=ProblemPage.css.map */

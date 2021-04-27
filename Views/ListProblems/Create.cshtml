@@ -66,8 +66,20 @@
             {
                 CKEDITOR.instances.editor.insertHtml(html);
             });
+
+            document.querySelectorAll('pre code').forEach((block) => {
+                if(block.classList == "")
+                    block.classList.add("plaintext");
+                hljs.highlightBlock(block);
+            });
                 
             MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        });
+        CKEDITOR.on("instanceReady", function(event)
+        {
+            var frame = document.querySelector(".cke_wysiwyg_frame");
+            var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+            frame.contentWindow.document.querySelector("head").innerHTML += css;
         });
     </script>
 }

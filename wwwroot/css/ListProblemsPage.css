@@ -12,8 +12,7 @@
 .ListProblemsPage .ListProblemTable {
   width: 100%;
   font-size: 14rem;
-  -webkit-box-shadow: 0 0 8px #afafaf;
-          box-shadow: 0 0 8px #afafaf;
+  box-shadow: 0 0 8px #afafaf;
   background-color: #fff;
   border-radius: 4px;
 }
@@ -49,8 +48,7 @@
 
 .ProblemFilter {
   background-color: #fff;
-  -webkit-box-shadow: 0 0 8px #afafaf;
-          box-shadow: 0 0 8px #afafaf;
+  box-shadow: 0 0 8px #afafaf;
   border-radius: 4px;
   padding: 10px 15px;
   margin: 35px 0;
@@ -94,8 +92,7 @@
 
 .ProblemFilter .ProblemCategoryFillter #ProblemCategory:focus {
   border: 1px solid #52a8eccc;
-  -webkit-box-shadow: 0 0 5px #52a8eccc;
-          box-shadow: 0 0 5px #52a8eccc;
+  box-shadow: 0 0 5px #52a8eccc;
 }
 
 .ProblemFilter .ProblemDifficultFillter {
@@ -111,12 +108,8 @@
 
 .ProblemFilter .ProblemFillterSubmit {
   margin: 10px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .ProblemFilter .ProblemFillterSubmit .ProblemFillterSubmit_Button {

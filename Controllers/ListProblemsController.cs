@@ -78,6 +78,17 @@ namespace PBL3.Controllers
             var problem = _context.Problems.FirstOrDefault(m => m.ID == id);
             return View(problem);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+            if(problem == null)
+                return NotFound();
+            _context.Remove(problem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

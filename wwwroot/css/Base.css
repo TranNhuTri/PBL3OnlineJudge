@@ -28,3 +28,19 @@ input:focus
 {
     opacity: 0.8;
 }
+.deleteButton
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    background-color: #dc3545;
+}
+.deleteButton:hover
+{
+    opacity: 0.8;
+}

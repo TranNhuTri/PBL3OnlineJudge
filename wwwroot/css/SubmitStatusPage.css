@@ -1,0 +1,60 @@
+.SubmitionStatusPage {
+  font-size: 16rem;
+  min-height: 100vh;
+  background-color: #ccc;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer {
+  margin: 30px 0;
+  padding: 20px 30px;
+  min-height: 20vh;
+  background-color: #fff;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Header {
+  margin: 0;
+  font-weight: normal;
+  font-size: 24rem;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table .SubmitionStatus_Table_Header {
+  background-color: #f7f8f9;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table th {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  color: #898992;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table th:first-child {
+  border-left: 1px solid #ccc;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table td {
+  text-align: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table td:first-child {
+  border-left: 1px solid #ccc;
+}
+
+.SubmitionStatusPage .SubmitionStatus_Code {
+  margin: 30px 0;
+  margin-top: 0;
+  padding: 20px 30px;
+  min-height: 10vh;
+  background-color: #fff;
+}
+/*# sourceMappingURL=SubmitStatusPage.css.map */

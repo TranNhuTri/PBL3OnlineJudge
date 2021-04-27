@@ -3,28 +3,19 @@
   height: 500px;
   margin: 5% auto;
   border-radius: 5px;
-  -webkit-box-shadow: 0 2px 5px #ccc;
-          box-shadow: 0 2px 5px #ccc;
+  box-shadow: 0 2px 5px #ccc;
   position: relative;
   overflow: hidden;
 }
 
 .SignUpPage .SignUp_Form {
   width: 280px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  justify-content: center;
+  flex-direction: column;
   position: absolute;
   top: 100px;
   left: 40px;
-  -webkit-transition: .8s;
   transition: .8s;
 }
 
@@ -71,23 +62,15 @@
 }
 
 .SignUpPage .SignUp_Form .SignUp_Form_ButtonBox {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   margin-top: 40px;
 }
 
 .SignUpPage .SignUp_Form .GmailConfirm {
   margin-top: 100px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .SignUpPage .SignUp_Form .GmailConfirm .SignUp_Form_Textbox {
@@ -105,12 +88,8 @@
 .SignUpPage .SignUpPage_Step--Row {
   width: 100%;
   height: 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   border: none;
   border-bottom: 1px solid #ccc;
 }
@@ -120,7 +99,6 @@
   width: calc(1/2*360px);
   position: absolute;
   background-color: #1dbfaf;
-  -webkit-transition: .8s;
   transition: .8s;
 }
 
