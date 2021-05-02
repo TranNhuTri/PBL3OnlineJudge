@@ -54,6 +54,8 @@ namespace PBL3
             }
             app.UseHttpsRedirection();
 
+            app.UseDefaultFiles();
+
             app.UseStaticFiles(); 
             
             app.UseRouting();

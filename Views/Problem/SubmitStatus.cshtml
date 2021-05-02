@@ -1,3 +1,4 @@
+@model Submission
 <div class="SubmitionStatusPage">
     <div class="grid">
         <div class="grid_row">
@@ -11,29 +12,69 @@
                                 <th>Ngày nộp</th>
                                 <th>Bài</th>
                                 <th>Trạng thái</th>
-                                <th>CPU Time</th>
+                                <th>Total CPU Time</th>
                                 <th>Ngôn ngữ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>7197950</td>
-                                <td>2021-04-26 13:08:06</td>
-                                <td>Hello World!</td>
-                                <td>Accepted</td>
-                                <td>0.00s</td>
-                                <td>C++</td>
+                                <td>@Model.ID</td>
+                                <td>@Model.DateSubmit</td>
+                                <td>@Model.Problem.Title</td>
+                                <td class = "SubmissionStatus">Running</td>
+                                <td class = "SubmissionTime">?</td>
+                                <td>@Model.Language</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="grid_row">
+        @* <div class="grid_row">
             <div class="grid_column">
                 <div class="SubmitionStatus_Code">
                 </div>
             </div>
-        </div>
+        </div> *@
     </div>
 </div>
+@section Scripts
+{
+    <script>
+        var request = false;
+        function update()
+        {
+            fetch("https://localhost:5001/Submission/Detail/" + '@Model.ID.ToString()')
+            .then(response => response.json())
+            .then(function(obj)
+            {
+                if(obj["Status"] == "Running")
+                {
+                    setTimeout(function()
+                    {
+                        update();
+                    }, 500);
+                }
+                else
+                {
+                    var submissionStatus = document.querySelector(".SubmissionStatus");
+                    var submissionTime = document.querySelector(".SubmissionTime");
+                    submissionStatus.innerHTML = obj["Status"];
+                    submissionTime.innerHTML = obj["Time"];
+                    if(obj["Status"] == "Accepted")
+                    {
+                        submissionStatus.innerHTML = '<i class="fas fa-check" style = "padding-right: 5px"></i>' + obj["Status"];
+                        submissionStatus.classList.add("SubmissionStatus--AC");
+                    }
+                    else
+                    {
+                        submissionStatus.innerHTML = '<i class="fas fa-times" style = "padding-right: 5px"></i>' + obj["Status"];
+                        submissionStatus.classList.add("SubmissionStatus--WA");
+                    }
+                    return;
+                }
+            })
+        }
+        update();
+    </script>
+}

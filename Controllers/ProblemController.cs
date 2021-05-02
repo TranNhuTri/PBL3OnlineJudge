@@ -7,9 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
-using System.Net.Http;
-using System.Net.Http.Json;
-using Newtonsoft.Json;
 
 namespace PBL3.Controllers
 {
@@ -27,31 +24,27 @@ namespace PBL3.Controllers
         }
         public IActionResult Submit(string id)
         {
-            var problem = _context.Problems.FirstOrDefault(m => m.ID == id);
+            var problem = _context.Problem.FirstOrDefault(m => m.ID == id);
             return View(problem);
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string id, string ProblemSolution)
+        public IActionResult Submit(string id, string ProblemSolution, string Language)
         {
-            var test = _context.TestCases.FirstOrDefault(t => t.Problem.ID == id);
-            var code = new code{
-                script = ProblemSolution,
-                stdin = test.Input
+            var problem = _context.Problem.FirstOrDefault(p => p.ID == id);
+            var submission = new Submission
+            {
+                Code = ProblemSolution,
+                Language = Language,
+                DateSubmit = DateTime.Now,
+                Status = "Running",
+                ProblemID = problem.ID,
+                AccountID = 1
             };
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.jdoodle.com");
-            var result = await client.PostAsJsonAsync("/v1/execute", code);
-            var returnValue = JsonConvert.DeserializeObject<codeResult>(result.Content.ReadAsStringAsync().Result);
-            if(returnValue.statusCode == 200 && returnValue.output == test.Output)
-            {
-                Console.WriteLine("Accept");
-            }
-            else
-            {
-                Console.WriteLine("WA");
-            }
-            return View("SubmitStatus");
+            _context.Submission.Add(submission);
+            _context.SaveChanges();
+            return View("SubmitStatus", submission);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -64,13 +57,13 @@ namespace PBL3.Controllers
 class code
 {
     public string script{get; set;}
-    public string language {get; set;} = "cpp17";
+    public string language {get; set;}
     public int versionIndex{get; set;}
     public string stdin{get; set;}
     public string clientId{get; set;} = "672651acf3fa819a1e0c27a9fb272658";
-    public string clientSecret{get; set;} = "14aec224d7ad63e9c036929fbd7b356d4e043f80cb5993daabd855b184e076e1";
+    public string clientSecret{get; set;} = "eb951e6e38f239380084104d7629f1312d66345ec661a4da5bd62822ad3a842b";
 }
-class codeResult
+class SubmitResponse
 {
     public string output{get; set;}
     public int statusCode{get; set;}

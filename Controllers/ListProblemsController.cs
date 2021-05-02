@@ -19,7 +19,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Index(string ProblemName = "", bool HideSolvedProblem = false, string ProblemCategory = "", int MinDifficult = 0, int MaxDifficult = (int)1e9)
         {
-            var problems = from problem in _context.Problems select problem;
+            var problems = from problem in _context.Problem select problem;
             problems = problems.Where(p => p.Difficulty >= MinDifficult && p.Difficulty <= MaxDifficult);
             if(!String.IsNullOrEmpty(ProblemName))
             {
@@ -49,7 +49,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Edit(string id)
         {
-            var model = _context.Problems.FirstOrDefault(m => m.ID == id);
+            var model = _context.Problem.FirstOrDefault(m => m.ID == id);
             return View(model);
         }
         [HttpPost]
@@ -60,7 +60,7 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            var probl = _context.Problems.FirstOrDefault(m => m.ID == id);
+            var probl = _context.Problem.FirstOrDefault(m => m.ID == id);
             probl.Title = problem.Title;
             probl.Content = problem.Content;
             probl.Difficulty = problem.Difficulty;
@@ -75,14 +75,14 @@ namespace PBL3.Controllers
         }
         public IActionResult Problem(string id)
         {
-            var problem = _context.Problems.FirstOrDefault(m => m.ID == id);
+            var problem = _context.Problem.FirstOrDefault(m => m.ID == id);
             return View(problem);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
-            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problem.FirstOrDefault(p => p.ID == id);
             if(problem == null)
                 return NotFound();
             _context.Remove(problem);

@@ -38,7 +38,7 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(string accountName, string passWord)
         {
-            var account = _context.Accounts.FirstOrDefault(m => m.AccountName == accountName && m.PassWord == passWord && m.Actived == true);
+            var account = _context.Account.FirstOrDefault(m => m.AccountName == accountName && m.PassWord == passWord && m.Actived == true);
             if(account != null)
             {
                 HttpContext.Session.SetString("accountName", account.AccountName);
@@ -98,7 +98,7 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SignUp([Bind("AccountName", "PassWord")]Account Account, string ConfirmPassword, string LastName, string FirstName, string Email)
         {
-            var account = _context.Accounts.FirstOrDefault(a => a.AccountName == Account.AccountName);
+            var account = _context.Account.FirstOrDefault(a => a.AccountName == Account.AccountName);
             if(account != null)
             {
                 return NotFound();
@@ -106,7 +106,7 @@ namespace PBL3.Controllers
             if(!String.IsNullOrEmpty(Email))
             {
                 Console.WriteLine(Email);
-                _context.Accounts.Add(Account);
+                _context.Account.Add(Account);
                 _context.SaveChangesAsync();
                 var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
@@ -127,7 +127,7 @@ namespace PBL3.Controllers
         }
         public IActionResult VerifyMail(string token)
         {
-            var account = _context.Accounts.FirstOrDefault(a => a.AccountName == Decrypt(token));
+            var account = _context.Account.FirstOrDefault(a => a.AccountName == Decrypt(token));
             if(account != null)
             {
                 account.Actived = true;

@@ -9,8 +9,10 @@ namespace PBL3.Data
             : base(options)
         {
         }
-        public DbSet<Problem> Problems { get; set; }
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<TestCase> TestCases{get; set;}
+        public DbSet<Problem> Problem { get; set; }
+        public DbSet<Account> Account { get; set; }
+        public DbSet<TestCase> TestCase{get; set;}
+        public DbSet<Submission> Submission {get; set;}
+        public DbSet<SubmitResult> SubmitResult {get; set;}
     }
 }

@@ -48,6 +48,19 @@
             {
                 border-left: 1px solid #ccc;
             }
+            .SubmissionStatus
+            {
+                font-weight: 600;
+                color: $blue-color;
+            }
+            .SubmissionStatus--AC
+            {
+                color: $primary-color;
+            }
+            .SubmissionStatus--WA
+            {
+                color: #f20707;
+            }
         }
     }
     .SubmitionStatus_Code

@@ -50,6 +50,19 @@
   border-left: 1px solid #ccc;
 }
 
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table .SubmissionStatus {
+  font-weight: 600;
+  color: #008eff;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table .SubmissionStatus--AC {
+  color: #1dbfaf;
+}
+
+.SubmitionStatusPage .SubmitionStatusContainer .SubmitionStatus_Table .SubmissionStatus--WA {
+  color: #f20707;
+}
+
 .SubmitionStatusPage .SubmitionStatus_Code {
   margin: 30px 0;
   margin-top: 0;
