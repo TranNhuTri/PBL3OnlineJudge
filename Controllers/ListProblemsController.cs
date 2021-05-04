@@ -47,32 +47,6 @@ namespace PBL3.Controllers
             }
             return View(problem);
         }
-        public IActionResult Edit(string id)
-        {
-            var model = _context.Problem.FirstOrDefault(m => m.ID == id);
-            return View(model);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID, Title, Content, Difficulty")] Problem problem)
-        {
-            if(id != problem.ID)
-            {
-                return NotFound();
-            }
-            var probl = _context.Problem.FirstOrDefault(m => m.ID == id);
-            probl.Title = problem.Title;
-            probl.Content = problem.Content;
-            probl.Difficulty = problem.Difficulty;
-
-            if (ModelState.IsValid && probl != null)
-            {
-                _context.Update(probl);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(problem);
-        }
         public IActionResult Problem(string id)
         {
             var problem = _context.Problem.FirstOrDefault(m => m.ID == id);

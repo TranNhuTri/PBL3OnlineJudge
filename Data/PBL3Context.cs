@@ -14,5 +14,10 @@ namespace PBL3.Data
         public DbSet<TestCase> TestCase{get; set;}
         public DbSet<Submission> Submission {get; set;}
         public DbSet<SubmitResult> SubmitResult {get; set;}
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
     }
 }

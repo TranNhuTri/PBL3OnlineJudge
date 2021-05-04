@@ -15619,6 +15619,11 @@
   "RootNamespace": "PBL3",
   "Documents": [
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\ListSubmissions\\Index.cshtml",
+      "TargetPath": "Views\\ListSubmissions\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
@@ -15631,11 +15636,6 @@
     {
       "FilePath": "d:\\Web\\PBL3\\Views\\_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Edit.cshtml",
-      "TargetPath": "Views\\ListProblems\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15664,13 +15664,13 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "d:\\Web\\PBL3\\Views\\_ViewImports.cshtml",
-      "TargetPath": "Views\\_ViewImports.cshtml",
+      "FilePath": "d:\\Web\\PBL3\\Views\\ListSubmissions\\Submission.cshtml",
+      "TargetPath": "Views\\ListSubmissions\\Submission.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "d:\\Web\\PBL3\\Views\\Problem\\SubmitStatus.cshtml",
-      "TargetPath": "Views\\Problem\\SubmitStatus.cshtml",
+      "FilePath": "d:\\Web\\PBL3\\Views\\_ViewImports.cshtml",
+      "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15686,6 +15686,11 @@
     {
       "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Index.cshtml",
       "TargetPath": "Views\\ListProblems\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Problem\\Edit.cshtml",
+      "TargetPath": "Views\\Problem\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {

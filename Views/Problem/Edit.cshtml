@@ -10,7 +10,7 @@
             <div class="grid_column">
                 <div class="Create-EditProblemPage_Input">
                     <h1 class="Create-EditProblemPage_Header">Sửa đề bài @Model.Title</h1>
-                    <form asp-action="edit">
+                    <form asp-asp-controller = "Problem" asp-action="Edit">
                         <div class="FormGroup">
                             <label for="ID">Mã bài :</label>
                             <input type="text" asp-for = "ID">
@@ -77,6 +77,9 @@
             CKEDITOR.instances.editor.setData("", function()
             {
                 CKEDITOR.instances.editor.insertHtml(html);
+                let frame = document.querySelector(".cke_wysiwyg_frame");
+                let css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+                frame.contentWindow.document.querySelector("head").innerHTML += css;
             });
 
             document.querySelectorAll('pre code').forEach((block) => {

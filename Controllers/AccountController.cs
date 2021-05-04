@@ -42,6 +42,7 @@ namespace PBL3.Controllers
             if(account != null)
             {
                 HttpContext.Session.SetString("accountName", account.AccountName);
+                HttpContext.Session.SetString("accountID", account.ID.ToString());
                 return RedirectToAction("Index", "Home");
             }
             else

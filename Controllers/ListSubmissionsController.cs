@@ -16,16 +16,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PBL3.Controllers
 {
-    public class SubmissionController : Controller
+    public class ListSubmissionsController : Controller
     {
         private readonly PBL3Context _context;
-        public SubmissionController(PBL3Context context)
+        public ListSubmissionsController(PBL3Context context)
         {
             _context = context;
         }
-        public string Detail(int id)
+        public IActionResult Index()
         {
-            return null;
+            var listSubmissions = from submission in _context.Submission select submission;
+            return View(listSubmissions.ToList());
+        }
+        public IActionResult Submission(int? id)
+        {
+            if(id == null)
+                return NotFound();
+            var submission = _context.Submission.FirstOrDefault(s => s.ID == id);
+            if(submission == null)
+                return NotFound();
+            return View(submission);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

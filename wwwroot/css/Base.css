@@ -44,3 +44,8 @@ input:focus
 {
     opacity: 0.8;
 }
+.link
+{
+    text-decoration: none;
+    color: #4e92d0;
+}

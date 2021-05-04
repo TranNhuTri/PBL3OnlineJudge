@@ -1,52 +1,67 @@
 @import 'var.scss';
-.SubmitionStatusPage
+.SubmissionsPage
 {
     font-size: 16rem;
     min-height: 100vh;
-    background-color: #ccc;
-    .SubmitionStatusContainer
+    background-color: #e7e7e8;
+    .SubmissionsContainer
     {
         margin: 30px 0;
         padding: 20px 30px;
         min-height: 20vh;
         background-color: $white-color;
-        .SubmitionStatus_Header
+        border-radius: 4px;
+        .Submissions_Header
         {
             margin: 0;
             font-weight: normal;
             font-size: 24rem;
         }
-        .SubmitionStatus_Table
+        .Submissions_Table
         {
             width: 100%;
             margin: 20px 0;
-            .SubmitionStatus_Table_Header
+            .Submissions_Table_Header
             {
                 background-color: #f7f8f9;
             }
             th 
             {
-                text-align: center;
+                text-align: left;
                 padding: 20px;
-                border-top: 1px solid #ccc;
-                border-bottom: 1px solid #ccc;
-                border-right: 1px solid #ccc;
+                border-top: 1px solid #e7e7e8;
+                border-bottom: 1px solid #e7e7e8;
+                border-right: 1px solid #e7e7e8;
                 color: #898992;
             }
             th:first-child
             {
-                border-left: 1px solid #ccc;
+                border-left: 1px solid #e7e7e8;
+                border-top-left-radius: 4px;
+            }
+            th:last-child
+            {
+                border-left: 1px solid #e7e7e8;
+                border-top-right-radius: 4px;
             }
             td 
             {
-                text-align: center;
+                text-align: left;
                 padding: 15px 20px;
-                border-bottom: 1px solid #ccc;
-                border-right: 1px solid #ccc;
+                border-bottom: 1px solid #e7e7e8;
+                border-right: 1px solid #e7e7e8;
             }
             td:first-child
             {
-                border-left: 1px solid #ccc;
+                border-left: 1px solid #e7e7e8;
+            }
+            tr:last-child td:first-child
+            {
+                border-bottom-left-radius: 4px;
+            }
+            tr:last-child td:last-child
+            {
+                border-bottom-right-radius: 4px;
             }
             .SubmissionStatus
             {
@@ -63,7 +78,7 @@
             }
         }
     }
-    .SubmitionStatus_Code
+    .Submissions_Code
     {
         margin: 30px 0;
         margin-top: 0;

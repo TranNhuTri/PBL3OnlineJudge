@@ -29,7 +29,7 @@
                         </a>
                     </div>
                     <div class="ProblemPropertyContainer">
-                        <a asp-action = "Edit" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
+                        <a asp-controller = "Problem" asp-action = "Edit" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
                         <p class = "CUDProblem" id = "DeleteProblemLink">Xóa đề bài</p>
                         <p class = "ProblemProperty"><b>Mã bài: </b>@Model.ID</p>
                         <p class = "ProblemProperty"><b>Thời gian giới hạn: </b></p>

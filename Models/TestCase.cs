@@ -7,6 +7,7 @@ namespace PBL3.Models
         public int ID{get; set;}
         public string Input{get; set;}
         public string Output{get; set;}
-        public Problem Problem{get; set;}
+        public string ProblemID{get; set;}
+        public virtual Problem Problem{get; set;}
     } 
 }
