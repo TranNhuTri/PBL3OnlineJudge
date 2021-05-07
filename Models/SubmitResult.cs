@@ -10,5 +10,6 @@ namespace PBL3.Models
         public int TestCaseID{get; set;}
         public virtual TestCase TestCase{get; set;}
         public string Result{get; set;}
+        public string Status{get; set;}
     }
 }

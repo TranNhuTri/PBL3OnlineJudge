@@ -1,3 +1,6 @@
+@{
+    ViewData["Title"] = "Danh sách bài nộp";
+}
 @model List<Submission>
 <div class="SubmissionsPage">
     <div class="grid">
@@ -10,7 +13,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Ngày nộp</th>
-                                <th>Người nộp</th>
                                 <th style="width: 35%">Bài</th>
                                 <th>Trạng thái</th>
                                 <th>CPU</th>
@@ -23,7 +25,6 @@
                                 <tr>
                                     <td class = "link SubmissionID">@Model[i].ID</td>
                                     <td>@Model[i].DateSubmit</td>
-                                    <td><a href="" class = "link">@Model[i].Account.AccountName</a></td>
                                     <td><a asp-action = "Problem" asp-route-id = "@Model[i].Problem.ID" asp-controller = "ListProblems" class = "link">@Model[i].Problem.Title</a></td>
                                     <td class = "SubmissionStatus">Running</td>
                                     <td class = "SubmissionTime">?</td>

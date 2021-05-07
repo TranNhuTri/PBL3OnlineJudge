@@ -10,7 +10,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    [Migration("20210503150159_init")]
+    [Migration("20210507020023_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,11 +31,23 @@ namespace PBL3.Migrations
                     b.Property<string>("AccountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Actived")
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActived")
                         .HasColumnType("bit");
 
                     b.Property<string>("PassWord")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeAccount")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -114,6 +126,9 @@ namespace PBL3.Migrations
                     b.Property<string>("Result")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SubmissionID")
                         .HasColumnType("int");
 
@@ -155,13 +170,13 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.Submission", b =>
                 {
                     b.HasOne("PBL3.Models.Account", "Account")
-                        .WithMany()
+                        .WithMany("Submissions")
                         .HasForeignKey("AccountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PBL3.Models.Problem", "Problem")
-                        .WithMany()
+                        .WithMany("Submissions")
                         .HasForeignKey("ProblemID");
 
                     b.Navigation("Account");
@@ -172,13 +187,13 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.SubmitResult", b =>
                 {
                     b.HasOne("PBL3.Models.Submission", "Submission")
-                        .WithMany()
+                        .WithMany("SubmitResults")
                         .HasForeignKey("SubmissionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PBL3.Models.TestCase", "TestCase")
-                        .WithMany()
+                        .WithMany("SubmitResults")
                         .HasForeignKey("TestCaseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,10 +206,32 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
                 {
                     b.HasOne("PBL3.Models.Problem", "Problem")
-                        .WithMany()
+                        .WithMany("TestCases")
                         .HasForeignKey("ProblemID");
 
                     b.Navigation("Problem");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Account", b =>
+                {
+                    b.Navigation("Submissions");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Problem", b =>
+                {
+                    b.Navigation("Submissions");
+
+                    b.Navigation("TestCases");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Submission", b =>
+                {
+                    b.Navigation("SubmitResults");
+                });
+
+            modelBuilder.Entity("PBL3.Models.TestCase", b =>
+                {
+                    b.Navigation("SubmitResults");
                 });
 #pragma warning restore 612, 618
         }

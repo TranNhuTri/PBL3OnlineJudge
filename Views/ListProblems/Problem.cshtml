@@ -29,6 +29,15 @@
                         </a>
                     </div>
                     <div class="ProblemPropertyContainer">
+                        @if(!String.IsNullOrEmpty(Context.Session.GetString("accountName")))
+                        {
+                            var parms = new Dictionary<string, string>
+                            {
+                                {"problemID", Model.ID},
+                                {"accountName", Context.Session.GetString("accountName")},
+                            };
+                            <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem">Lời giải của tôi</a>
+                        }
                         <a asp-controller = "Problem" asp-action = "Edit" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
                         <p class = "CUDProblem" id = "DeleteProblemLink">Xóa đề bài</p>
                         <p class = "ProblemProperty"><b>Mã bài: </b>@Model.ID</p>

@@ -7,7 +7,7 @@
         <div class="grid_row">
             <div class="grid_column">
                 <div class="SubmitProblemForm">
-                    <form asp-action = "Submit" asp-route-id = "@Model.ID">
+                    <form asp-action = "Submit" asp-route-id = "@Model.ID" asp-controller = "Problem">
                         <h1 class = "SubmitProblemPage_Header">Nộp bài @Model.Title</h1>
                         <textarea name="ProblemSolution" id="codemirror" cols="30" rows="10" class = "ProblemSolution"></textarea>
                         <div class="SubmitProblem_Inputs">

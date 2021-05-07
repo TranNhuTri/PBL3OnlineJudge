@@ -18,7 +18,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>@Model.ID</td>
+                                <td class = "link SubmissionID">@Model.ID</td>
                                 <td>@Model.DateSubmit</td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model.Problem.ID" asp-controller = "ListProblems" class = "link">@Model.Problem.Title</a></td>
                                 <td class = "SubmissionStatus">Running</td>
@@ -30,20 +30,5 @@
                 </div>
             </div>
         </div>
-        @* <div class="grid_row">
-            <div class="grid_column">
-                <div class="Submissions_Code">
-                </div>
-            </div>
-        </div> *@
     </div>
 </div>
-@section Scripts
-{
-    <script>
-        var request = false;
-        function update()
-        {
-        }
-    </script>
-}

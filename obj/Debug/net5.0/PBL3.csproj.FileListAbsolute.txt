@@ -170,10 +170,11 @@ D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Submit.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Index.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\SignUp.cshtml.g.cs
-D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Delete.cshtml.g.cs
-D:\Web\PBL3\bin\Debug\net5.0\Castle.Core.dll
-D:\Web\PBL3\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Proxies.dll
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListProblems\Problem.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Edit.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListSubmissions\Index.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\ListSubmissions\Submission.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Problem\Submissions.cshtml.g.cs
+D:\Web\PBL3\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Web\PBL3\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\Web\PBL3\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

@@ -24,7 +24,7 @@
 }
 
 .ListProblemsPage .ListProblemTable tr:nth-child(even) {
-  background-color: #ccc3;
+  background-color: #cccccc1c;
 }
 
 .ListProblemsPage .ListProblemTable .Number, .ListProblemsPage .ListProblemTable .ProblemNumber {

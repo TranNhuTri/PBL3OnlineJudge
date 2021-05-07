@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Json;
+
 
 namespace PBL3.Controllers
 {
@@ -50,8 +55,7 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine(HttpContext.Session.GetString("userName"));
-            if(String.IsNullOrEmpty(HttpContext.Session.GetString("userName")))
+            if(String.IsNullOrEmpty(HttpContext.Session.GetString("accountName")))
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -65,10 +69,11 @@ namespace PBL3.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Submit(string id, string ProblemSolution, string Language)
+        public async Task<IActionResult> Submit(string id, string ProblemSolution, string Language)
         {
-            var problem = _context.Problem.FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problem.Include(p => p.TestCases).FirstOrDefault(p => p.ID == id);
             var account = _context.Account.FirstOrDefault(a => a.ID == Convert.ToInt32(HttpContext.Session.GetString("accountID")));
+
             var submission = new Submission
             {
                 Code = ProblemSolution,
@@ -78,11 +83,68 @@ namespace PBL3.Controllers
                 Problem = problem,
                 Account = account
             };
+
             _context.Submission.Add(submission);
             _context.SaveChanges();
-            return RedirectToAction("Detail", "Submission", submission);
-        }
+            
+            var code = new code()
+            {
+                script = submission.Code,
+                language = submission.Language,
+                versionIndex = 0,
+            };
 
+            HttpClient client = new HttpClient();   
+            client.BaseAddress = new Uri("https://api.jdoodle.com/");
+            bool ACCheck = true;
+            foreach(TestCase t in problem.TestCases)
+            {
+                code.stdin = t.Input;
+                var response = client.PostAsJsonAsync("v1/execute", code).Result;
+                var output = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {  
+                    var submitResponse = JsonConvert.DeserializeObject<SubmitResponse>(output);
+                    Console.WriteLine(submitResponse.output);
+                    SubmitResult sr = new SubmitResult()
+                    {
+                        Submission = submission,
+                        TestCase = t,
+                        Result = submitResponse.output
+                    };
+
+                    if(submitResponse.output != t.Output)
+                    {
+                        ACCheck = false;
+                        sr.Status = "Wrong Answer";
+                    }
+                    else
+                    {
+                        sr.Status = "OK";
+                    }
+                    _context.SubmitResult.Add(sr);
+                }
+            }
+            if(ACCheck== true)
+                submission.Status = "Accepted";
+            else
+                submission.Status = "Wrong Answer";
+            
+            _context.Submission.Update(submission);
+            _context.SaveChanges();
+            return RedirectToAction("Submission", "ListSubmissions", submission.ID);
+        } 
+        public IActionResult Submissions(string problemID, string accountName)
+        {
+            if(problemID == null || accountName == null)
+            {
+                return NotFound();
+            }
+            var listSubmissions = (from Submission in _context.Submission.Include(s => s.Account).Include(s => s.Problem) where (Submission.Problem.ID == problemID && Submission.Account.AccountName == accountName) select Submission).ToList();
+            listSubmissions.Reverse();
+            return View(listSubmissions);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

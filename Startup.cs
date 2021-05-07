@@ -37,6 +37,7 @@ namespace PBL3
             services.AddControllersWithViews();
             services.AddDbContext<PBL3Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PBL3Context")));
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

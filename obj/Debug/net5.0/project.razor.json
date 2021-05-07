@@ -15639,6 +15639,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Problem\\Submissions.cshtml",
+      "TargetPath": "Views\\Problem\\Submissions.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Create.cshtml",
       "TargetPath": "Views\\ListProblems\\Create.cshtml",
       "FileKind": "mvc"
@@ -15676,11 +15681,6 @@
     {
       "FilePath": "d:\\Web\\PBL3\\Views\\Problem\\Submit.cshtml",
       "TargetPath": "Views\\Problem\\Submit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Delete.cshtml",
-      "TargetPath": "Views\\ListProblems\\Delete.cshtml",
       "FileKind": "mvc"
     },
     {

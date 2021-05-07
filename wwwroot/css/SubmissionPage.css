@@ -78,11 +78,35 @@
   color: #f20707;
 }
 
-.SubmissionsPage .Submissions_Code {
-  margin: 30px 0;
-  margin-top: 0;
-  padding: 20px 30px;
-  min-height: 10vh;
+.SubmissionsPage .SubmissionsContainer .Submissions_Table .SubmissionID {
+  cursor: pointer;
+}
+
+.DetailSubmissionContainer {
+  font-size: 14rem;
+  position: absolute;
+  top: 100px;
+  width: 55vw;
   background-color: #fff;
+  padding: 20px;
+  padding-top: 25px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.DetailSubmissionContainer .DetailSubmissionIcon {
+  font-size: 18rem;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.DetailSubmissionContainer .DetailSubmissionContent {
+  font-size: 14rem;
+  overflow-y: auto;
+  max-height: 700px;
+  padding: 0 10px;
 }
 /*# sourceMappingURL=SubmissionPage.css.map */

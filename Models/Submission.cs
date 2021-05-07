@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Models
 {
     public class Submission
     {
+        public Submission()
+        {
+            SubmitResults = new List<SubmitResult>();
+        }
         public int ID{get; set;}
         public int AccountID {get; set;}
         public virtual Account Account{get; set;}
@@ -15,5 +20,6 @@ namespace PBL3.Models
         public string Language{get; set;}
         public string Status {get; set;}
         public float Time{get; set;}
+        public virtual List<SubmitResult> SubmitResults {get; set;}
     }
 }

@@ -15,7 +15,11 @@ namespace PBL3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PassWord = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Actived = table.Column<bool>(type: "bit", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActived = table.Column<bool>(type: "bit", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeAccount = table.Column<int>(type: "int", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,7 +102,8 @@ namespace PBL3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubmissionID = table.Column<int>(type: "int", nullable: false),
                     TestCaseID = table.Column<int>(type: "int", nullable: false),
-                    Result = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Result = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
