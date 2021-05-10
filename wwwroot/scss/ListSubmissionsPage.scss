@@ -11,11 +11,13 @@
         min-height: 20vh;
         background-color: $white-color;
         border-radius: 4px;
+        box-shadow: 0 0 3px $shadow-color;
         .Submissions_Header
         {
             margin: 0;
             font-weight: normal;
-            font-size: 24rem;
+            font-size: 20rem;
+            line-height: 26rem;
         }
         .Submissions_Table
         {
@@ -93,7 +95,7 @@
     padding: 20px;
     padding-top: 25px;
     border-radius: 4px;
-    z-index: 2;
+    z-index: 1;
     .DetailSubmissionIcon
     {
         font-size: 18rem;

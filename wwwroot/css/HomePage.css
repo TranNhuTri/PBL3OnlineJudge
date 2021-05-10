@@ -170,6 +170,7 @@
 
 .AppBody {
   min-height: 100vh;
+  background-color: #dedede9c;
 }
 
 .AppFooter {

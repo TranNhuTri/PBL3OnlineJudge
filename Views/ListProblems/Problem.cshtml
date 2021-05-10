@@ -29,12 +29,12 @@
                         </a>
                     </div>
                     <div class="ProblemPropertyContainer">
-                        @if(!String.IsNullOrEmpty(Context.Session.GetString("accountName")))
+                        @if(!String.IsNullOrEmpty(Context.Session.GetString("UserName")))
                         {
                             var parms = new Dictionary<string, string>
                             {
                                 {"problemID", Model.ID},
-                                {"accountName", Context.Session.GetString("accountName")},
+                                {"accountName", Context.Session.GetString("UserName")},
                             };
                             <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem">Lời giải của tôi</a>
                         }

@@ -10,12 +10,14 @@
   min-height: 20vh;
   background-color: #fff;
   border-radius: 4px;
+  box-shadow: 0 0 3px #ccc;
 }
 
 .SubmissionsPage .SubmissionsContainer .Submissions_Header {
   margin: 0;
   font-weight: normal;
-  font-size: 24rem;
+  font-size: 20rem;
+  line-height: 26rem;
 }
 
 .SubmissionsPage .SubmissionsContainer .Submissions_Table {
@@ -91,7 +93,7 @@
   padding: 20px;
   padding-top: 25px;
   border-radius: 4px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .DetailSubmissionContainer .DetailSubmissionIcon {
@@ -109,4 +111,4 @@
   max-height: 700px;
   padding: 0 10px;
 }
-/*# sourceMappingURL=SubmissionPage.css.map */
+/*# sourceMappingURL=ListSubmissionsPage.css.map */

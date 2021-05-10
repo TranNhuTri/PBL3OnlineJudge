@@ -1,32 +1,38 @@
 .SignUpPage {
+  padding-top: 40px;
+}
+
+.SignUpPage .SignUpContainer {
+  margin: 0 auto;
   width: 360px;
   height: 500px;
-  margin: 5% auto;
   border-radius: 5px;
   box-shadow: 0 2px 5px #ccc;
   position: relative;
   overflow: hidden;
+  font-size: 14rem;
+  background-color: #fff;
 }
 
-.SignUpPage .SignUp_Form {
+.SignUpPage .SignUpContainer .SignUp_Form {
   width: 280px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   position: absolute;
-  top: 100px;
+  top: 65px;
   left: 40px;
   transition: .8s;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Title {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Title {
   text-align: center;
   font-size: 20rem;
   margin-bottom: 10px;
   font-weight: normal;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Label {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Label {
   color: #333;
   margin-top: 5%;
   font-size: 14rem;
@@ -34,22 +40,22 @@
   margin-bottom: 10px;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Textbox {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Textbox {
   outline: none;
   border-radius: 5px;
   border: 1px solid #b3b3b3;
   padding: 10px 10px;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Textbox:focus {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Textbox:focus {
   border-color: #1dbfaf;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Textbox:hover {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Textbox:hover {
   border-color: #1dbfaf;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Button {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Button {
   border-radius: 15px;
   border: none;
   width: 35%;
@@ -57,23 +63,23 @@
   margin-right: 10px;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_Button:hover {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_Button:hover {
   opacity: 0.8;
 }
 
-.SignUpPage .SignUp_Form .SignUp_Form_ButtonBox {
+.SignUpPage .SignUpContainer .SignUp_Form .SignUp_Form_ButtonBox {
   display: flex;
   justify-content: center;
   margin-top: 40px;
 }
 
-.SignUpPage .SignUp_Form .GmailConfirm {
+.SignUpPage .SignUpContainer .SignUp_Form .GmailConfirm {
   margin-top: 100px;
   display: flex;
   justify-content: center;
 }
 
-.SignUpPage .SignUp_Form .GmailConfirm .SignUp_Form_Textbox {
+.SignUpPage .SignUpContainer .SignUp_Form .GmailConfirm .SignUp_Form_Textbox {
   width: 40px;
   height: 40px;
   text-align: center;
@@ -81,11 +87,11 @@
   margin: 0 2px;
 }
 
-.SignUpPage .SignUp_Form--2 {
+.SignUpPage .SignUpContainer .SignUp_Form--2 {
   left: 400px;
 }
 
-.SignUpPage .SignUpPage_Step--Row {
+.SignUpPage .SignUpContainer .SignUpPage_Step--Row {
   width: 100%;
   height: 40px;
   display: flex;
@@ -94,7 +100,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.SignUpPage .SignUpPage_Step--Row .SignUpPage_Progress {
+.SignUpPage .SignUpContainer .SignUpPage_Step--Row .SignUpPage_Progress {
   height: 40px;
   width: calc(1/2*360px);
   position: absolute;
@@ -102,7 +108,7 @@
   transition: .8s;
 }
 
-.SignUpPage .SignUpPage_Step--Row .SignUpPage_Step--Col {
+.SignUpPage .SignUpContainer .SignUpPage_Step--Row .SignUpPage_Step--Col {
   width: 180px;
   position: relative;
   text-align: center;

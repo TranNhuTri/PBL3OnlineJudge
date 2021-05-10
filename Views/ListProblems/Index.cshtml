@@ -1,48 +1,48 @@
 @{
     ViewData["Title"] = "Danh sách bài tập";
+    SearchForm sf = (SearchForm)ViewData["SearchForm"];
 }
 @model List<Problem>;
 <div class="ListProblemsPage">
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column-9">
-                <h1 class="ProblemPage_Header">Danh Sách Bài Tập</h1>
-                <table cellspacing="0" cellpadding="0" class="ListProblemTable">
-                    <thead>
-                        <tr>
-                            <th class = "Number">#</th>
-                            <th class = "Title">
-                                Tên Bài
-                            </th>
-                            <th class = "Status">
-                                Trạng Thái
-                            </th>
-                            <th class = "Points">
-                                Độ Khó
-                            </th>
-                            <th class = "SuccessRate">
-                                Tỉ Lệ AC
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            string status = Model[i].Status ? "Đã hoàn thành" : "Chưa hoàn thành";
-                            <tr class= "ListProblemRow">
-                            <td class = "ProblemNumber">@(i + 1)</td>
-                            <td class = "ProblemTitle">
-                                <a asp-controller = "ListProblems" asp-action = "Problem" asp-route-id = "@Model[i].ID" class = "ProblemTitle_Link">@Model[i].Title</a>
-                            </td>
-                            <td class = "ProblemStatus">
-                                @status
-                            </td>
-                            <td class = "ProblemDifficullity">@Model[i].Difficulty</td>
-                            <td class = "ProblemSuccessRate">@Model[i].SuccessRate</td>
+                <div class="ListProblemsContainer">
+                    <h1 class="ProblemPage_Header">Danh Sách Bài Tập</h1>
+                    <table cellspacing="0" cellpadding="0" class="ListProblemTable">
+                        <thead>
+                            <tr>
+                                <th class = "Number">#</th>
+                                <th class = "Title">
+                                    Tên Bài
+                                </th>
+                                <th class = "Status">
+                                    Trạng Thái
+                                </th>
+                                <th class = "Points">
+                                    Độ Khó
+                                </th>
+                                <th class = "SuccessRate">
+                                    Tỉ Lệ AC
+                                </th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    <tr class= "ListProblemRow">
+                                    <td class = "ProblemNumber">@(i + 1)</td>
+                                    <td class = "ProblemTitle">
+                                        <a asp-controller = "ListProblems" asp-action = "Problem" asp-route-id = "@Model[i].ID" class = "ProblemTitle_Link">@Model[i].Title</a>
+                                    </td>
+                                    <td class = "ProblemStatus"></td>
+                                    <td class = "ProblemDifficullity">@Model[i].Difficulty</td>
+                                    <td class = "ProblemSuccessRate"></td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="grid_column-3">
                 <form asp-controller = "ListProblems" asp-action = "Index" method="GET">

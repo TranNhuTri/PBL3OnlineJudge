@@ -25,7 +25,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Index()
         {
-            var listSubmissions = (from submission in _context.Submission.Include(s => s.Account).Include(s => s.Problem) select submission).ToList();
+            var listSubmissions = (from submission in _context.Submission.Include(s => s.User).Include(s => s.Problem) select submission).ToList();
             listSubmissions.Reverse();
             
             return View(listSubmissions);

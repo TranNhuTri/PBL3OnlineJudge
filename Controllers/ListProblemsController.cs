@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
@@ -17,18 +18,34 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string ProblemName = "", bool HideSolvedProblem = false, string ProblemCategory = "", int MinDifficult = 0, int MaxDifficult = (int)1e9)
+        public IActionResult Index(string ProblemName, bool HideSolvedProblem, string ProblemCategory, int? MinDifficult, int? MaxDifficult)
         {
-            var problems = from problem in _context.Problem select problem;
-            problems = problems.Where(p => p.Difficulty >= MinDifficult && p.Difficulty <= MaxDifficult);
+            var problems = _context.Problem.ToList();
+            var seachForm = new SearchForm();
+
             if(!String.IsNullOrEmpty(ProblemName))
             {
-                problems = problems.Where(p => p.Title.ToLower().Contains(ProblemName.ToLower()));
+                problems = problems.Where(p => p.Title.ToLower().Contains(ProblemName.ToLower())).Select(p => p).ToList();
+                seachForm.ProblemName = ProblemName;
             }
-            if(HideSolvedProblem == true)
+            if(!String.IsNullOrEmpty(ProblemCategory))
             {
-                problems = problems.Where(p => p.Status == false);
+                //
             }
+            if(MinDifficult != null || MaxDifficult != null)
+            {
+                if(MinDifficult != null)
+                {
+                    problems = problems.Where(p => p.Difficulty >= MinDifficult).Select(p => p).ToList();
+                    seachForm.MinDiff = MinDifficult;
+                }
+                if(MaxDifficult != null)
+                {
+                    problems = problems.Where(p => p.Difficulty <= MaxDifficult).Select(p => p).ToList();
+                    seachForm.MaxDiff = MaxDifficult;
+                }
+            }
+            ViewData["SearchForm"] = seachForm;
             return View(problems.ToList());
         }
         public IActionResult Create()
@@ -37,10 +54,16 @@ namespace PBL3.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID, Title, Content, Difficulty")] Problem problem)
+        public async Task<IActionResult> Create([Bind("ID, Title, Content, Difficulty, TimeLimit, MemoryLimit, Public")] Problem problem)
         {
             if (ModelState.IsValid)
             {
+                if(_context.Problem.FirstOrDefault(p => p.ID == problem.ID) != null)
+                {
+                    return NotFound();
+                }
+                problem.TimeCreate = DateTime.Now;
+                problem.User = _context.User.FirstOrDefault(a => a.UserName == HttpContext.Session.GetString("UserName"));
                 _context.Add(problem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

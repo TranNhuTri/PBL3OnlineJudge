@@ -30,26 +30,29 @@ namespace PBL3.Controllers
 
         public IActionResult Logout()
         {
-            HttpContext.Session.SetString("accountName", string.Empty);
+            HttpContext.Session.SetString("UserName", string.Empty);
             return RedirectToAction("Index", "Home");
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string accountName, string passWord)
+        public IActionResult Login([Bind("UserName, PassWord")]LoginUser user)
         {
-            var account = _context.Account.FirstOrDefault(m => m.AccountName == accountName && m.PassWord == passWord && m.IsActived == true);
-            if(account != null)
+            if(ModelState.IsValid)
             {
-                HttpContext.Session.SetString("accountName", account.AccountName);
-                HttpContext.Session.SetString("accountID", account.ID.ToString());
-                return RedirectToAction("Index", "Home");
+                var User = _context.User.FirstOrDefault(m => m.UserName == user.UserName && m.PassWord == user.PassWord && m.Actived == true);
+                if(User != null)
+                {
+                    HttpContext.Session.SetString("UserName", User.UserName);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không hợp lệ !");
+                    return View();
+                }
             }
-            else
-            {
-                ModelState.AddModelError("", "Invalid User Name or Password");
-                return View();
-            }
+            return View();
         }
 
         public IActionResult SignUp()
@@ -97,55 +100,57 @@ namespace PBL3.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp([Bind("AccountName", "PassWord", "Email")]Account Account, string ConfirmPassword, string LastName, string FirstName)
+        public IActionResult SignUp([Bind("UserName", "PassWord", "Email")]User User, string ConfirmPassword, string LastName, string FirstName)
         {
-            var account = _context.Account.FirstOrDefault(a => a.AccountName == Account.AccountName);
-            if(account != null)
+            if(ModelState.IsValid)
             {
-                return NotFound();
-            }
-            if(!String.IsNullOrEmpty(Account.Email))
-            {
-                Console.WriteLine(Account.Email);
-                Account.DateCreate = DateTime.Now;
-                Account.Token = Encrypt(Account.AccountName);
-                Account.TypeAccount = 3;
-
-                _context.Account.Add(Account);
-                _context.SaveChangesAsync();
-
-                var smtpClient = new SmtpClient("smtp.gmail.com")
+                var user = _context.User.FirstOrDefault(a => a.UserName == User.UserName);
+                if(user != null)
                 {
-                    Port = 587,
-                    Credentials = new NetworkCredential("CodeTop1.Net@gmail.com", "codetop1"),
-                    EnableSsl = true,
-                };
-                var mailMessage = new MailMessage
+                    return NotFound();
+                }
+                if(!String.IsNullOrEmpty(User.Email))
                 {
-                    From = new MailAddress("CodeTop1.Net@gmail.com"),
-                    Subject = "Wellcome to CodeTop1",
-                    Body = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + Account.Token + "&&Email=" + Account.Email,
-                };
-                mailMessage.To.Add(Account.Email);
-                smtpClient.Send(mailMessage);
+                    User.TimeCreate = DateTime.Now;
+                    User.Token = Encrypt(User.UserName);
+                    User.TypeAccount = 3;
+
+                    _context.User.Add(User);
+                    _context.SaveChangesAsync();
+
+                    var smtpClient = new SmtpClient("smtp.gmail.com")
+                    {
+                        Port = 587,
+                        Credentials = new NetworkCredential("CodeTop1.Net@gmail.com", "codetop1"),
+                        EnableSsl = true,
+                    };
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("CodeTop1.Net@gmail.com"),
+                        Subject = "Wellcome to CodeTop1",
+                        Body = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + User.Token + "&&Email=" + User.Email,
+                    };
+                    mailMessage.To.Add(User.Email);
+                    smtpClient.Send(mailMessage);
+                }
             }
             return View();
         }
         public IActionResult VerifyMail(string token, string Email)
         {
-            var account = (from acc in _context.Account where acc.AccountName == Decrypt(token) && acc.Email == Email select acc).FirstOrDefault();
-            if(account != null)
+            var User = (from acc in _context.User where acc.UserName == Decrypt(token) && acc.Email == Email select acc).FirstOrDefault();
+            if(User != null)
             {
-                if(DateTime.Compare(account.DateCreate.AddHours(4), DateTime.Now) >= 0)
+                if(DateTime.Compare(User.TimeCreate.AddHours(4), DateTime.Now) >= 0)
                 {
-                    account.IsActived = true;
-                    _context.Update(account);
+                    User.Actived = true;
+                    _context.Update(User);
                     _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    _context.Account.Remove(account);
+                    _context.User.Remove(User);
                     _context.SaveChanges();
                 }
             }

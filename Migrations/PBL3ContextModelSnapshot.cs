@@ -19,37 +19,48 @@ namespace PBL3.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PBL3.Models.Account", b =>
+            modelBuilder.Entity("PBL3.Models.Article", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccountName")
+                    b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActived")
+                    b.Property<bool>("Public")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PassWord")
+                    b.Property<DateTime>("TimeCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TypeAccount")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Account");
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Article");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Category", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("PBL3.Models.Problem", b =>
@@ -63,18 +74,54 @@ namespace PBL3.Migrations
                     b.Property<int>("Difficulty")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
+                    b.Property<int>("MemoryLimit")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Public")
                         .HasColumnType("bit");
 
-                    b.Property<float>("SuccessRate")
+                    b.Property<DateTime>("TimeCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("TimeLimit")
                         .HasColumnType("real");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
+                    b.HasIndex("UserID");
+
                     b.ToTable("Problem");
+                });
+
+            modelBuilder.Entity("PBL3.Models.ProblemCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProblemID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProblemID1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.HasIndex("ProblemID1");
+
+                    b.ToTable("ProblemCategory");
                 });
 
             modelBuilder.Entity("PBL3.Models.Submission", b =>
@@ -84,14 +131,8 @@ namespace PBL3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateSubmit")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
@@ -105,16 +146,22 @@ namespace PBL3.Migrations
                     b.Property<float>("Time")
                         .HasColumnType("real");
 
+                    b.Property<DateTime>("TimeCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("AccountID");
-
                     b.HasIndex("ProblemID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Submission");
                 });
 
-            modelBuilder.Entity("PBL3.Models.SubmitResult", b =>
+            modelBuilder.Entity("PBL3.Models.SubmissionResult", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -139,7 +186,7 @@ namespace PBL3.Migrations
 
                     b.HasIndex("TestCaseID");
 
-                    b.ToTable("SubmitResult");
+                    b.ToTable("SubmissionResult");
                 });
 
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
@@ -165,27 +212,102 @@ namespace PBL3.Migrations
                     b.ToTable("TestCase");
                 });
 
-            modelBuilder.Entity("PBL3.Models.Submission", b =>
+            modelBuilder.Entity("PBL3.Models.User", b =>
                 {
-                    b.HasOne("PBL3.Models.Account", "Account")
-                        .WithMany("Submissions")
-                        .HasForeignKey("AccountID")
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Actived")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassWord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeAccount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Article", b =>
+                {
+                    b.HasOne("PBL3.Models.User", "User")
+                        .WithMany("Articles")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Problem", b =>
+                {
+                    b.HasOne("PBL3.Models.User", "User")
+                        .WithMany("Problems")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PBL3.Models.ProblemCategory", b =>
+                {
+                    b.HasOne("PBL3.Models.Category", "Category")
+                        .WithMany("ProblemCategories")
+                        .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PBL3.Models.Problem", "Problem")
-                        .WithMany("Submissions")
-                        .HasForeignKey("ProblemID");
+                        .WithMany("ProblemCategories")
+                        .HasForeignKey("ProblemID1");
 
-                    b.Navigation("Account");
+                    b.Navigation("Category");
 
                     b.Navigation("Problem");
                 });
 
-            modelBuilder.Entity("PBL3.Models.SubmitResult", b =>
+            modelBuilder.Entity("PBL3.Models.Submission", b =>
+                {
+                    b.HasOne("PBL3.Models.Problem", "Problem")
+                        .WithMany("Submissions")
+                        .HasForeignKey("ProblemID");
+
+                    b.HasOne("PBL3.Models.User", "User")
+                        .WithMany("Submissions")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PBL3.Models.SubmissionResult", b =>
                 {
                     b.HasOne("PBL3.Models.Submission", "Submission")
-                        .WithMany("SubmitResults")
+                        .WithMany("SubmissionResults")
                         .HasForeignKey("SubmissionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -210,13 +332,15 @@ namespace PBL3.Migrations
                     b.Navigation("Problem");
                 });
 
-            modelBuilder.Entity("PBL3.Models.Account", b =>
+            modelBuilder.Entity("PBL3.Models.Category", b =>
                 {
-                    b.Navigation("Submissions");
+                    b.Navigation("ProblemCategories");
                 });
 
             modelBuilder.Entity("PBL3.Models.Problem", b =>
                 {
+                    b.Navigation("ProblemCategories");
+
                     b.Navigation("Submissions");
 
                     b.Navigation("TestCases");
@@ -224,12 +348,21 @@ namespace PBL3.Migrations
 
             modelBuilder.Entity("PBL3.Models.Submission", b =>
                 {
-                    b.Navigation("SubmitResults");
+                    b.Navigation("SubmissionResults");
                 });
 
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
                 {
                     b.Navigation("SubmitResults");
+                });
+
+            modelBuilder.Entity("PBL3.Models.User", b =>
+                {
+                    b.Navigation("Articles");
+
+                    b.Navigation("Problems");
+
+                    b.Navigation("Submissions");
                 });
 #pragma warning restore 612, 618
         }

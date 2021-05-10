@@ -25,7 +25,7 @@ for(let i = 0; i < submissionID.length; i++)
         .then(res => res.json())
         .then(function(data)
         {
-            console.log(data["SubmitResults"]);
+
             let styleString = "font-weight: bold;";
             if(data["Status"] == "Accepted")
             {
@@ -36,12 +36,12 @@ for(let i = 0; i < submissionID.length; i++)
                 {
                     styleString += "color: #dc3545;"
                 }
-            let stringData = '<p>Nộp bởi ' + data["Account"]["AccountName"] + " , bài: " + data["Problem"]["Title"] + ", <span style = " + '"' + styleString + '">' + data["Status"] + "</span>" + "</p>" + '<pre><code class="language-cpp">' + data["Code"] + "</code></pre>";
+            let stringData = '<p>Nộp bởi ' + data["UserName"] + " , bài: " + data["ProblemTitle"] + ", <span style = " + '"' + styleString + '">' + data["Status"] + "</span>" + "</p>" + '<pre><code class="language-cpp">' + data["Code"] + "</code></pre>";
             
-            let submitResults = data["SubmitResults"];
+            let submissionResults = data["SubmissionResults"];
             let submitResultIndex = 0;
 
-            submitResults.forEach(sr => {
+            submissionResults.forEach(sr => {
                 let styleString = "font-weight: bold;";
                 if(sr["Status"] == "OK")
                 {

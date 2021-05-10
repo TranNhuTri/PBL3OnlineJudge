@@ -23,6 +23,7 @@
   border: 1px solid #ccc;
   font-size: 14rem;
   height: 50vh;
+  z-index: 0;
 }
 
 .SubmitProblemPage .SubmitProblemForm .SubmitProblem_Inputs {

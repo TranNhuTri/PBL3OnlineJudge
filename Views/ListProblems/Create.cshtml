@@ -31,9 +31,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class = "FormGroup">
+                            <input type="checkbox" asp-for = "Public" style="width: 20px;" value = "True">
+                            <label for="Public">Công khai</label>
+                        </div>
+                        <div class="FormGroup">
+                            <label for="TimeLimit">Giới hạn thời gian :</label>
+                            <input type="text" asp-for = "TimeLimit"><span style="margin-left: 10px; color: #7b7b7b">s</span>
+                        </div>
+                        <div class="FormGroup">
+                            <label for="MemoryLimit">Giới hạn bộ nhớ :</label>
+                            <input type="text" asp-for = "MemoryLimit"><span style="margin-left: 10px; color: #7b7b7b">KB</span>
+                        </div>
                         <div class="FormGroup">
                             <label for="Difficulity">Độ khó :</label>
                             <input type="text" asp-for = "Difficulty">
+                            <span asp-validation-for="Difficulty" class="text-danger"></span>
                         </div>
                         <div class="FormSubmit">
                             <input type="submit" value = "Tạo đề bài" class="CreateProblemSubmit button">

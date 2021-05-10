@@ -1,23 +1,23 @@
-@model Problem
 @{
     ViewData["Title"] = "Sửa đề bài";
     if(!String.IsNullOrEmpty(Model.Content))
         Model.Content = Model.Content.Replace("$", "~");
 }
+@model Problem
 <div class="Create-EditProblemPage">
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
                 <div class="Create-EditProblemPage_Input">
-                    <h1 class="Create-EditProblemPage_Header">Sửa đề bài @Model.Title</h1>
-                    <form asp-asp-controller = "Problem" asp-action="Edit">
+                    <h1 class="Create-EditProblemPage_Header">Tạo bài mới</h1>
+                    <form asp-action = "edit">
                         <div class="FormGroup">
                             <label for="ID">Mã bài :</label>
                             <input type="text" asp-for = "ID">
                         </div>
                         <div class="FormGroup">
                             <label for="Tilte">Tên bài :</label>
-                            <input type="text" asp-for = "Title" value= "@Model.Title">
+                            <input type="text" asp-for = "Title">
                         </div>
                         <div class="FormGroup">
                             <label>Đề bài :</label>
@@ -36,15 +36,24 @@
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            
-                        </script>
+                        <div class = "FormGroup">
+                            <input type="checkbox" asp-for = "Public" style="width: 20px;" value = "True">
+                            <label for="Public">Công khai</label>
+                        </div>
+                        <div class="FormGroup">
+                            <label for="TimeLimit">Giới hạn thời gian :</label>
+                            <input type="text" asp-for = "TimeLimit"><span style="margin-left: 10px; color: #7b7b7b">s</span>
+                        </div>
+                        <div class="FormGroup">
+                            <label for="MemoryLimit">Giới hạn bộ nhớ :</label>
+                            <input type="text" asp-for = "MemoryLimit"><span style="margin-left: 10px; color: #7b7b7b">KB</span>
+                        </div>
                         <div class="FormGroup">
                             <label for="Difficulity">Độ khó :</label>
-                            <input type="text" asp-for = "Difficulty" value="@Model.Difficulty">
+                            <input type="text" asp-for = "Difficulty">
                         </div>
                         <div class="FormSubmit">
-                            <input type="submit" value = "Lưu" class="button EditProblemSubmit">
+                            <input type="submit" value = "Lưu thay đổi" class="CreateProblemSubmit button">
                         </div>
                     </form>
                 </div>

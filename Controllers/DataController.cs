@@ -22,8 +22,17 @@ namespace PBL3.Controllers
         }
         public string Submission(int? id)
         {
-            var submission = _context.Submission.Include(s => s.Account).Include(s => s.Problem).Include(s => s.SubmitResults).ThenInclude(sr => sr.TestCase).FirstOrDefault(s => s.ID == id);
-            return JsonConvert.SerializeObject(submission, new JsonSerializerSettings() { 
+            var submission = _context.Submission.Include(s => s.User).Include(s => s.Problem).Include(s => s.SubmissionResults).ThenInclude(sr => sr.TestCase).FirstOrDefault(s => s.ID == id);
+
+            var submissionResponse = new SubmissionResponse()
+            {
+                ProblemTitle = submission.Problem.Title,
+                UserName = submission.User.UserName,
+                Code = submission.Code,
+                SubmissionResults = submission.SubmissionResults,
+                Status = submission.Status
+            };
+            return JsonConvert.SerializeObject(submissionResponse, new JsonSerializerSettings() { 
 		        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 	        });
         }
@@ -32,5 +41,13 @@ namespace PBL3.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+    class SubmissionResponse
+    {
+        public string UserName{get; set;}
+        public string ProblemTitle{get; set;}
+        public string Code{get; set;}
+        public List<SubmissionResult> SubmissionResults{get; set;}
+        public string Status{get; set;}
     }
 }

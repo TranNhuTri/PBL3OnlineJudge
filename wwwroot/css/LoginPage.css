@@ -1,12 +1,13 @@
 .Login {
   width: 360px;
-  margin: 30px auto;
+  margin: 40px auto;
   box-sizing: border-box;
   box-shadow: 0 1px 10px #ccc;
   text-align: center;
   border-radius: 4px;
   padding: 24px;
   font-size: 14rem;
+  background-color: #fff;
 }
 
 .Login .Login_Title {
@@ -81,7 +82,7 @@
   font-weight: normal;
 }
 
-.Login .Login_Input #email, .Login .Login_Input #password {
+.Login .Login_Input #UserName, .Login .Login_Input #PassWord {
   width: 100%;
   padding: 10px 15px;
 }

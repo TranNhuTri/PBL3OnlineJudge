@@ -7,7 +7,7 @@
         <div class="grid_row">
             <div class="grid_column">
                 <div class="SubmissionsContainer">
-                    <h1 class="Submissions_Header">Submission</h1>
+                    <h1 class="Submissions_Header">Tất cả bài nộp</h1>
                     <table cellspacing="0" cellpadding="0" class="Submissions_Table">
                         <thead class = "Submissions_Table_Header">
                             <tr>
@@ -24,9 +24,9 @@
                             {
                                 <tr>
                                     <td class = "link SubmissionID">@Model[i].ID</td>
-                                    <td>@Model[i].DateSubmit</td>
+                                    <td>@Model[i].TimeCreate</td>
                                     <td><a asp-action = "Problem" asp-route-id = "@Model[i].Problem.ID" asp-controller = "ListProblems" class = "link">@Model[i].Problem.Title</a></td>
-                                    <td class = "SubmissionStatus">Running</td>
+                                    <td class = "SubmissionStatus">@Model[i].Status</td>
                                     <td class = "SubmissionTime">?</td>
                                     <td>@Model[i].Language</td>
                                 </tr>

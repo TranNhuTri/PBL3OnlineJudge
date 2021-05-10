@@ -49,3 +49,14 @@ input:focus
     text-decoration: none;
     color: #1958c1;
 }
+.text-danger
+{
+    color: #dc3545;
+    display: block;
+    margin: 5px 0;
+}
+.text-danger ul
+{
+    list-style: none;
+    padding: 0;
+}

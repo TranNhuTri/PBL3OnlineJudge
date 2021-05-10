@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace PBL3.Models
 {
-    public class SubmitResult
+    public class SubmissionResult
     {
         public int ID{get; set;}
         public int SubmissionID{get; set;}

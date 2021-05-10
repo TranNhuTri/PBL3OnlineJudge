@@ -1,57 +1,68 @@
 .ListProblemsPage {
-  padding: 40px 0;
-  min-height: 100vh;
+  padding: 30px 0;
 }
 
-.ListProblemsPage .ProblemPage_Header {
-  font-size: 18px;
+.ListProblemsPage .ListProblemsContainer {
+  box-shadow: 0 0 3px #ccc;
+  background-color: #fff;
+  padding-top: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ListProblemsPage .ListProblemsContainer .ProblemPage_Header {
   font-weight: normal;
-  margin: 0 0 20px 0;
+  font-size: 20rem;
+  line-height: 25rem;
+  margin: 0 0 20px 20px;
 }
 
-.ListProblemsPage .ListProblemTable {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable {
   width: 100%;
   font-size: 14rem;
-  box-shadow: 0 0 8px #afafaf;
   background-color: #fff;
-  border-radius: 4px;
 }
 
-.ListProblemsPage .ListProblemTable th {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable th {
   padding: 10px;
   font-weight: 100;
   border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+  background-color: #f8f8f9;
 }
 
-.ListProblemsPage .ListProblemTable tr:nth-child(even) {
-  background-color: #cccccc1c;
-}
-
-.ListProblemsPage .ListProblemTable .Number, .ListProblemsPage .ListProblemTable .ProblemNumber {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable .Number, .ListProblemsPage .ListProblemsContainer .ListProblemTable .ProblemNumber {
   width: 10%;
 }
 
-.ListProblemsPage .ListProblemTable .Title, .ListProblemsPage .ListProblemTable .ProblemTitle {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable .Title, .ListProblemsPage .ListProblemsContainer .ListProblemTable .ProblemTitle {
   text-align: left;
   width: 50%;
 }
 
-.ListProblemsPage .ListProblemTable td {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable td {
   padding: 20px 10px;
   text-align: center;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 }
 
-.ListProblemsPage .ListProblemTable td .ProblemTitle_Link {
+.ListProblemsPage .ListProblemsContainer .ListProblemTable td .ProblemTitle_Link {
   text-decoration: none;
-  color: #006bbf;
+  color: #008eff;
+}
+
+.ListProblemsPage .ListProblemsContainer .ListProblemTable tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+
+.ListProblemsPage .ListProblemsContainer .ListProblemTable tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
 }
 
 .ProblemFilter {
   background-color: #fff;
-  box-shadow: 0 0 8px #afafaf;
+  box-shadow: 0 0 3px #ccc;
   border-radius: 4px;
   padding: 10px 15px;
-  margin: 35px 0;
   font-size: 14rem;
   line-height: 20rem;
 }
@@ -91,8 +102,8 @@
 }
 
 .ProblemFilter .ProblemCategoryFillter #ProblemCategory:focus {
-  border: 1px solid #52a8eccc;
-  box-shadow: 0 0 5px #52a8eccc;
+  border: 1px solid #57a3f3;
+  box-shadow: 0 0 5px #57a3f3;
 }
 
 .ProblemFilter .ProblemDifficultFillter {

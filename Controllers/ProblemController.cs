@@ -30,7 +30,7 @@ namespace PBL3.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID, Title, Content, Difficulty")] Problem problem)
+        public async Task<IActionResult> Edit(string id, [Bind("ID, Title, Content, Difficulty, Public, TimeLimit, MemoryLimit")] Problem problem)
         {
             if(id != problem.ID)
             {
@@ -40,6 +40,9 @@ namespace PBL3.Controllers
             probl.Title = problem.Title;
             probl.Content = problem.Content;
             probl.Difficulty = problem.Difficulty;
+            probl.Public = problem.Public;
+            probl.TimeLimit = problem.TimeLimit;
+            probl.MemoryLimit = problem.MemoryLimit;
 
             if (ModelState.IsValid && probl != null)
             {
@@ -55,7 +58,7 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            if(String.IsNullOrEmpty(HttpContext.Session.GetString("accountName")))
+            if(String.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -72,16 +75,16 @@ namespace PBL3.Controllers
         public async Task<IActionResult> Submit(string id, string ProblemSolution, string Language)
         {
             var problem = _context.Problem.Include(p => p.TestCases).FirstOrDefault(p => p.ID == id);
-            var account = _context.Account.FirstOrDefault(a => a.ID == Convert.ToInt32(HttpContext.Session.GetString("accountID")));
+            var account = _context.User.FirstOrDefault(a => a.UserName == HttpContext.Session.GetString("UserName"));
 
             var submission = new Submission
             {
                 Code = ProblemSolution,
                 Language = Language,
-                DateSubmit = DateTime.Now,
+                TimeCreate = DateTime.Now,
                 Status = "Running",
                 Problem = problem,
-                Account = account
+                User = account
             };
 
             _context.Submission.Add(submission);
@@ -107,7 +110,7 @@ namespace PBL3.Controllers
                 {  
                     var submitResponse = JsonConvert.DeserializeObject<SubmitResponse>(output);
                     Console.WriteLine(submitResponse.output);
-                    SubmitResult sr = new SubmitResult()
+                    SubmissionResult sr = new SubmissionResult()
                     {
                         Submission = submission,
                         TestCase = t,
@@ -123,7 +126,7 @@ namespace PBL3.Controllers
                     {
                         sr.Status = "OK";
                     }
-                    _context.SubmitResult.Add(sr);
+                    _context.SubmissionResult.Add(sr);
                 }
             }
             if(ACCheck== true)
@@ -141,7 +144,7 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            var listSubmissions = (from Submission in _context.Submission.Include(s => s.Account).Include(s => s.Problem) where (Submission.Problem.ID == problemID && Submission.Account.AccountName == accountName) select Submission).ToList();
+            var listSubmissions = (from Submission in _context.Submission.Include(s => s.User).Include(s => s.Problem) where (Submission.Problem.ID == problemID && Submission.User.UserName == accountName) select Submission).ToList();
             listSubmissions.Reverse();
             return View(listSubmissions);
         }

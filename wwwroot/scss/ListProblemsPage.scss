@@ -1,48 +1,60 @@
 @import 'var.scss';
 .ListProblemsPage
 {
-    padding: 40px 0;
-    min-height: 100vh;
-    .ProblemPage_Header
+    padding: 30px 0;
+    .ListProblemsContainer
     {
-        font-size: 18px;
-        font-weight: normal;
-        margin: 0 0 20px 0;
-    }
-    .ListProblemTable
-    {
-        width: 100%;
-        font-size: 14rem;
-        box-shadow: 0 0 8px $border-color;
+        box-shadow: 0 0 3px $shadow-color;
         background-color: $white-color;
+        padding-top: 20px;
         border-radius: 4px;
-        th
+        overflow: hidden;
+        .ProblemPage_Header
         {
-            padding: 10px;
-            font-weight: 100;
-            border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+            font-weight: normal;
+            font-size: 20rem;
+            line-height: 25rem;
+            margin: 0 0 20px 20px;
         }
-        tr:nth-child(even)
+        .ListProblemTable
         {
-            background-color: $light-gray-color;
-        }
-        .Number, .ProblemNumber
-        {
-            width: 10%;
-        }
-        .Title, .ProblemTitle
-        {
-            text-align: left;
-            width: 50%;
-        }
-        td
-        {
-            padding: 20px 10px;
-            text-align: center;
-            .ProblemTitle_Link
+            width: 100%;
+            font-size: 14rem;
+            background-color: $white-color;
+            th
             {
-                text-decoration: none;
-                color: #006bbf;
+                padding: 10px;
+                font-weight: 100;
+                border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+                background-color: $light-gray-color;
+            }
+            .Number, .ProblemNumber
+            {
+                width: 10%;
+            }
+            .Title, .ProblemTitle
+            {
+                text-align: left;
+                width: 50%;
+            }
+            td
+            {
+                padding: 20px 10px;
+                text-align: center;
+                border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+                .ProblemTitle_Link
+                {
+                    text-decoration: none;
+                    color: $blue-color;
+                }
+            }
+            tr:last-child td:first-child
+            {
+                border-bottom-left-radius: 4px;
+            }
+            tr:last-child td:last-child
+            {
+                border-bottom-right-radius: 4px;
             }
         }
     }
@@ -50,10 +62,9 @@
 .ProblemFilter
 {
     background-color: $white-color;
-    box-shadow: 0 0 8px $border-color;
+    box-shadow: 0 0 3px $shadow-color;
     border-radius: 4px;
     padding: 10px 15px;
-    margin: 35px 0;
     font-size: 14rem;
     line-height: 20rem;
     .ProblemFillter_Header
