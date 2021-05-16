@@ -1,6 +1,7 @@
 @model Problem
 @{
     ViewData["Title"] = Model.Title;
+    var listAuthors = Model.ProblemAuthors.Select(p => p.Author);
 }
 
 <div class="ProblemPage">
@@ -37,13 +38,24 @@
                                 {"accountName", Context.Session.GetString("UserName")},
                             };
                             <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem">Lời giải của tôi</a>
+                            if(Convert.ToInt32(Context.Session.GetString("TypeAccount")) == 1)
+                            {
+                                <a asp-controller = "Problem" asp-action = "Edit" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
+                                <p class = "CUDProblem" id = "DeleteProblemLink">Xóa đề bài</p>
+                            }
                         }
-                        <a asp-controller = "Problem" asp-action = "Edit" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
-                        <p class = "CUDProblem" id = "DeleteProblemLink">Xóa đề bài</p>
+                        
                         <p class = "ProblemProperty"><b>Mã bài: </b>@Model.ID</p>
-                        <p class = "ProblemProperty"><b>Thời gian giới hạn: </b></p>
-                        <p class = "ProblemProperty"><b>Bộ nhớ giới hạn: </b></p>
+                        <p class = "ProblemProperty"><b>Thời gian giới hạn: </b>@Model.TimeLimit s</p>
+                        <p class = "ProblemProperty"><b>Bộ nhớ giới hạn: </b>@Model.MemoryLimit M</p>
                         <p class = "ProblemProperty"><b>Độ khó: </b>@Model.Difficulty</p>
+                        <p class = "ProblemProperty"><b>Tác giả: </b></p>
+                        <div>
+                            @foreach (var author in listAuthors)
+                            {
+                                <span style="font-size: 16rem; font-weight: bold; color: #989898">@author.UserName  </span>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,13 +82,17 @@
         var appContainer = document.querySelector(".AppContainer");
         var confirmDeleteProblem = document.querySelector(".ConfirmDeleteProblem");
 
-        deleteProblemLink.addEventListener('click', function()
+        if(deleteProblemLink != null)
         {
-            overlay.classList.add("Overlay--active");
-            appContainer.classList.add("AppContainer--isCovered");
-            confirmDeleteProblem.style.top = String((window.innerHeight - confirmDeleteProblem.offsetHeight)/2) + "px";
-            confirmDeleteProblem.style.left = String((window.innerWidth - confirmDeleteProblem.offsetWidth)/2) + "px";
-        })
+            deleteProblemLink.addEventListener('click', function()
+            {
+                overlay.classList.add("Overlay--active");
+                appContainer.classList.add("AppContainer--isCovered");
+                confirmDeleteProblem.style.top = String((window.innerHeight - confirmDeleteProblem.offsetHeight)/2) + "px";
+                confirmDeleteProblem.style.left = String((window.innerWidth - confirmDeleteProblem.offsetWidth)/2) + "px";
+            })
+        }
+        
         var cancelButton = document.querySelector(".CancelButton");
         cancelButton.addEventListener('click', function()
         {

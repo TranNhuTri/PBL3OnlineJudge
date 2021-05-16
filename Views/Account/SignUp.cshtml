@@ -10,11 +10,11 @@
                     ĐĂNG KÍ TÀI KHOẢN
                 </h2>
                 <p class="SignUp_Form_Label">Tên tài khoản</p>
-                <input type="text" name="UserName" placeholder="trannhutri" class="SignUp_Form_Textbox">
+                <input type="text" asp-for="UserName" placeholder="trannhutri" class="SignUp_Form_Textbox">
                 <span asp-validation-for="UserName" class="text-danger"></span>
 
                 <p class="SignUp_Form_Label">Mật khẩu</p>
-                <input type="password" name="Password" placeholder="Password" class="SignUp_Form_Textbox">
+                <input type="password" asp-for="PassWord" placeholder="Password" class="SignUp_Form_Textbox">
                 <span asp-validation-for="PassWord" class="text-danger"></span>
 
                 <p class="SignUp_Form_Label">Nhập lại mật khẩu</p>
@@ -34,7 +34,7 @@
                 <p class="SignUp_Form_Label">Tên</p>
                 <input type="text" name="FirstName" placeholder="First Name" class="SignUp_Form_Textbox">
                 <p class="SignUp_Form_Label">Email</p>
-                <input type="text" name="Email" placeholder="Email" class="SignUp_Form_Textbox">
+                <input type="text" asp-for="Email" placeholder="Email" class="SignUp_Form_Textbox">
                 <span asp-validation-for="Email" class="text-danger"></span>
 
                 <div class="SignUp_Form_ButtonBox">
@@ -66,6 +66,17 @@
             document.querySelector(".SignUp_Form--2").style.left="400px";
             document.querySelector(".SignUp_Form--1").style.left="40px";
             document.querySelector(".SignUpPage_Progress").style.width="180px";
+        }
+    </script>
+    <script src="/js/Validation.js"></script>
+    <script>
+        var textDanger = document.getElementsByClassName('text-danger');
+        for(let i = 0; i < textDanger.length; i++)
+        {
+            if(textDanger[i].innerText != "" && textDanger[i] != null)
+            {
+                console.log(textDanger[i].parentElement.nodeName);
+            }
         }
     </script>
 }

@@ -91,19 +91,20 @@
   margin: 0 5px;
 }
 
-.ProblemFilter .ProblemCategoryFillter #ProblemCategory {
-  font-size: 14rem;
-  width: 100%;
-  margin: 10px 0;
-  padding: 4px;
-  border: 1px solid #afafaf;
-  border-radius: 4px;
-  outline: none;
+.ProblemFilter .ProblemCategoryFillter {
+  padding: 10px 0;
 }
 
-.ProblemFilter .ProblemCategoryFillter #ProblemCategory:focus {
-  border: 1px solid #57a3f3;
-  box-shadow: 0 0 5px #57a3f3;
+.ProblemFilter .ProblemCategoryFillter .ss-main {
+  margin-top: 5px;
+}
+
+.ProblemFilter .ProblemCategoryFillter .ss-multi-selected {
+  border: 1px solid #afafaf;
+}
+
+.ProblemFilter .ProblemCategoryFillter .ss-disabled {
+  color: #ccc !important;
 }
 
 .ProblemFilter .ProblemDifficultFillter {

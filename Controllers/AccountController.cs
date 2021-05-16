@@ -31,6 +31,7 @@ namespace PBL3.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.SetString("UserName", string.Empty);
+            HttpContext.Session.SetString("TypeAccount", String.Empty);
             return RedirectToAction("Index", "Home");
         }
         
@@ -44,6 +45,7 @@ namespace PBL3.Controllers
                 if(User != null)
                 {
                     HttpContext.Session.SetString("UserName", User.UserName);
+                    HttpContext.Session.SetString("TypeAccount", Convert.ToString(User.TypeAccount));
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -134,7 +136,7 @@ namespace PBL3.Controllers
                     smtpClient.Send(mailMessage);
                 }
             }
-            return View();
+            return View(User);
         }
         public IActionResult VerifyMail(string token, string Email)
         {

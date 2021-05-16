@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Danh sách bài tập";
     SearchForm sf = (SearchForm)ViewData["SearchForm"];
+    var listCategories = (List<Category>)ViewData["ListCategories"];
 }
 @model List<Problem>;
 <div class="ListProblemsPage">
@@ -56,30 +57,12 @@
                             <label for="HideSolvedProblem">Ẩn bài đã hoàn thành</label>
                         </div>
                         <div class="ProblemCategoryFillter">
-                            <label for="ProblemCategory">Dạng bài</label><br>
-                            <select id="ProblemCategory" name = "ProblemCategory">
-                                <option value="" selected disabled hidden>Tất cả</option>
-                                <option value="">DFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
-                                <option value="">BFS</option>
+                            <label for="ProblemCategories">Dạng bài</label><br>
+                            <select name="Test" id="ProblemCategories" multiple>
+                                @foreach (var cate in listCategories)
+                                {
+                                    <option value="@cate.ID">@cate.Name</option>
+                                }
                             </select>
                         </div>
                         <div class = "ProblemDifficultFillter">
@@ -97,3 +80,13 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#ProblemCategories',
+            placeholder: 'Chọn dạng bài',
+            searchText: 'Không thể tìm thấy',
+        })
+    </script>
+}

@@ -9,6 +9,7 @@ namespace PBL3.Models
         [Required(ErrorMessage = "Bạn cần điền tên đăng nhập")]
         public string UserName{get; set;}
         [Required(ErrorMessage = "Bạn cần điền mật khẩu")]
+        [StringLength(int.MaxValue, MinimumLength = 6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
         public string PassWord{get; set;}
     }
 }

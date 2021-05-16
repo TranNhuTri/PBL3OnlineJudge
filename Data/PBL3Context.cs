@@ -15,12 +15,22 @@ namespace PBL3.Data
         public DbSet<Submission> Submission {get; set;}
         public DbSet<SubmissionResult> SubmissionResult {get; set;}
         public DbSet<Category> Category{get; set;}
-        public DbSet<ProblemCategory> ProblemCategory{get; set;}
         public DbSet<Article> Article{get; set;}
+        public DbSet<ProblemAuthor> ProblemAuthor{get; set;}
+        public DbSet<ProblemCategory> ProblemCategory{get; set;}
+        public DbSet<ArticleAuthor> ArticleAuthor{get; set;}
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseLazyLoadingProxies();
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        {
+            modelBuilder.Entity<ProblemAuthor>()
+                .HasKey(x => new {x.ProblemID, x.AuthorID});
+            modelBuilder.Entity<ArticleAuthor>()
+                .HasKey(x => new {x.ArticleID, x.AuthorID});
+            modelBuilder.Entity<ProblemCategory>()
+                .HasKey(x => new {x.ProblemID, x.CategoryID});
         }
     }
 }

@@ -30,7 +30,7 @@
             }
             #Difficulty, #TimeLimit, #MemoryLimit
             {
-                width: 150px;
+                width: 200px;
             }
             .Editor
             {
@@ -77,6 +77,23 @@
                         font-size: 14rem;
                     }
                 }
+            }
+            .select-box
+            {
+                display: inline-block;
+                min-width: 300px;
+            }
+            .ss-main
+            {
+                font-size: 14rem;
+            }
+            .ss-multi-selected
+            {
+                border: 1px solid #afafaf;
+            }
+            .ss-disabled
+            {
+                color: #ccc !important;
             }
         }
         .FormSubmit

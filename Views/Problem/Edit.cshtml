@@ -2,6 +2,10 @@
     ViewData["Title"] = "Sửa đề bài";
     if(!String.IsNullOrEmpty(Model.Content))
         Model.Content = Model.Content.Replace("$", "~");
+    var listAuthors = (List<User>)ViewData["ListAuthors"];
+    var listCategories = (List<Category>)ViewData["ListCategories"];
+    var listChosenAuthors = (List<int>)ViewData["ListChosenAuthors"];
+    var listChosenCategories = (List<int>)ViewData["ListChosenCategories"];
 }
 @model Problem
 <div class="Create-EditProblemPage">
@@ -18,6 +22,37 @@
                         <div class="FormGroup">
                             <label for="Tilte">Tên bài :</label>
                             <input type="text" asp-for = "Title">
+                        </div>
+                        <div class = "FormGroup">
+                            <label for="Authors">Tác giả :</label>
+                            <div class="select-box">
+                                <select name="Authors" id="Authors" multiple>
+                                    @if(listAuthors != null)
+                                    {
+                                        @if(listChosenAuthors != null)
+                                        {
+                                            @foreach (var user in listAuthors)
+                                            {
+                                                if(listChosenAuthors.IndexOf(user.ID) != -1)
+                                                {
+                                                    <option value="@user.ID" selected>@user.UserName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@user.ID">@user.UserName</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @foreach (var user in listAuthors)
+                                            {
+                                                <option value="@user.ID">@user.UserName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
                         </div>
                         <div class="FormGroup">
                             <label>Đề bài :</label>
@@ -37,7 +72,38 @@
                             </div>
                         </div>
                         <div class = "FormGroup">
-                            <input type="checkbox" asp-for = "Public" style="width: 20px;" value = "True">
+                            <label for="Categories">Tác giả :</label>
+                            <div class="select-box">
+                                <select name="Categories" id="Categories" multiple>
+                                    @if(listCategories != null)
+                                    {
+                                        @if(listChosenAuthors != null)
+                                        {
+                                            @foreach (var cate in listCategories)
+                                            {
+                                                if(listChosenCategories.IndexOf(cate.ID) != -1)
+                                                {
+                                                    <option value="@cate.ID" selected>@cate.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@cate.ID">@cate.Name</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @foreach (var cate in listCategories)
+                                            {
+                                                <option value="@cate.ID">@cate.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "FormGroup">
+                            <input type="checkbox" asp-for = "Public" style="width: 15px;" value = "True">
                             <label for="Public">Công khai</label>
                         </div>
                         <div class="FormGroup">
@@ -52,6 +118,7 @@
                             <label for="Difficulity">Độ khó :</label>
                             <input type="text" asp-for = "Difficulty">
                         </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="FormSubmit">
                             <input type="submit" value = "Lưu thay đổi" class="CreateProblemSubmit button">
                         </div>
@@ -110,5 +177,15 @@
                 frame.contentWindow.document.querySelector("head").innerHTML += css;
             });
         });
+        new SlimSelect({
+            select: '#Authors',
+            placeholder: 'Chọn tác giả',
+            searchText: 'Không thể tìm thấy',
+        })
+        new SlimSelect({
+            select: '#Categories',
+            placeholder: 'Chọn dạng bài',
+            searchText: 'Không thể tìm thấy',
+        })
     </script>
 }

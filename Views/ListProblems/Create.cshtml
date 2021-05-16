@@ -1,5 +1,9 @@
 @{
     ViewData["Title"] = "Tạo bài mới";
+    var listAuthors = (List<User>)ViewData["ListAuthors"];
+    var listCategories = (List<Category>)ViewData["ListCategories"];
+    var listChosenAuthors = (List<int>)ViewData["ListChosenAuthors"];
+    var listChosenCategories = (List<int>)ViewData["ListChosenCategories"];
 }
 @model Problem
 <div class="Create-EditProblemPage">
@@ -11,11 +15,44 @@
                     <form asp-action = "create">
                         <div class="FormGroup">
                             <label for="ID">Mã bài :</label>
-                            <input type="text" asp-for = "ID">
+                            <input type="text" asp-for = "ID" placeholder="Nhập mã bài">
+                            <span asp-validation-for="ID" class="text-danger"></span>
                         </div>
                         <div class="FormGroup">
                             <label for="Tilte">Tên bài :</label>
-                            <input type="text" asp-for = "Title">
+                            <input type="text" asp-for = "Title" placeholder="Nhập tên bài">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class = "FormGroup">
+                            <label for="Authors">Tác giả :</label>
+                            <div class="select-box">
+                                <select name="Authors" id="Authors" multiple>
+                                    @if(listAuthors != null)
+                                    {
+                                        @if(listChosenAuthors != null)
+                                        {
+                                            @foreach (var user in listAuthors)
+                                            {
+                                                if(listChosenAuthors.IndexOf(user.ID) != -1)
+                                                {
+                                                    <option value="@user.ID" selected>@user.UserName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@user.ID">@user.UserName</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @foreach (var user in listAuthors)
+                                            {
+                                                <option value="@user.ID">@user.UserName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
                         </div>
                         <div class="FormGroup">
                             <label>Đề bài :</label>
@@ -32,22 +69,56 @@
                             </div>
                         </div>
                         <div class = "FormGroup">
-                            <input type="checkbox" asp-for = "Public" style="width: 20px;" value = "True">
+                            <label for="Categories">Dạng bài :</label>
+                            <div class="select-box">
+                                <select name="Categories" id="Categories" multiple>
+                                    @if(listCategories != null)
+                                    {
+                                        @if(listChosenAuthors != null)
+                                        {
+                                            @foreach (var cate in listCategories)
+                                            {
+                                                if(listChosenCategories.IndexOf(cate.ID) != -1)
+                                                {
+                                                    <option value="@cate.ID" selected>@cate.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@cate.ID">@cate.Name</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @foreach (var cate in listCategories)
+                                            {
+                                                <option value="@cate.ID">@cate.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class = "FormGroup">
+                            <input type="checkbox" asp-for = "Public" style="width: 15px;" value = "True">
                             <label for="Public">Công khai</label>
                         </div>
                         <div class="FormGroup">
                             <label for="TimeLimit">Giới hạn thời gian :</label>
-                            <input type="text" asp-for = "TimeLimit"><span style="margin-left: 10px; color: #7b7b7b">s</span>
+                            <input type="text" asp-for = "TimeLimit" placeholder="Nhập thời gian giới hạn"><span style="margin-left: 10px; color: #7b7b7b">s</span>
+                            <span asp-validation-for="TimeLimit" class="text-danger"></span>
                         </div>
                         <div class="FormGroup">
                             <label for="MemoryLimit">Giới hạn bộ nhớ :</label>
-                            <input type="text" asp-for = "MemoryLimit"><span style="margin-left: 10px; color: #7b7b7b">KB</span>
+                            <input type="text" asp-for = "MemoryLimit" placeholder="Nhập giới hạn bộ nhớ"><span style="margin-left: 10px; color: #7b7b7b">KB</span>
+                            <span asp-validation-for="MemoryLimit" class="text-danger"></span>
                         </div>
                         <div class="FormGroup">
                             <label for="Difficulity">Độ khó :</label>
-                            <input type="text" asp-for = "Difficulty">
+                            <input type="text" asp-for = "Difficulty" placeholder="Nhập độ khó">
                             <span asp-validation-for="Difficulty" class="text-danger"></span>
                         </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="FormSubmit">
                             <input type="submit" value = "Tạo đề bài" class="CreateProblemSubmit button">
                         </div>
@@ -97,5 +168,16 @@
             var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
             frame.contentWindow.document.querySelector("head").innerHTML += css;
         });
+        new SlimSelect({
+            select: '#Categories',
+            placeholder: 'Chọn dạng bài',
+            searchText: 'Không thể tìm thấy',
+        })
+        new SlimSelect({
+            select: '#Authors',
+            placeholder: 'Chọn tác giả',
+            searchText: 'Không thể tìm thấy',
+        })
     </script>
+    <script src="/js/Validation.js"></script>
 }

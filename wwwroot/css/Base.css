@@ -9,7 +9,7 @@ input
 input:focus
 {
     outline: none;
-    border: 1px solid #1dbfaf;
+    border: 1px solid #1dbfaf !important;
     box-shadow: 0 0 5px #52a8eccc;
 }
 .button
@@ -59,4 +59,8 @@ input:focus
 {
     list-style: none;
     padding: 0;
+}
+div.text-danger
+{
+    text-align: center;
 }
