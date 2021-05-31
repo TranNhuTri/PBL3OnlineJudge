@@ -6,9 +6,11 @@ namespace PBL3.Models
 {
     public class ProblemAuthor
     {
-        public string ProblemID{get; set;}
-        public Problem Problem{get; set;}
-        public int AuthorID{get; set;}
-        public User Author{get; set;}
+        public int ID {get; set;}
+        public int problemID{get; set;}
+        public Problem problem{get; set;}
+        public int authorID{get; set;}
+        public Account author{get; set;}
+        public bool isDeleted{get; set;}
     }
 }

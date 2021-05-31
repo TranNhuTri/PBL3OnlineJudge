@@ -1,0 +1,31 @@
+@model SearchSubmissionInfor
+<form action="">
+    <div class="searchForm">
+        <div class="searchForm_select">
+            <div class="searchForm_select_item">
+                <label for="status">Trạng thái: </label>
+                <div style="width: 200px; margin-left: 5px;">
+                    <select id="status" asp-for = "status">
+                        <option value="all">All</option>
+                        <option value="Accepted">Accepted</option>
+                        <option value="Wrong Answer">Wrong Answer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="searchForm_select_item">
+                <label for="language">Ngôn ngữ: </label>
+                <div style="width: 100px; margin-left: 5px;">
+                    <select id="language" asp-for = "language">
+                        <option value = "all">All</option>
+                        <option value = "python3">Python3</option>
+                        <option value = "cpp17">C++17</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="searchForm_search">
+            <input type="text" placeholder="Nhập mã bài, tên bài hoặc tên tài khoản" class="searchForm_searchInput" style="width: 300px;" asp-for = "searchText">
+            <input type="submit" value="Tìm" class="button searchForm_submit">
+        </div>
+    </div>
+</form>

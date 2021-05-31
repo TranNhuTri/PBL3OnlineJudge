@@ -9,28 +9,21 @@ namespace PBL3.Data
             : base(options)
         {
         }
-        public DbSet<Problem> Problem { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<TestCase> TestCase{get; set;}
-        public DbSet<Submission> Submission {get; set;}
-        public DbSet<SubmissionResult> SubmissionResult {get; set;}
-        public DbSet<Category> Category{get; set;}
-        public DbSet<Article> Article{get; set;}
-        public DbSet<ProblemAuthor> ProblemAuthor{get; set;}
-        public DbSet<ProblemCategory> ProblemCategory{get; set;}
-        public DbSet<ArticleAuthor> ArticleAuthor{get; set;}
+        public DbSet<Problem> Problems { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Comment> Comments{get; set;}
+        public DbSet<TestCase> TestCases{get; set;}
+        public DbSet<Notification> Notifications{get; set;}
+        public DbSet<Submission> Submissions {get; set;}
+        public DbSet<SubmissionResult> SubmissionResults {get; set;}
+        public DbSet<Category> Categories{get; set;}
+        public DbSet<Article> Articles{get; set;}
+        public DbSet<ProblemAuthor> ProblemAuthors{get; set;}
+        public DbSet<ProblemClassification> ProblemClassifications{get; set;}
+        public DbSet<ArticleAuthor> ArticleAuthors{get; set;}
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
-        {
-            modelBuilder.Entity<ProblemAuthor>()
-                .HasKey(x => new {x.ProblemID, x.AuthorID});
-            modelBuilder.Entity<ArticleAuthor>()
-                .HasKey(x => new {x.ArticleID, x.AuthorID});
-            modelBuilder.Entity<ProblemCategory>()
-                .HasKey(x => new {x.ProblemID, x.CategoryID});
         }
     }
 }

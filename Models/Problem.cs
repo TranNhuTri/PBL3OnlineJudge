@@ -8,27 +8,29 @@ namespace PBL3.Models
     {
         public Problem()
         {
-            Submissions = new List<Submission>();
-            TestCases = new List<TestCase>();
-            ProblemCategories = new List<ProblemCategory>();
-            ProblemAuthors = new List<ProblemAuthor>();
+            submissions = new List<Submission>();
+            testCases = new List<TestCase>();
+            problemClassifications = new List<ProblemClassification>();
+            problemAuthors = new List<ProblemAuthor>();
         }
+        public int ID{get; set;}
         [Required(ErrorMessage = "Bạn cần điền mã bài")]
-        public string ID{get; set;}
+        public string code{get; set;}
         [Required(ErrorMessage = "Bạn cần điền tên bài")]
-        public string Title{get; set;}
-        public string Content{get; set;}
+        public string title{get; set;}
+        public string content{get; set;}
         [Required(ErrorMessage = "Bạn cần điền độ khó")]
-        public int? Difficulty{get; set;}
-        public bool Public{get; set;}
-        public DateTime TimeCreate{get; set;}
+        public int? difficulty{get; set;}
+        public bool isPublic{get; set;}
+        public DateTime timeCreate{get; set;}
         [Required(ErrorMessage = "Bạn cần điền thời gian giới hạn")]
-        public float? TimeLimit{get; set;}
+        public float? timeLimit{get; set;}
         [Required(ErrorMessage = "Bạn cần điền giới hạn bộ nhớ")]
-        public int? MemoryLimit{get; set;}
-        public List<Submission> Submissions{get; set;}
-        public List<TestCase> TestCases{get; set;}
-        public List<ProblemCategory> ProblemCategories{get; set;}
-        public List<ProblemAuthor> ProblemAuthors{get; set;}
+        public int? memoryLimit{get; set;}
+        public bool isDeleted{get; set;}
+        public List<Submission> submissions{get; set;}
+        public List<TestCase> testCases{get; set;}
+        public List<ProblemClassification> problemClassifications{get; set;}
+        public List<ProblemAuthor> problemAuthors{get; set;}
     }
 }

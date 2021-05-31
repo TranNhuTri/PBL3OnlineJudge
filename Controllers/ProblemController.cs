@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
@@ -23,279 +22,227 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Edit(string id)
+        public IActionResult Edit(int id)
         {
-            var problem = _context.Problem.Include(problem => problem.ProblemAuthors).Include(problem => problem.ProblemCategories).AsSplitQuery().OrderBy(m => m.Title).FirstOrDefault(problem => problem.ID == id);
-            var listAuthors = _context.User.Where(user => user.TypeAccount == 2 || user.TypeAccount == 1).OrderBy(user => user.UserName).Select(user => user).ToList();
-            ViewData["ListAuthors"] = listAuthors;
-            ViewData["ListCategories"] = _context.Category.OrderBy(cate => cate.Name).ToList();
+            var problem = _context.Problems.Include(p => p.problemAuthors)
+                                            .Include(problem => problem.problemClassifications)
+                                            .AsSplitQuery().OrderBy(p => p.title)
+                                            .FirstOrDefault(p => p.ID == id);
+            
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
 
-            var listChosenAuthors = new List<int>();
-            foreach(int Id in problem.ProblemAuthors.Select(p => p.AuthorID).ToList())
-            {
-                listChosenAuthors.Add(_context.User.Select(user => user.ID).FirstOrDefault(ID => ID == Id));
-            }
+            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
 
-            var listChosenCategories = new List<int>();
-            foreach(int Id in problem.ProblemCategories.Select(p => p.CategoryID))
-            {
-                listChosenCategories.Add(_context.Category.Select(cate => cate.ID).FirstOrDefault(ID => ID == Id));
-            }
+            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Select(p => p.authorID).ToList();
 
-            ViewData["ListChosenAuthors"] = listChosenAuthors;
-            ViewData["ListChosenCategories"] = listChosenCategories;
+            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Select(p => p.categoryID).ToList();
+
             return View(problem);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ID, Title, Content, Difficulty, Public, TimeLimit, MemoryLimit")] Problem problem, List<int> Authors, List<int> Categories)
+        public async Task<IActionResult> Edit(int id, [Bind("code, title, content, difficulty, isPublic, timeLimit, memoryLimit")] Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, string next)
         {
-            if(id != problem.ID)
+            if(_context.Problems.FirstOrDefault(p => p.ID == id) == null)
             {
                 return NotFound();
             }
-            var listAuthors = _context.User.Where(user => user.TypeAccount == 2 || user.TypeAccount == 1).OrderBy(user => user.UserName).Select(user => user).ToList();
-            ViewData["ListAuthors"] = listAuthors;
-            ViewData["ListCategories"] = _context.Category.OrderBy(cate => cate.Name).ToList();
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
 
-            var listChosenAuthors = new List<int>();
-            foreach(int Id in Authors)
-            {
-                listChosenAuthors.Add(_context.User.Select(user => user.ID).FirstOrDefault(ID => ID == Id));
-            }
+            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
 
-            var listChosenCategories = new List<int>();
-            foreach(int Id in Categories)
-            {
-                listChosenCategories.Add(_context.Category.Select(cate => cate.ID).FirstOrDefault(ID => ID == Id));
-            }
+            ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
-            ViewData["ListChosenAuthors"] = listChosenAuthors;
-            ViewData["ListChosenCategories"] = listChosenCategories;
+            ViewData["ListChosenCategoryIds"] = reqListCategoryIds;
 
             if(ModelState.IsValid)
             {
-                if(Authors.Count == 0)
+                if(reqListAuthorIds.Count == 0)
                 {
                     ModelState.AddModelError("", "Bạn cần chọn tác giả");
-                    return View(problem);
+                    return View(reqProblem);
                 }
-                if(Categories.Count == 0)
+                if(reqListCategoryIds.Count == 0)
                 {
                     ModelState.AddModelError("", "Bạn cần chọn dạng bài");
-                    return View(problem);
+                    return View(reqProblem);
                 }
-                var probl = _context.Problem.Include(p => p.ProblemAuthors).Include(p => p.ProblemCategories).AsSplitQuery().OrderBy(p => p.Title).FirstOrDefault(m => m.ID == id);
-                probl.Title = problem.Title;
-                probl.Content = problem.Content;
-                probl.Difficulty = problem.Difficulty;
-                probl.Public = problem.Public;
-                probl.TimeLimit = problem.TimeLimit;
-                probl.MemoryLimit = problem.MemoryLimit;
+                var problem =  _context.Problems.Include(p => p.problemAuthors)
+                                                .Include(p => p.problemClassifications)
+                                                .AsSplitQuery().OrderBy(p => p.title)
+                                                .FirstOrDefault(p => p.ID == id);
                 
-                List<int> updateAuthorID = new List<int>();
-                List<int> bothAuthorID = new List<int>();
+                problem.code = reqProblem.code;
+                problem.title = reqProblem.title;
+                problem.content = reqProblem.content;
+                problem.difficulty = reqProblem.difficulty;
+                problem.isPublic = reqProblem.isPublic;
+                problem.timeLimit = reqProblem.timeLimit;
+                problem.memoryLimit = reqProblem.memoryLimit;
 
-                foreach(ProblemAuthor i in probl.ProblemAuthors)
+                foreach(var item in problem.problemAuthors)
                 {
-                    if(Authors.IndexOf(i.AuthorID) != -1)
+                    //xoa
+                    if(reqListAuthorIds.Any(p => p == item.authorID) == false)
                     {
-                        bothAuthorID.Add(i.AuthorID);
-                    }
-                    else
-                    {
-                        updateAuthorID.Add(i.AuthorID);
+                        _context.Remove(item);
                     }
                 }
-                foreach(int i in bothAuthorID)
+                foreach(var item in reqListAuthorIds)
                 {
-                    Authors.Remove(i);
-                }
-                if(updateAuthorID.Count > Authors.Count)
-                {
-                    for(int i = 0; i < Authors.Count; i ++)
+                    //them
+                    if(problem.problemAuthors.Any(p => p.authorID == item) == false)
                     {
-                        var problemAuthor = _context.ProblemAuthor.FirstOrDefault(p => p.ProblemID == id && p.AuthorID == updateAuthorID[i]);
-                        problemAuthor.AuthorID = Authors[i];
-                        _context.Update(problemAuthor);
-                    }
-                    for(int i = Authors.Count; i < updateAuthorID.Count; i++)
-                    {
-                        var problemAuthor = _context.ProblemAuthor.FirstOrDefault(p => p.ProblemID == id && p.AuthorID == updateAuthorID[i]);
-                        _context.Remove(problemAuthor);
-                    }
-                }
-                else
-                {
-                    for(int i = 0; i < updateAuthorID.Count; i ++)
-                    {
-                        var problemAuthor = _context.ProblemAuthor.FirstOrDefault(p => p.ProblemID == id && p.AuthorID == updateAuthorID[i]);
-                        problemAuthor.AuthorID = Authors[i];
-                        _context.Update(problemAuthor);
-                    }
-                    for(int i = updateAuthorID.Count; i < Authors.Count; i++)
-                    {
-                        var problemAuthor = new ProblemAuthor()
+                        _context.Add(new ProblemAuthor()
                         {
-                            ProblemID = id,
-                            AuthorID = Authors[i]
-                        };
-                        _context.Add(problemAuthor);
+                            authorID = item,
+                            problem = problem
+                        });
                     }
                 }
 
-                List<int> updateCategoryID = new List<int>();
-                List<int> bothCategoryID = new List<int>();
-
-                foreach(ProblemCategory i in probl.ProblemCategories)
+                foreach(var item in problem.problemClassifications)
                 {
-                    if(Categories.IndexOf(i.CategoryID) != -1)
+                    //xoa
+                    if(reqListCategoryIds.Any(p => p == item.categoryID) == false)
                     {
-                        bothCategoryID.Add(i.CategoryID);
-                    }
-                    else
-                    {
-                        updateCategoryID.Add(i.CategoryID);
+                        _context.Remove(item);
                     }
                 }
-                foreach(int i in bothCategoryID)
+                foreach(var item in reqListCategoryIds)
                 {
-                    Categories.Remove(i);
-                }
-                if(updateCategoryID.Count > Categories.Count)
-                {
-                    for(int i = 0; i < Categories.Count; i ++)
+                    //them
+                    if(problem.problemClassifications.Any(p => p.categoryID == item) == false)
                     {
-                        var problemCategory = _context.ProblemCategory.FirstOrDefault(p => p.ProblemID == id && p.CategoryID == updateCategoryID[i]);
-                        problemCategory.CategoryID = Categories[i];
-                        _context.Update(problemCategory);
-                    }
-                    for(int i = Categories.Count; i < updateCategoryID.Count; i++)
-                    {
-                        Console.WriteLine(updateCategoryID[i]);
-                        var problemCategory = _context.ProblemCategory.FirstOrDefault(p => p.ProblemID == id && p.CategoryID == updateCategoryID[i]);
-                        _context.Remove(problemCategory);
-                    }
-                }
-                else
-                {
-                    for(int i = 0; i < updateCategoryID.Count; i ++)
-                    {
-                        var problemCategory = _context.ProblemCategory.FirstOrDefault(p => p.ProblemID == id && p.CategoryID == updateCategoryID[i]);
-                        problemCategory.CategoryID = Categories[i];
-                        _context.Update(problemCategory);
-                    }
-                    for(int i = updateCategoryID.Count; i < Categories.Count; i++)
-                    {
-                        var ProblemCategory = new ProblemCategory()
+                        _context.Add(new ProblemClassification()
                         {
-                            ProblemID = id,
-                            CategoryID = Categories[i]
-                        };
-                        _context.Add(ProblemCategory);
+                            categoryID = item,
+                            problem = problem
+                        });
                     }
                 }
 
-                _context.Update(probl);
+                _context.Update(problem);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Problem), "ListProblems", probl);
+                if(next == "edit")
+                {
+                    return RedirectToAction("Edit", id);
+                }
+                return RedirectToAction("ListProblems", "Admin");
             }
-            return View(problem);
+            return View(reqProblem);
         }
-        public IActionResult Submit(string id)
+        public IActionResult Submit(int id)
         {
-            if(id == null)
-            {
-                return NotFound();
-            }
-            if(String.IsNullOrEmpty(HttpContext.Session.GetString("UserName")))
+            if(String.IsNullOrEmpty(HttpContext.Session.GetString("AccountName")))
             {
                 return RedirectToAction("Login", "Account");
             }
-            var problem = _context.Problem.FirstOrDefault(m => m.ID == id);
+
+            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+
             if(problem == null)
             {
                 return NotFound();
             }
+
             return View(problem);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(string id, string ProblemSolution, string Language)
+        public async Task<IActionResult> Submit(int id, string problemSolution, string language)
         {
-            var problem = _context.Problem.Include(p => p.TestCases).FirstOrDefault(p => p.ID == id);
-            var account = _context.User.FirstOrDefault(a => a.UserName == HttpContext.Session.GetString("UserName"));
-
-            var submission = new Submission
-            {
-                Code = ProblemSolution,
-                Language = Language,
-                TimeCreate = DateTime.Now,
-                Status = "Running",
-                Problem = problem,
-                User = account
-            };
-
-            _context.Submission.Add(submission);
-            _context.SaveChanges();
+            var problem = _context.Problems.Include(p => p.testCases).FirstOrDefault(p => p.ID == id);
             
-            var code = new code()
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+
+            var mySubmission = new Submission
             {
-                script = submission.Code,
-                language = submission.Language,
+                code = problemSolution,
+                language = language,
+                timeCreate = DateTime.Now,
+                status = "Running",
+                problem = problem,
+                account = account
+            };
+            
+            var code = new Code()
+            {
+                script = mySubmission.code,
+                language = mySubmission.language,
                 versionIndex = 0,
             };
 
             HttpClient client = new HttpClient();   
             client.BaseAddress = new Uri("https://api.jdoodle.com/");
+
             bool ACCheck = true;
-            foreach(TestCase t in problem.TestCases)
+            float excuteTime = 0;
+            float memoryUsed = 0;
+
+            foreach(TestCase tc in problem.testCases)
             {
-                code.stdin = t.Input;
+                code.stdin = tc.input;
                 var response = client.PostAsJsonAsync("v1/execute", code).Result;
                 var output = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {  
-                    var submitResponse = JsonConvert.DeserializeObject<SubmitResponse>(output);
-                    Console.WriteLine(submitResponse.output);
+                    var Response = JsonConvert.DeserializeObject<Response>(output);
+                    Console.WriteLine(Response.output);
                     SubmissionResult sr = new SubmissionResult()
                     {
-                        Submission = submission,
-                        TestCase = t,
-                        Result = submitResponse.output
+                        submission = mySubmission,
+                        testCase = tc,
+                        result = Response.output,
+                        excuteTime = Response.cpuTime,
+                        memory = Response.memory
                     };
-
-                    if(submitResponse.output != t.Output)
+                    excuteTime += Response.cpuTime;
+                    memoryUsed += Response.memory;
+                    if(Response.output != tc.output)
                     {
                         ACCheck = false;
-                        sr.Status = "Wrong Answer";
+                        sr.status = "Wrong Answer";
                     }
                     else
                     {
-                        sr.Status = "OK";
+                        sr.status = "Accepted";
                     }
-                    _context.SubmissionResult.Add(sr);
+                    _context.SubmissionResults.Add(sr);
                 }
             }
+
             if(ACCheck== true)
-                submission.Status = "Accepted";
+                mySubmission.status = "Accepted";
             else
-                submission.Status = "Wrong Answer";
-            
-            _context.Submission.Update(submission);
+                mySubmission.status = "Wrong Answer";
+
+            mySubmission.time = excuteTime;
+            mySubmission.memory = memoryUsed;
+
+            _context.Add(mySubmission);
+
             _context.SaveChanges();
-            return RedirectToAction("Submission", "ListSubmissions", submission.ID);
+
+            return RedirectToAction("Submissions", new Dictionary<string, string>
+            {
+                {"problemID", Convert.ToString(id)},
+                {"accountName", account.accountName},
+            });
         } 
-        public IActionResult Submissions(string problemID, string accountName)
+        public IActionResult Submissions(int problemID, string accountName)
         {
-            if(problemID == null || accountName == null)
+            if(accountName == null)
             {
                 return NotFound();
             }
-            var listSubmissions = (from Submission in _context.Submission.Include(s => s.User).Include(s => s.Problem) where (Submission.Problem.ID == problemID && Submission.User.UserName == accountName) select Submission).ToList();
+
+            var listSubmissions = (from submission in _context.Submissions.Include(p => p.account).Include(p => p.problem) where (submission.problem.ID == problemID && submission.account.accountName == accountName) select submission).ToList();
+            
             listSubmissions.Reverse();
+            
             return View(listSubmissions);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -305,7 +252,7 @@ namespace PBL3.Controllers
         }
     }
 }
-class code
+class Code
 {
     public string script{get; set;}
     public string language {get; set;}
@@ -314,7 +261,7 @@ class code
     public string clientId{get; set;} = "672651acf3fa819a1e0c27a9fb272658";
     public string clientSecret{get; set;} = "eb951e6e38f239380084104d7629f1312d66345ec661a4da5bd62822ad3a842b";
 }
-class SubmitResponse
+class Response
 {
     public string output{get; set;}
     public int statusCode{get; set;}

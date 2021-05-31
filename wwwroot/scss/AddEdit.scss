@@ -1,0 +1,132 @@
+@import 'var.scss';
+.AddEditPage
+{
+    box-shadow: 0 0 3px $shadow-color;
+    background-color: $white-color;
+    border-radius: 4px;
+    padding: 15px 20px;
+    color: $text-color;
+    .AddEditPage_header
+    {
+        h1 
+        {
+            font-size: 20rem;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+    }
+    .AddEditPage_input
+    {
+        .formGroup
+        {
+            margin: 15px 0;
+            input 
+            {
+                width: 250px;
+            }
+            .ss-main
+            {
+                font-size: 14rem;
+                .ss-single-selected
+                {
+                    border: 1px solid #afafaf;
+                }
+                .ss-multi-selected
+                {
+                    border: 1px solid #afafaf !important;
+                }
+                .ss-disabled
+                {
+                    color: #ccc !important;
+                }
+            }
+            label 
+            {
+                width: 150px; 
+                display: inline-block;
+            }
+        }
+        .formSubmitGroup
+        {
+            display: flex;
+            justify-content: left;
+            padding: 10px 0;
+        }
+        .formSubmit
+        {
+            margin-left: 20px;
+            display: flex;
+            justify-content: center;
+            .submitButton
+            {
+                padding: 10px 40px;
+                border: none;
+                font-size: 16rem;
+                p 
+                {
+                    margin: 0;
+                }
+                i 
+                {
+                    margin-right: 10px;
+                }
+            }
+        }
+        .formSubmit:first-child
+        {
+            margin-left: 0;
+        }
+    }
+}
+
+//problem editor
+.editor
+{
+    padding: 10px 0;
+}
+.preview
+{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    .previewButton
+    {
+        height: 50px;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .previewContent
+    {
+        min-height: 100px;
+        padding: 0 20px;
+        overflow-y: auto;
+        font-family: "Merriweather",serif;
+        line-height: 30rem;
+        li 
+        {
+            font-size: 16rem;
+        }
+        h1
+        {
+            font-size: 20rem;
+        }
+        h2
+        {
+            font-size: 18rem;
+        }
+        h3
+        {
+            font-size: 16rem;
+        }
+        h4
+        {
+            font-size: 14rem;
+        }
+        a
+        {
+            color: #1958c1;
+        }
+    }
+}

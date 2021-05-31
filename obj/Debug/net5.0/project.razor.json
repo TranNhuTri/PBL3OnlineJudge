@@ -15619,6 +15619,11 @@
   "RootNamespace": "PBL3",
   "Documents": [
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\AddProblemCategory.cshtml",
+      "TargetPath": "Views\\Admin\\AddProblemCategory.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\ListSubmissions\\Index.cshtml",
       "TargetPath": "Views\\ListSubmissions\\Index.cshtml",
       "FileKind": "mvc"
@@ -15626,6 +15631,11 @@
     {
       "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_SearchSubmissionForm.cshtml",
+      "TargetPath": "Views\\Shared\\_SearchSubmissionForm.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15639,13 +15649,23 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Add.cshtml",
+      "TargetPath": "Views\\ListProblems\\Add.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\EditProblemCategory.cshtml",
+      "TargetPath": "Views\\Admin\\EditProblemCategory.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\Problem\\Submissions.cshtml",
       "TargetPath": "Views\\Problem\\Submissions.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Create.cshtml",
-      "TargetPath": "Views\\ListProblems\\Create.cshtml",
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_AdminLayout.cshtml",
+      "TargetPath": "Views\\Shared\\_AdminLayout.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15654,13 +15674,38 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\ListProblemCategories.cshtml",
+      "TargetPath": "Views\\Admin\\ListProblemCategories.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\ListUsers.cshtml",
+      "TargetPath": "Views\\Admin\\ListUsers.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"
     },
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\ListSubmissions.cshtml",
+      "TargetPath": "Views\\Admin\\ListSubmissions.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\Home\\Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_SearchProblemCategoryForm.cshtml",
+      "TargetPath": "Views\\Shared\\_SearchProblemCategoryForm.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_SearchProblemForm2.cshtml",
+      "TargetPath": "Views\\Shared\\_SearchProblemForm2.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15684,8 +15729,38 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_SearchProblemForm1.cshtml",
+      "TargetPath": "Views\\Shared\\_SearchProblemForm1.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Delete.cshtml",
+      "TargetPath": "Views\\ListProblems\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_Pagination.cshtml",
+      "TargetPath": "Views\\Shared\\_Pagination.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Index.cshtml",
       "TargetPath": "Views\\ListProblems\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\ListProblems.cshtml",
+      "TargetPath": "Views\\Admin\\ListProblems.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\Submission.cshtml",
+      "TargetPath": "Views\\Admin\\Submission.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\Index.cshtml",
+      "TargetPath": "Views\\Admin\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -15696,6 +15771,16 @@
     {
       "FilePath": "d:\\Web\\PBL3\\Views\\ListProblems\\Problem.cshtml",
       "TargetPath": "Views\\ListProblems\\Problem.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Shared\\_SearchUserForm.cshtml",
+      "TargetPath": "Views\\Shared\\_SearchUserForm.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "d:\\Web\\PBL3\\Views\\Admin\\EditUser.cshtml",
+      "TargetPath": "Views\\Admin\\EditUser.cshtml",
       "FileKind": "mvc"
     }
   ],

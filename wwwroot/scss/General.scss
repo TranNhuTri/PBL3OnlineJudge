@@ -1,0 +1,206 @@
+@import 'var.scss';
+.comments_header
+{
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+    h1 
+    {
+        margin: 0;
+        font-size: 24px !important;
+        font-weight: normal;
+        margin-left: 10px;
+    }
+    i 
+    {
+        font-size: 28px !important;
+        font-weight: normal;
+    }
+}
+.comment_item
+{
+    background-color: #cccccc5e;
+    border-radius: 30px;
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16rem;
+    font-family: 'Arial', sans-serif;
+    color: $text-color;
+    margin-right: 30px;
+    position: relative;
+    .comment_avar
+    {
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-image: url(https://th.bing.com/th/id/Rc5469d9d60dc2e14ef73f2240fd48a7c?rik=wcKDgHrR0qaekw&pid=ImgRaw);
+    }
+    .comment_container
+    {
+        margin-left: 10px;
+        .comment_author
+        {
+            text-decoration: none;
+            font-size: 16rem;
+            font-weight: bold;
+        }
+        .comment_author:hover
+        {
+            text-decoration: underline;
+        }
+        .comment_content
+        {
+            margin-left: 5px;
+            word-break: break-word;
+            p 
+            {
+                margin: 0;
+                line-height: 20rem;
+                font-size: 14rem;
+            }
+            ul, li, h1, h2, h3, h4
+            {
+                margin: 0;
+            }
+            li 
+            {
+                font-size: 18rem;
+            }
+            h1
+            {
+                font-size: 18rem;
+            }
+            h2
+            {
+                font-size: 16rem;
+            }
+            h3
+            {
+                font-size: 14rem;
+            }
+            h4
+            {
+                font-size: 14rem;
+            }
+            a
+            {
+                color: #1958c1;
+            }
+        }
+    }
+    .comment_dot
+    {
+        color: $light-text-color;
+        position: absolute;
+        right: -40px;
+        top: 30%;
+        cursor: pointer;
+        font-size: 14rem;
+        padding: 0 10px;
+    }
+    .comment_dot:hover .comment_extern-tool
+    {
+        opacity: 1;
+    }
+    .comment_extern-tool
+    {
+        position: absolute;
+        background-color: #545454;
+        width: 40px;
+        border-radius: 10px;
+        right: -2px;
+        top: 80%;
+        color: $white-color;
+        text-align: center;
+        z-index: 1;
+        opacity: 0;
+        transition: all 0.1s ease-in;
+        .delete_comment:hover, .hide_comment:hover
+        {
+            text-decoration: underline;
+        }
+    }
+}
+.comment_tool
+{
+    margin-left: 76px;
+    top: 100%;
+    color: $text-color;
+    font-family: 'Arial', sans-serif;
+    .comment_tool_like
+    {
+        text-decoration: none;
+        font-size: 14rem;
+        color: $text-color !important;
+        font-weight: bold;
+        margin-right: 5px;
+        user-select: none;
+    }
+    .comment_tool_like:hover
+    {
+        text-decoration: underline;
+    }
+    .comment_tool_reply
+    {
+        cursor: pointer;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+    .comment_tool_reply:hover
+    {
+        text-decoration: underline;
+    }
+    .comment-load-child
+    {
+        margin: 0;
+        margin-bottom: 10px;
+        font-size: 14rem;
+        line-height: 15rem;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+    }
+    .comment-load-child:hover
+    {
+        text-decoration: underline;
+    }
+    span 
+    {
+        font-size: 14rem;
+        user-select: none;
+    }
+}
+.comment_box
+{
+    transition: all 1s ease-in;
+    display: none;
+    position: relative;
+    margin-bottom: 5px;
+    i 
+    {
+        font-size: 14rem;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+    }
+    .cke
+    {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .comment_button
+    {
+        padding: 10px 40px;
+        border: none;
+        margin-left: auto;
+        margin-top: 10px;
+        font-size: 16rem;
+    }
+}
+.comment_box--active
+{
+    display: block;
+}

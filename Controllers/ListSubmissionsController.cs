@@ -1,17 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
-using System.Text.Json;
-using System.Net.Http;
-using System.Net.Http.Json;
-using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 
 namespace PBL3.Controllers
@@ -25,8 +18,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Index()
         {
-            var listSubmissions = (from submission in _context.Submission.Include(s => s.User).Include(s => s.Problem) select submission).ToList();
-            listSubmissions.Reverse();
+            var listSubmissions = _context.Submissions.Include(p => p.account).Include(p => p.problem).ToList();
             
             return View(listSubmissions);
         }
@@ -34,9 +26,12 @@ namespace PBL3.Controllers
         {
             if(id == null)
                 return NotFound();
-            var submission = _context.Submission.FirstOrDefault(s => s.ID == id);
+
+            var submission = _context.Submissions.FirstOrDefault(s => s.ID == id);
+
             if(submission == null)
                 return NotFound();
+
             return View(submission);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

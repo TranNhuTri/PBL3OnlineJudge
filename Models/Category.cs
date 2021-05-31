@@ -8,11 +8,12 @@ namespace PBL3.Models
     {
         public Category()
         {
-            ProblemCategories = new List<ProblemCategory>();
+            problemClassifications = new List<ProblemClassification>();
         }
         public int ID{get; set;}
         [Required(ErrorMessage = "Bạn cần nhập tên dạng bài")]
-        public string Name{get; set;}
-        public List<ProblemCategory> ProblemCategories{get; set;}
+        public string name{get; set;}
+        public bool isDeleted{get; set;}
+        public List<ProblemClassification> problemClassifications{get; set;}
     }
 }

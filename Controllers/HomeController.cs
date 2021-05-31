@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using PBL3.Models;
 using PBL3.Data;
 
@@ -21,6 +18,14 @@ namespace PBL3.Controllers
 
         public IActionResult Index()
         {
+            var accountName = HttpContext.Session.GetString("AccountName");
+            if(!String.IsNullOrEmpty(accountName))
+            {
+                ViewData["Submissions"] = _context.Submissions.Where(s => s.account.accountName == accountName).ToList().Count;
+                ViewData["ACSubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "Accepted").ToList().Count;
+                ViewData["WASubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "Wrong Answer").ToList().Count;
+                ViewData["TLESubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "TLE").ToList().Count;
+            }
             return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

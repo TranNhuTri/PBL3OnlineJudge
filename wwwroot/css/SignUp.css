@@ -1,0 +1,145 @@
+.table {
+  width: 100%;
+  font-size: 14rem;
+  background-color: #fff;
+}
+
+.table th {
+  padding: 10px 5px;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+  background-color: #f8f8f9;
+}
+
+.table td {
+  padding: 20px 5px;
+  text-align: center;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.table tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+
+.table tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.signUpPage {
+  padding-top: 40px;
+}
+
+.signUpPage .signUpContainer {
+  margin: 0 auto;
+  width: 360px;
+  height: 540px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px #ccc;
+  position: relative;
+  overflow: hidden;
+  font-size: 14rem;
+  background-color: #fff;
+}
+
+.signUpPage .signUpContainer .signUpForm {
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 65px;
+  left: 40px;
+  transition: .8s;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_title {
+  text-align: center;
+  font-size: 20rem;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_label {
+  color: #333;
+  margin-top: 5%;
+  font-size: 14rem;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_textBox {
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid #b3b3b3;
+  padding: 10px 10px;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_textbox:focus {
+  border-color: #1dbfaf;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_textbox:hover {
+  border-color: #1dbfaf;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_button {
+  border-radius: 15px;
+  border: none;
+  width: 35%;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_button:hover {
+  opacity: 0.8;
+}
+
+.signUpPage .signUpContainer .signUpForm .signUpForm_buttonBox {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.signUpPage .signUpContainer .signUpForm .GmailConfirm {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.signUpPage .signUpContainer .signUpForm .GmailConfirm .signUpForm_textBox {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 16rem;
+  margin: 0 2px;
+}
+
+.signUpPage .signUpContainer .signUpForm--2 {
+  left: 400px;
+}
+
+.signUpPage .signUpContainer .signUpPage_step--row {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.signUpPage .signUpContainer .signUpPage_step--row .signUpPage_progress {
+  height: 40px;
+  width: calc(1/2*360px);
+  position: absolute;
+  background-color: #1dbfaf;
+  transition: .8s;
+}
+
+.signUpPage .signUpContainer .signUpPage_step--row .signUpPage_step--colFirst, .signUpPage .signUpContainer .signUpPage_step--row .signUpPage_step--colSecond {
+  width: 180px;
+  position: relative;
+  text-align: center;
+  color: white;
+  font-size: 14rem;
+}
+/*# sourceMappingURL=SignUp.css.map */

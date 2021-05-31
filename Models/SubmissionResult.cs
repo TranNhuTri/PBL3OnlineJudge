@@ -5,11 +5,14 @@ namespace PBL3.Models
     public class SubmissionResult
     {
         public int ID{get; set;}
-        public int SubmissionID{get; set;}
-        public virtual Submission Submission{get; set;}
-        public int TestCaseID{get; set;}
-        public virtual TestCase TestCase{get; set;}
-        public string Result{get; set;}
-        public string Status{get; set;}
+        public int submissionID{get; set;}
+        public Submission submission{get; set;}
+        public int? testCaseID{get; set;}
+        public TestCase testCase{get; set;}
+        public string result{get; set;}
+        public string status{get; set;}
+        public float excuteTime{get; set;}
+        public float memory{get; set;}
+        public bool isDeleted{get; set;}
     }
 }

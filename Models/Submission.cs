@@ -8,18 +8,20 @@ namespace PBL3.Models
     {
         public Submission()
         {
-            SubmissionResults = new List<SubmissionResult>();
+            submissionResults = new List<SubmissionResult>();
         }
         public int ID{get; set;}
-        public int UserID {get; set;}
-        public User User{get; set;}
-        public string ProblemID{get; set;}
-        public Problem Problem{get; set;}
-        public DateTime TimeCreate{get; set;}
-        public string Code{get; set;}
-        public string Language{get; set;}
-        public string Status {get; set;}
-        public float Time{get; set;}
-        public List<SubmissionResult> SubmissionResults {get; set;}
+        public int accountID {get; set;}
+        public Account account{get; set;}
+        public int problemID{get; set;}
+        public Problem problem{get; set;}
+        public DateTime timeCreate{get; set;}
+        public string code{get; set;}
+        public string language{get; set;}
+        public string status {get; set;}
+        public float time{get; set;}
+        public float memory{get; set;}
+        public bool isDeleted{get; set;}
+        public List<SubmissionResult> submissionResults {get; set;}
     }
 }

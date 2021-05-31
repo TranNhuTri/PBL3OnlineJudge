@@ -1,0 +1,32 @@
+@model SearchUserInfor
+<form action="">
+    <div class="searchForm">
+        <div class="searchForm_select">
+            <div class="searchForm_select_item">
+                <label for="authorSelect">Loại tài khoản: </label>
+                <div style="width: 100px; margin-left: 5px;">
+                    <select id="typeAccount" asp-for = "typeAccount">
+                        <option value = "0">All</option>
+                        <option value = "1">Admin</option>
+                        <option value = "2">Author</option>
+                        <option value = "3">User</option>
+                    </select>
+                </div>
+            </div>
+            <div class="searchForm_select_item">
+                <label for="isActived">Kích hoạt: </label>
+                <div style="width: 80px; margin-left: 5px;">
+                    <select id="isActived" asp-for = "isActived">
+                        <option value="2">All</option>
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="searchForm_search">
+            <input type="text" placeholder="Nhập tên tài khoản hoặc email" class="searchForm_searchInput" style="width: 300px;" asp-for = "searchText">
+            <input type="submit" value="Tìm" class="button searchForm_submit">
+        </div>
+    </div>
+</form>

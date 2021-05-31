@@ -1,0 +1,52 @@
+@using PBL3.Models
+@model Comment
+<div class="comment_item" id = "comment@(Model.ID)">
+    <div style="display: flex;">
+        <a href="">
+            <div class = "comment_avar"></div>
+        </a>
+        <div class="comment_container">
+            <a href="" class="comment_author">
+                @Model.account.accountName
+            </a>
+            <div class="comment_content">
+                @Html.Raw(@Model.content)
+            </div>
+        </div>
+    </div>
+    <div class="comment_dot">
+        <i class="fas fa-ellipsis-h"></i>
+        <div id="comment_extern-tool@(Model.ID)" class="comment_extern-tool">
+            <span class = "delete_comment" onclick="deleteComment('@Model.ID')">Xóa</span>
+            <span class = "hide_comment" onclick="hideComment('@Model.ID')">Ẩn</span>
+        </div>
+    </div>
+</div>
+<div class="comment_tool" id = "comment_tool@(Model.ID)">
+    <a href="" class="comment_tool_like">Thích</a>
+    @if(Model.level < 3)
+    {
+        <span class="comment_tool_reply" onclick="LoadCommentBox('@Model.ID')">Trả lời</span>
+    }
+    else
+    {
+        <span class="comment_tool_reply" onclick="LoadCommentBox('@Model.rootCommentID')">Trả lời</span>
+    }
+    <span>14 giờ</span>
+    @if(Model.child.Count > 0)
+    {
+        <span class="comment-load-child" id = "comment-load-child@(Model.ID)" onclick="LoadCommentChild('@Model.ID')">Xem phản hồi</span>
+    }
+    @if(Model.level < 3)
+    {
+        <div class="comment_child" id = "comment_child@(Model.ID)">
+        </div>
+    }
+    <div class="comment_box" id = "comment-box@(Model.ID)">
+        <i class="fas fa-times comment_box_icon" onclick="CloseCommentBox('@Model.ID')"></i>
+        <form onsubmit="return PostCommentData('@Model.ID', '@Model.postID')">
+            <textarea name="content" id="editor@(Model.ID)" data-first = "1" cols="30" rows="10" value = ""></textarea>
+            <button class="button comment_button">Gửi</button>
+        </form>
+    </div>
+</div>

@@ -7,9 +7,11 @@ namespace PBL3.Models
 {
     public class ArticleAuthor
     {
-        public int ArticleID{get; set;}
-        public Article Article{get; set;}
-        public int AuthorID{get; set;}
-        public User Author{get; set;}
+        public int ID {get; set;}
+        public int articleID{get; set;}
+        public Article article{get; set;}
+        public int authorID{get; set;}
+        public Account author{get; set;}
+        public bool isDeleted{get; set;}
     }
 }

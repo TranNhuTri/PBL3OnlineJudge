@@ -1,0 +1,37 @@
+@{
+    var listCategories = (List<Category>)ViewData["ListCategories"];
+}
+@model SearchProblemInfor
+<form asp-controller = "ListProblems" asp-action = "Index" method="GET">
+    <div class="problemFilter">
+        <h1 class="problemFillter_header">Tìm Kiếm Bài Tập</h1>
+        <div class="problemNameFillter">
+            <input type="text" asp-for ="problemName" placeholder="Nhập tên bài">
+        </div>
+        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+        {
+            <div class = "problemUnsolvedFillter">
+                <input type="checkbox" asp-for = "hideSolvedProblem" value = "true">
+                <label for="hideSolvedProblem">Ẩn bài đã hoàn thành</label>
+            </div>
+        }
+        <div class="problemCategoryFillter">
+            <label for="categoryIds">Dạng bài</label><br>
+            <select name="CategoryIds" id="CategoryIds" multiple>
+                @foreach (var cate in listCategories)
+                {
+                    <option value="@cate.ID">@cate.name</option>
+                }
+            </select>
+        </div>
+        <div class = "problemDifficultFillter">
+            <label for="minDifficult">Độ khó</label>
+            <input type="text" asp-for = "minDifficult">
+            -
+            <input type="text" asp-for ="maxDifficult">
+        </div>
+        <div class = "problemFillterSubmit">
+            <input type="submit" value="Lọc" class = "button problemFillterSubmit_button">
+        </div>
+    </div>
+</form>

@@ -1,0 +1,150 @@
+.table {
+  width: 100%;
+  font-size: 14rem;
+  background-color: #fff;
+}
+
+.table th {
+  padding: 10px 5px;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+  background-color: #f8f8f9;
+}
+
+.table td {
+  padding: 20px 5px;
+  text-align: center;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.table tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+
+.table tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.AddEditPage {
+  box-shadow: 0 0 3px #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 15px 20px;
+  color: #444444;
+}
+
+.AddEditPage .AddEditPage_header h1 {
+  font-size: 20rem;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.AddEditPage .AddEditPage_input .formGroup {
+  margin: 15px 0;
+}
+
+.AddEditPage .AddEditPage_input .formGroup input {
+  width: 250px;
+}
+
+.AddEditPage .AddEditPage_input .formGroup .ss-main {
+  font-size: 14rem;
+}
+
+.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-single-selected {
+  border: 1px solid #afafaf;
+}
+
+.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-multi-selected {
+  border: 1px solid #afafaf !important;
+}
+
+.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-disabled {
+  color: #ccc !important;
+}
+
+.AddEditPage .AddEditPage_input .formGroup label {
+  width: 150px;
+  display: inline-block;
+}
+
+.AddEditPage .AddEditPage_input .formSubmitGroup {
+  display: flex;
+  justify-content: left;
+  padding: 10px 0;
+}
+
+.AddEditPage .AddEditPage_input .formSubmit {
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.AddEditPage .AddEditPage_input .formSubmit .submitButton {
+  padding: 10px 40px;
+  border: none;
+  font-size: 16rem;
+}
+
+.AddEditPage .AddEditPage_input .formSubmit .submitButton p {
+  margin: 0;
+}
+
+.AddEditPage .AddEditPage_input .formSubmit .submitButton i {
+  margin-right: 10px;
+}
+
+.AddEditPage .AddEditPage_input .formSubmit:first-child {
+  margin-left: 0;
+}
+
+.editor {
+  padding: 10px 0;
+}
+
+.preview {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.preview .previewButton {
+  height: 50px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.preview .previewContent {
+  min-height: 100px;
+  padding: 0 20px;
+  overflow-y: auto;
+  font-family: "Merriweather",serif;
+  line-height: 30rem;
+}
+
+.preview .previewContent li {
+  font-size: 16rem;
+}
+
+.preview .previewContent h1 {
+  font-size: 20rem;
+}
+
+.preview .previewContent h2 {
+  font-size: 18rem;
+}
+
+.preview .previewContent h3 {
+  font-size: 16rem;
+}
+
+.preview .previewContent h4 {
+  font-size: 14rem;
+}
+
+.preview .previewContent a {
+  color: #1958c1;
+}
+/*# sourceMappingURL=AddEdit.css.map */

@@ -1,0 +1,94 @@
+@model string[]
+<div class="pagination">
+    @if(ViewBag.totalPage > 1)
+    {
+        <ul class="pagination-list">
+            @{
+                int totalPage = ViewBag.totalPage;
+                int currentPage = ViewBag.currentPage;
+                int denta = 2;
+                int from = Math.Max(currentPage - denta, 1), end = Math.Min(currentPage + denta, totalPage);
+
+                if(from > 1)
+                {
+                    <li class="pagination-item">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "1" class="pagination-item_link">
+                            <i class="pagination-item__icon fas fa-angle-double-left">
+                            </i>
+                        </a>
+                    </li>
+                    if(from > denta)
+                    {
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "1" class="pagination-item_link">1</a>
+                        </li>
+
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "2" class="pagination-item_link">2</a>
+                        </li>
+                        <li class="pagination-item pagination-item_icon">...</li>
+                    }
+                    else
+                    {
+                        for(int i = 1; i < from; i++)
+                        {
+                            <li class="pagination-item">
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                            </li>
+                        }
+                    }
+                }
+                for(int i = from; i <= end; i++)
+                {
+                    var parms = new Dictionary<string, string>
+                    {
+                        {"problemID", Convert.ToString(123)},
+                        {"accountName", Context.Session.GetString("AccountName")},
+                    };
+                    parms.Add("id", Convert.ToString(i));
+                    if(i == currentPage)
+                    {
+                        <li class="pagination-item pagination-item--active">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" asp-all-route-data = "parms" class="pagination-item_link">@i</a>
+                        </li>
+                    }
+                }
+                if(end < totalPage)
+                {
+                    if(end < totalPage - denta + 1)
+                    {
+                        <li class="pagination-item pagination-item_icon">...</li>
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@(totalPage - 1)" class="pagination-item_link">@(totalPage - 1)</a>
+                        </li>
+
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@(totalPage)" class="pagination-item_link">@(totalPage)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        for(int i = end + 1; i <= totalPage; i++)
+                        {
+                            <li class="pagination-item">
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                            </li>
+                        }
+                    }
+                    <li class="pagination-item">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@totalPage" class="pagination-item_link">
+                            <i class="pagination-item__icon fas fa-angle-double-right">
+                            </i>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    }
+</div>

@@ -1,0 +1,50 @@
+@{
+    Layout = "_AdminLayout";
+}
+@model List<Category>
+<div class="listAdminObjectsPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listAdminObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách dạng bài tập</h1>
+                    <a asp-action = "AddProblemCategory" asp-controller = "Admin" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm dạng bài mới</div>
+                    </a>
+                </div>
+            </div>
+            @await Html.PartialAsync("_SearchProblemCategoryForm")
+            <table cellspacing="0" cellpadding="0" class="table listProblemCategories_table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            Tên dạng bài
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>
+                                <a asp-action = "EditProblemCategory" asp-controller = "Admin" asp-route-id = "@Model[i].ID" style="text-decoration: none; color: #008eff">
+                                    @Model[i].name
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"ListProblemCategories", "Admin"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>

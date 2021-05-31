@@ -1,0 +1,196 @@
+.table {
+  width: 100%;
+  font-size: 14rem;
+  background-color: #fff;
+}
+
+.table th {
+  padding: 10px 5px;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+  background-color: #f8f8f9;
+}
+
+.table td {
+  padding: 20px 5px;
+  text-align: center;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.table tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+
+.table tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
+}
+
+.problemPage {
+  min-height: 100vh;
+  padding: 30px 0;
+  font-size: 18rem;
+  font-family: "Merriweather",serif;
+  line-height: 30rem;
+  background-color: #eeeeee;
+}
+
+.problemPage .problemContent {
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 4px #ccc;
+  border-radius: 4px;
+  word-break: break-word;
+}
+
+.problemPage .problemContent .problemPageHeader {
+  font-size: 26px;
+  font-weight: normal;
+  margin: 20px 0;
+}
+
+.problemPage .problemContent li {
+  font-size: 18rem;
+}
+
+.problemPage .problemContent h1 {
+  font-size: 20rem;
+}
+
+.problemPage .problemContent h2 {
+  font-size: 18rem;
+}
+
+.problemPage .problemContent h3 {
+  font-size: 16rem;
+}
+
+.problemPage .problemContent h4 {
+  font-size: 14rem;
+}
+
+.problemPage .problemContent a {
+  color: #1958c1;
+}
+
+.problemPage .problemMenu {
+  font-family: "Arial",serif;
+  background-color: #fff;
+  box-shadow: 0 0 4px #ccc;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link {
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton, .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton {
+  border: none;
+  color: #fff;
+  transition: all 0.05s ease-in;
+  width: 130px;
+  padding: 10px 0;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton i, .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton i {
+  padding: 0 5px;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton:hover, .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton:hover {
+  transform: scale(1.04);
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton {
+  background-color: #52bb50;
+  border-bottom: 3px solid #53a152;
+}
+
+.problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton {
+  background-color: #00b1bc;
+  border-bottom: 3px solid #099ca7;
+}
+
+.problemPage .problemMenu .problemPropertyContainer {
+  margin-top: 15px;
+  font-size: 14rem;
+}
+
+.problemPage .problemMenu .problemPropertyContainer .problemProperty {
+  margin: 5px 0;
+  color: #444444;
+}
+
+.problemPage .problemMenu .problemPropertyContainer .mySubmissions {
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px !important;
+  color: #546e7a !important;
+}
+
+.problemPage .problemMenu .problemPropertyContainer .CUDProblem {
+  text-decoration: none;
+  color: #008eff;
+  display: block;
+  cursor: pointer;
+  margin: 0;
+}
+
+.problemPage .problemCategory {
+  margin-top: 25px;
+  padding: 10px 15px;
+  background-color: #fff;
+  box-shadow: 0 0 4px #ccc;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16rem;
+}
+
+.problemPage .problemCategory .CategoryBox {
+  font-size: 14rem;
+  line-height: 26rem;
+  background-color: #cccccc8c;
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 4px;
+}
+
+.confirmDeleteProblem {
+  position: absolute;
+  min-width: 30%;
+  max-width: 50%;
+  min-height: 20%;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.confirmDeleteProblem .confirmDeleteProblem_header {
+  font-size: 20rem;
+  font-weight: normal;
+  padding: 5px 20px;
+}
+
+.confirmDeleteProblem .confirmDeleteProblem_warning {
+  font-size: 14rem;
+  padding: 5px 20px;
+  color: #dc3545;
+}
+
+.confirmDeleteProblem .confirmDeleteProblem_buttons {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.confirmDeleteProblem .confirmDeleteProblem_buttons .deleteProblem_button {
+  padding: 10px 40px;
+  margin: 0 20px;
+  border: none;
+}
+/*# sourceMappingURL=Problem.css.map */

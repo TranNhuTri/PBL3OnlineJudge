@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PBL3.Models;
+using PBL3.DTO;
 using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using PBL3.General;
 
 namespace PBL3.Controllers
 {
@@ -18,124 +20,202 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string ProblemName, bool HideSolvedProblem, string ProblemCategory, int? MinDifficult, int? MaxDifficult)
+        public IActionResult Index(int? id, string problemName, bool hideSolvedProblem, List<int> listCategoryIds, int? minDifficult, int? maxDifficult)
         {
-            var problems = _context.Problem.ToList();
-            var seachForm = new SearchForm();
-            ViewData["ListCategories"] = _context.Category.ToList();
+            ViewData["listCategories"] = _context.Categories.ToList();
+
+            var listProblems = _context.Problems.Include(p => p.problemClassifications)
+                                                .Include(p => p.submissions)
+                                                .ThenInclude(s => s.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
+                                                .ToList();
             
-            if(!String.IsNullOrEmpty(ProblemName))
+            if(!String.IsNullOrEmpty(problemName))
             {
-                problems = problems.Where(p => p.Title.ToLower().Contains(ProblemName.ToLower())).Select(p => p).ToList();
-                seachForm.ProblemName = ProblemName;
+                listProblems = listProblems.Where(p => p.title.ToLower().Contains(problemName.ToLower())).ToList();
             }
-            if(!String.IsNullOrEmpty(ProblemCategory))
+            
+            if(listCategoryIds.Count > 0)
             {
-                //
-            }
-            if(MinDifficult != null || MaxDifficult != null)
-            {
-                if(MinDifficult != null)
+                var lstTmpt = new List<Problem>();
+                foreach(var item in listProblems)
                 {
-                    problems = problems.Where(p => p.Difficulty >= MinDifficult).Select(p => p).ToList();
-                    seachForm.MinDiff = MinDifficult;
+                    var tmpt = item.problemClassifications.Select(p => p.category.ID).ToList();
+                    bool check = true;
+                    foreach(int Id in listCategoryIds)
+                    {
+                        if(tmpt.IndexOf(Id) == -1)
+                        {
+                            check = false;
+                            break;
+                        }
+                    }
+                    if(check)
+                    {
+                        lstTmpt.Add(item);
+                    }
                 }
-                if(MaxDifficult != null)
+                listProblems = lstTmpt;
+            }
+
+            if(minDifficult != null || maxDifficult != null)
+            {
+                if(minDifficult != null)
                 {
-                    problems = problems.Where(p => p.Difficulty <= MaxDifficult).Select(p => p).ToList();
-                    seachForm.MaxDiff = MaxDifficult;
+                    listProblems = listProblems.Where(p => p.difficulty >= minDifficult).ToList();
+                }
+                if(maxDifficult != null)
+                {
+                    listProblems = listProblems.Where(p => p.difficulty <= maxDifficult).ToList();
                 }
             }
-            ViewData["SearchForm"] = seachForm;
-            return View(problems.ToList());
+            if(hideSolvedProblem)
+            {
+                listProblems = listProblems.Where(p => p.submissions.Where(s => s.status == "Accepted").ToList().Count() == 0).ToList();
+            }
+            ViewData["SearchProblemInfor"] = new SearchProblemInfor
+            {
+                problemName = problemName,
+                minDifficult = minDifficult,
+                maxDifficult = maxDifficult,
+                hideSolvedProblem = hideSolvedProblem
+            };
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString("TypeAccount")) || Convert.ToInt32(HttpContext.Session.GetString("typeAccount")) == 3)
+            {
+                listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
+            }
+
+            //pagination
+            int page;
+            if(id == null)
+            {
+                page = 1;
+            }
+            else
+            {
+                page = (int)id;
+            }
+            int limit = Utility.limitData;
+            int start = (int)(page - 1)*limit;
+
+            ViewBag.currentPage = page;
+
+            ViewBag.totalPage = (int)Math.Ceiling((float)listProblems.Count/limit);
+
+            listProblems = listProblems.Skip(start).Take(limit).ToList();
+
+            return View(listProblems.ToList());
         }
-        public IActionResult Create()
+        public IActionResult Add()
         {
-            var listAuthors = _context.User.Where(user => user.TypeAccount == 2 || user.TypeAccount == 1).OrderBy(user => user.UserName).Select(user => user).ToList();
-            ViewData["ListAuthors"] = listAuthors;
-            ViewData["ListCategories"] = _context.Category.OrderBy(cate => cate.Name).ToList();
+            ViewData["listAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+
+            ViewData["listCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID, Title, Content, Difficulty, TimeLimit, MemoryLimit, Public")] Problem problem, int[] Authors, int[] Categories)
+        public async Task<IActionResult> Add([Bind("code, title, content, difficulty, timeLimit, memoryLimit, isPublic")] Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategorieIds, string next)
         {
-            var listAuthors = _context.User.Where(user => user.TypeAccount == 2 || user.TypeAccount == 1).OrderBy(user => user.UserName).Select(user => user).ToList();
-            ViewData["ListAuthors"] = listAuthors;
-            ViewData["ListCategories"] = _context.Category.OrderBy(cate => cate.Name).ToList();
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
 
-            var listChosenAuthors = new List<int>();
-            foreach(int id in Authors)
-            {
-                listChosenAuthors.Add(_context.User.Select(user => user.ID).FirstOrDefault(ID => ID == id));
-            }
+            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
 
-            var listChosenCategories = new List<int>();
-            foreach(int id in Categories)
-            {
-                listChosenCategories.Add(_context.Category.Select(cate => cate.ID).FirstOrDefault(ID => ID == id));
-            }
+            ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
-            ViewData["ListChosenAuthors"] = listChosenAuthors;
-            ViewData["ListChosenCategories"] = listChosenCategories;
+            ViewData["ListChosenCategoryIds"] = reqListCategorieIds;
 
             if (ModelState.IsValid)
             {
-                if(Authors.Length == 0)
+                if(reqListAuthorIds.Count == 0)
                 {
                     ModelState.AddModelError("", "Bạn cần chọn tác giả");
                     return View();
                 }
-                if(Categories.Length == 0)
+                if(reqListCategorieIds.Count == 0)
                 {
                     ModelState.AddModelError("", "Bạn cần chọn dạng bài");
                     return View();
                 }
-                if(_context.Problem.FirstOrDefault(p => p.ID == problem.ID) != null)
+                if(_context.Problems.FirstOrDefault(p => p.code == reqProblem.code) != null)
                 {
                     ModelState.AddModelError("", "Mã bài đã tồn tại");
                     return View();
                 }
-                problem.TimeCreate = DateTime.Now;
+                if(_context.Problems.FirstOrDefault(p => p.title == reqProblem.title) != null)
+                {
+                    ModelState.AddModelError("", "Tên bài đã tồn tại");
+                    return View();
+                }
+                reqProblem.timeCreate = DateTime.Now;
 
-                foreach(int id in Authors)
+                foreach(var item in reqListAuthorIds)
                 {
-                    var problemAuthor = new ProblemAuthor()
+                    _context.Add(new ProblemAuthor()
                     {
-                        Problem = problem,
-                        AuthorID = id
-                    };
-                    _context.Add(problemAuthor);
+                        problem = reqProblem,
+                        authorID = item
+                    });
                 }
-                foreach(int id in Categories)
-                {
-                    var problemCategory = new ProblemCategory()
+                foreach(int id in reqListCategorieIds)
+                { 
+                    _context.Add(new ProblemClassification()
                     {
-                        Problem = problem,
-                        CategoryID = id
-                    };
-                    _context.Add(problemCategory);
+                        problem = reqProblem,
+                        categoryID = id
+                    });
                 }
-                _context.Add(problem);
+                _context.Add(reqProblem);
+
                 await _context.SaveChangesAsync();
+
+                if(next == "edit")
+                {
+                    return RedirectToAction("Edit", "Problem", new {id = reqProblem.ID});
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View();
         }
-        public IActionResult Problem(string id)
+        public IActionResult Problem(int id)
         {
-            var problem = _context.Problem.Include(p => p.ProblemAuthors).ThenInclude(p => p.Author).FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problems.Include(p => p.problemAuthors)
+                                            .ThenInclude(p => p.author)
+                                            .Include(p => p.problemClassifications)
+                                            .ThenInclude(p => p.category)
+                                            .Include(p => p.submissions)
+                                            .ThenInclude(s => s.account)
+                                            .AsSplitQuery()
+                                            .OrderByDescending(p => p.timeCreate)
+                                            .FirstOrDefault(p => p.ID == id);
+            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1)
+                                                        .Include(p => p.account)
+                                                        .Include(p => p.child)
+                                                        .ToList();
+            if(problem == null)
+            {
+                return NotFound();
+            }
             return View(problem);
+        }
+        public IActionResult Delete(int? id)
+        {
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var problem = _context.Problem.FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+
             if(problem == null)
                 return NotFound();
-            _context.Remove(problem);
+
+            problem.isDeleted = true;
+            _context.Update(problem);
+
             await _context.SaveChangesAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 

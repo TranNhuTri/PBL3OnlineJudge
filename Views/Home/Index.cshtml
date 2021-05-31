@@ -1,3 +1,177 @@
 ﻿@{
     ViewData["Title"] = "CodeTop1";
 }
+<div class="main">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="main__content">
+                <div class="grid_column-9">
+                    <div class="main__content--left">
+                        <div class="main__header--initial">
+                            <div class="main__header--initial-heading">
+                                <h2 class="heading__title">
+                                    Welcome!
+                                </h2>
+                                <div class="heading__infor">
+                                    <span class="heading__infor-user">admin</span>
+                                    <span class="heading__infor-date">20 May 2021</span>
+                                </div>
+                            </div>
+                            <div class="main__header--initial-dicription">
+                                <div class="dicription-paragraph">
+                                    <p class="dicription-paragraph--1">
+                                        Welcome to the new LightOJ website. This new version contains a new faster judge and modern UI.
+                                    </p>
+                                    <p class="dicription-paragraph--2">
+                                        As this time we have completely written the site from scratch, there can be a few bugs. Also, it is a great opportunity to add new features. 
+                                        Feel free to raise issues on our Github tracking repository if you see any bug or if you want to have some feature on this new LightOJ.
+                                    </p>
+                                    <p class="dicription-paragraph--3">
+                                        Some features - (Ranking, Contest, Problem Locking, Learning Section, Tutorial, etc) are still in development and will be coming soon...
+                                    </p>
+                                </div>
+                                <div class="dicription-img">
+                                    <img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20190820175612/Why-You-Should-Learn-To-Code.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid_row">
+                            <div class="grid_column">
+                                <div class="main__header--item">
+                                    <div class="item-function pratice">
+                                        <a href="/ListProblems" class="item-function--link">
+                                            <div class="item-function--img">
+                                                <img src="https://static.lightoj.com/assets/problem-solving.svg" alt="">
+                                            </div>
+                                            <h3 class="item-function--heading">Practice Problems</h3>
+                                            <p class="item-function--dicription">
+                                                Solve various algorithmic problems on LightOJ.
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="item-function contest">
+                                        <a href="" class="item-function--link">
+                                            <div class="item-function--img">
+                                                <img src="/img/contest-img.png" alt="">
+                                            </div>
+                                            <h3 class="item-function--heading">Contests Section</h3>
+                                            <p class="item-function--dicription">
+                                                Test your knowlege in the contest area. Coming soon.
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="item-function learn">
+                                        <a href="" class="item-function--link">
+                                            <div class="item-function--img">
+                                                <img src="https://static.lightoj.com/assets/coding.svg" alt="">
+                                            </div>
+                                            <h3 class="item-function--heading">Learn Section</h3>
+                                            <p class="item-function--dicription">
+                                                Learn programming from scratch. Coming soon.
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid_row">
+                            <div class="grid_column">
+                                <div class="feedback">
+                                    <div class="feedback_title">
+                                        <h3>Tell us what you think ?</h3>
+                                    </div>
+                                    <form action="">
+                                        <div class="feedback_editor">
+                                            <textarea name="FeedbackContent" id="editor" rows="10" cols="80">
+                                            </textarea>
+                                        </div>
+                                        <div class="feedback_submit">
+                                            <input type="submit" class = "button feedback_submitButton" value="Gửi">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+                {
+                    <div class="grid_column-3">
+                        <div class="main__content--right">
+                            <div class="main__content--statistic">
+                                <div class="statistic-solved">
+                                    <span class="statistic-dicription statistic-dicription--number">
+                                        @ViewData["ACSubmissions"]
+                                    </span>
+                                    <span class="statistic-dicription statistic-dicription--title">
+                                        SOLVED
+                                    </span>
+                                </div>
+                                <div class="statistic-submission">
+                                    <span class="statistic-dicription statistic-dicription--number">
+                                        @ViewData["Submissions"]
+                                    </span>
+                                    <span class="statistic-dicription statistic-dicription--title">
+                                        SUBMISSIONS
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="main__content--chart">
+                                @if(Convert.ToInt32(ViewData["Submissions"]) > 0)
+                                {
+                                    <div class="statistic--chart">
+                                        <div class="chart-container" >
+                                            <canvas class="" id="chart" >
+
+                                            </canvas> 
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p>Không đủ dữ liệu bài nộp để tạo biểu đồ</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        CKEDITOR.replace('editor', {
+            height: '250px',
+        });
+    </script>
+    <script>
+        var ctx = document.getElementById('chart');
+        if(ctx != null)
+        {
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Wrong Answer',
+                        'Accepted',
+                        'Time Limit Exceed'
+                    ],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [@ViewData["WASubmissions"], @ViewData["ACSubmissions"], @ViewData["TLESubmissions"]],
+                        backgroundColor: [
+                        '#F94850',
+                        '#00bb008f',
+                        'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 5
+                    }]
+                },
+            });
+        }
+    </script>
+}

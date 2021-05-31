@@ -1,0 +1,36 @@
+@model SearchProblemInfor
+@{
+    var listAuthors = (List<Account>)ViewData["ListAuthors"];
+}
+<form action="">
+    <div class="searchForm">
+        <div class="searchForm_select">
+            <div class="searchForm_select_item">
+                <label for="authorSelect">Tác giả: </label>
+                <div style="width: 180px; margin-left: 5px;">
+                    <select asp-for = "@Model.authorID" id="authorSelect">
+                        <option value="0">All</option>
+                        @for (int i = 0; i < listAuthors.Count; i++)
+                        {
+                            <option value="@listAuthors[i].ID">@listAuthors[i].accountName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="searchForm_select_item">
+                <label for="isPublic">Công khai: </label>
+                <div style="width: 80px; margin-left: 5px;">
+                    <select asp-for = "@Model.isPublic" id="isPublic">
+                        <option value = "2">All</option>
+                        <option value = "1">True</option>
+                        <option value = "0">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="searchForm_search">
+            <input type="text" placeholder="Nhập mã bài hoặc tên bài" class="searchForm_searchInput" asp-for = "@Model.searchText">
+            <input type="submit" value="Tìm" class="button searchForm_submit">
+        </div>
+    </div>
+</form>

@@ -19,11 +19,11 @@
                         <tbody>
                             <tr>
                                 <td class = "link SubmissionID">@Model.ID</td>
-                                <td>@Model.TimeCreate</td>
-                                <td><a asp-action = "Problem" asp-route-id = "@Model.Problem.ID" asp-controller = "ListProblems" class = "link">@Model.Problem.Title</a></td>
+                                <td>@Model.timeCreate</td>
+                                <td><a asp-action = "Problem" asp-route-id = "@Model.problem.code" asp-controller = "ListProblems" class = "link">@Model.problem.title</a></td>
                                 <td class = "SubmissionStatus">Running</td>
                                 <td class = "SubmissionTime">?</td>
-                                <td>@Model.Language</td>
+                                <td>@Model.language</td>
                             </tr>
                         </tbody>
                     </table>

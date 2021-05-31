@@ -7,13 +7,14 @@ namespace PBL3.Models
     {
         public Article()
         {
-            ArticleAuthors = new List<ArticleAuthor>();
+            articleAuthors = new List<ArticleAuthor>();
         }
         public int ID{get; set;}
-        public string Title{get; set;}
-        public string Content{get; set;}
-        public DateTime TimeCreate{get; set;}
-        public bool Public {get; set;}
-        public List<ArticleAuthor> ArticleAuthors{get; set;}
+        public string title{get; set;}
+        public string content{get; set;}
+        public DateTime timeCreate{get; set;}
+        public bool IsPublic {get; set;}
+        public bool isDeleted{get; set;}
+        public List<ArticleAuthor> articleAuthors{get; set;}
     }
 }

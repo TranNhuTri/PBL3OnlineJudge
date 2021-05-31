@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var accountName = "";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,24 +10,29 @@
     <link rel="shortcut icon" type="image/jpg" href="/img/favicon.jpg"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-    <link rel="stylesheet" href="/css/HomePage.css">
-    <link rel="stylesheet" href="/css/ListProblemsPage.css">
-    <link rel="stylesheet" href="/css/ProblemPage.css">
+    <link rel="stylesheet" href="/css/Home.css">
+    <link rel="stylesheet" href="/css/ListProblems.css">
+    <link rel="stylesheet" href="/css/Problem.css">
     <link rel="stylesheet" href="/css/Layout.css">
-    <link rel="stylesheet" href="/css/Create-EditProblemPage.css">
-    <link rel="stylesheet" href="/css/SubmitProblemPage.css">
+    <link rel="stylesheet" href="/css/SubmitProblem.css">
     <link rel="stylesheet" href="/css/Base.css">
-    <link rel="stylesheet" href="/css/LoginPage.css">
-    <link rel="stylesheet" href="/css/SignUpPage.css">
-    <link rel="stylesheet" href="/css/ListSubmissionsPage.css">
+    <link rel="stylesheet" href="/css/Login.css">
+    <link rel="stylesheet" href="/css/SignUp.css">
+    <link rel="stylesheet" href="/css/ListSubmissions.css">
+    <link rel="stylesheet" href="/css/General.css">
+    
     <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
+    
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/vs.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     <script src="/codemirror-5.60.0/lib/codemirror.js"></script>
     <link rel="stylesheet" href="/codemirror-5.60.0/lib/codemirror.css">
     <script src="/codemirror-5.60.0/mode/clike/clike.js"></script>
+    <script src="/codemirror-5.60.0/mode/python/python.js"></script>
+
     <script src="/codemirror-5.60.0/addon/edit/closebrackets.js"></script>
     <script src = "/codemirror-5.60.0/addon/fold/foldcode.js"></script>
     <script src = "/codemirror-5.60.0/addon/fold/foldgutter.js"></script>
@@ -34,111 +42,107 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.1/chart.min.js"></script>
 </head>
 <body>
-    <div class="AppContainer">
-        <header class = "AppHeader">
+    <div class="appContainer">
+        <header class = "appHeader">
             <div class="grid ">
-                <div class="AppHeader_Row grid_row">
-                    <ul class="AppHeader_List">
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_Logo">
-                                <a asp-action = "Index" asp-controller = "Home" class ="AppHeader_Link" ><img src="/img/logo.png" alt=""></a>
-                            </div>
-                        </li>
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_Text">
-                                <a href="/" class ="AppHeader_Link" >Trang Chủ</a>
-                            </div>
-                        </li>
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_Text">
-                                <a href="/ListProblems" class ="AppHeader_Link" >Bài Tập</a>
-                            </div>
-                        </li>
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_Text">
-                                <a href="/ListSubmissions" class ="AppHeader_Link" >Bài nộp</a>
-                            </div>
-                        </li>
-                        <li class="AppHeader_Item">
-                            <div class="AppHeader_Text">
-                                <a href="/" class ="AppHeader_Link" >Bài viết</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <ul class="AppHeader_List">
-                        @if(string.IsNullOrEmpty(Context.Session.GetString("UserName")) == false)
-                        {
-                            <li class="AppHeader_Item">
-                                <div class="AppHeader_BellIcon">
-                                    <i class="fas fa-bell"></i>
-                                    <div class="AppHeader_Dropdown">
-                                        <ul class="AppHeader_Dropdown_List">
-                                            <li class="AppHeader_Dropdown_Item">
-                                                <a class="AppHeader_Dropdown_Link" href="">
-                                                    <p class="AppHeader_NotiText">Alo alo alo alo</p>
-                                                </a>
-                                            </li>
-                                            <li class="AppHeader_Dropdown_Item">
-                                                <a class="AppHeader_Dropdown_Link" href="">
-                                                    <p class="AppHeader_NotiText">Alo alo alo alo</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                <div class="appHeader_row grid_row">
+                    <div class="grid_column" style="display: flex; justify-content: space-between;">
+                        <ul class="appHeader_list">
+                            <li class="appHeader_item">
+                                <div class="appHeader_logo">
+                                    <a asp-action = "Index" asp-controller = "Home" class ="appHeader_link" ><img src="/img/logo.png" alt=""></a>
                                 </div>
                             </li>
-                            <li class="AppHeader_Item">
-                                <div class="AppHeader_AvarIcon">
-                                    <i class="fas fa-user-circle"></i>
-                                    <div class="AppHeader_Dropdown">
-                                        <ul class="AppHeader_Dropdown_List">
-                                            <li class="AppHeader_Dropdown_Item">
-                                                <a class="AppHeader_Dropdown_Link" href="/">
-                                                    <i class="AppHeader_Dropdown_Icon fas fa-user"></i>
-                                                    @Context.Session.GetString("UserName")
-                                                </a>
-                                            </li>
-                                            <li class="AppHeader_Dropdown_Item">
-                                                <a class="AppHeader_Dropdown_Link" asp-controller = "ListProblems" asp-action = "Create">
-                                                    <i class="AppHeader_Dropdown_Icon far fa-edit"></i>
-                                                    Đăng bài tập
-                                                </a>
-                                            </li>
-                                            <li class="AppHeader_Dropdown_Item">
-                                                <a class="AppHeader_Dropdown_Link" href="/Account/Logout">
-                                                    <i class="AppHeader_Dropdown_Icon fas fa-sign-out-alt"></i>
-                                                    Đăng xuất
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "Home", cssClass: "appHeader_item--active")">
+                                <div class="appHeader_text">
+                                    <a href="/" class ="appHeader_link" >Trang Chủ</a>
                                 </div>
                             </li>
-                        }
-                        else
-                        {
-                            <li class="AppHeader_Item">
-                                <a href="/Account/Login" class = "Login_Link">Đăng nhập</a>
+                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "ListProblems", cssClass: "appHeader_item--active")">
+                                <div class="appHeader_text">
+                                    <a href="/ListProblems" class ="appHeader_link" >Bài Tập</a>
+                                </div>
                             </li>
-                            <li class="AppHeader_Item">
-                                <a href="/Account/SignUp" class = "Register_Link">Đăng ký</a>
+                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "ListSubmissions", cssClass: "appHeader_item--active")">
+                                <div class="appHeader_text">
+                                    <a href="/ListSubmissions" class ="appHeader_link" >Bài nộp</a>
+                                </div>
                             </li>
-                        }
-                    </ul>
+                            <li class="appHeader_item">
+                                <div class="appHeader_text">
+                                    <a href="/" class ="appHeader_link" >Bài viết</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="appHeader_list">
+                            @if(string.IsNullOrEmpty(Context.Session.GetString("AccountName")) == false)
+                            {
+                                accountName = Context.Session.GetString("AccountName");
+                                <li class="appHeader_item">
+                                    <div class="appHeader_bellIcon" onclick="showNotifications('@accountName')">
+                                        <i class="fas fa-bell"></i>
+                                        <div class="appHeader_notifications_dropdown">
+                                            <ul class="appHeader_dropdown_list" id = "notification-list">
+                                            </ul>
+                                        </div>
+                                        <div class="number_notifi"></div>
+                                    </div>
+                                </li>
+                                <li class="appHeader_item">
+                                    <div class="appHeader_avarIcon">
+                                        <i class="fas fa-user-circle"></i>
+                                        <div class="appHeader_dropdown">
+                                            <ul class="appHeader_dropdown_list">
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/">
+                                                        <i class="appHeader_dropdown_icon fas fa-user"></i>
+                                                        @Context.Session.GetString("AccountName")
+                                                    </a>
+                                                </li>
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/Admin">
+                                                        <i class="appHeader_dropdown_icon fas fa-cogs"></i>
+                                                        Admin
+                                                    </a>
+                                                </li>
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                        <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
+                                                        Đăng xuất
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="appHeader_item">
+                                    <a href="/Account/Login" class = "login_link">Đăng nhập</a>
+                                </li>
+                                <li class="appHeader_item">
+                                    <a href="/Account/SignUp" class = "register_link">Đăng ký</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </header>
-        <div class="AppBody">
+        <div class="appBody">
             @RenderBody()
         </div>
         <footer>
             <div class="grid">
                 <div class="grid_row">
                     <div class="grid_column">
-                        <div class="AppFooter">
-                            <p><a href="/" class="AppFooter_Link">CodeTop1</a></p>
+                        <div class="appFooter">
+                            <p><a href="/" class="appFooter_link">CodeTop1</a></p>
                             <p>Developed by Tran Nhu Tri - Phan Dinh Khoi - Le Huynh Nhat Long - Do Tan Truong Sanh</p>
                             <p>University of Science and Technology - University of Danang</p>
                         </div>
@@ -160,15 +164,82 @@
             });
     </script>
     <script>
-        var submissionID = document.getElementsByClassName("SubmissionID");
-        for(let i = 0; i < submissionID.length; i++)
+        function showNotifications(accountName)
         {
-            submissionID[i].addEventListener('click', function()
+            $('.appHeader_notifications_dropdown').toggle();
+        }
+
+        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + '@accountName')
+        .then(res => res.text())
+        .then(data => {
+            if(data == "")
             {
-                var overlay = document.querySelector(".Overlay");
-                overlay.classList.add("Overlay--active");
+                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                $(".number_notifi").html(0);
+            }
+            else
+            {
+                $('#notification-list').html(data);
+            }
+        })
+
+        function getNotificationData(accountName)
+        {   
+            fetch("https://localhost:5001/Notification/GetNumberUnSeenNotification?accountName=" + accountName)
+            .then(res => res.text())
+            .then(numberOfNotifications => {
+                if(numberOfNotifications >= 0)
+                {
+                    console.log(numberOfNotifications, $(".number_notifi").text())
+                    if(String(numberOfNotifications) != $(".number_notifi").text())
+                    {
+                        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                        .then(res => res.text())
+                        .then(data => {
+                            if(data == "")
+                            {
+                                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                            }
+                            else
+                            {
+                                $('#notification-list').html(data);
+                            }
+                        })
+                    }
+                    if(numberOfNotifications > 0)
+                    {
+                        $(".number_notifi").html(numberOfNotifications);
+                        $(".number_notifi").css("opacity", "1");
+                    }
+                    else
+                    {
+                        $(".number_notifi").css("opacity", "0");
+                        $(".number_notifi").html(0);
+                    }
+                }
+
+                setTimeout(function()
+                {
+                    getNotificationData('@accountName')
+                }, 4000);
             })
         }
+        getNotificationData('@accountName');
+    </script>
+    <script>
+        window.addEventListener('click', function(e){
+
+            var bellIcon = document.querySelector(".appHeader_bellIcon");
+
+            if(bellIcon != null)
+            {
+                let top = bellIcon.offsetTop, left = bellIcon.offsetLeft;
+                let height = bellIcon.offsetHeight, width = bellIcon.offsetWidth;
+
+                if(e.clientX < left || e.clientX > left + width || e.clientY < top || e.clientY > top + height)
+                    $('.appHeader_notifications_dropdown').css("display", "none");
+            }
+        })
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

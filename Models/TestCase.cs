@@ -7,13 +7,13 @@ namespace PBL3.Models
     {
         public TestCase()
         {
-            SubmitResults = new List<SubmissionResult>();
+            submitResults = new List<SubmissionResult>();
         }
         public int ID{get; set;}
-        public string Input{get; set;}
-        public string Output{get; set;}
-        public string ProblemID{get; set;}
-        public Problem Problem{get; set;}
-        public List<SubmissionResult> SubmitResults {get; set;}
+        public string input{get; set;}
+        public string output{get; set;}
+        public int problemID{get; set;}
+        public Problem problem{get; set;}
+        public List<SubmissionResult> submitResults {get; set;}
     } 
 }

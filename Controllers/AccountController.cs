@@ -2,16 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using PBL3.Models;
+using PBL3.DTO;
 using PBL3.Data;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
-using System.Security.Cryptography;
+using PBL3.General;
 
 namespace PBL3.Controllers
 {
@@ -25,27 +21,42 @@ namespace PBL3.Controllers
         }
         public IActionResult Login()
         {
+            string returnUrl;
+            if (Request.Headers["Referer"].ToString() != null)
+            {
+                returnUrl = System.Net.WebUtility.UrlEncode(Request.Headers["Referer"].ToString());
+                ViewBag.ReturnURL = returnUrl;
+            }
+
             return View();
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.SetString("UserName", string.Empty);
+            HttpContext.Session.SetString("AccountName", string.Empty);
             HttpContext.Session.SetString("TypeAccount", String.Empty);
             return RedirectToAction("Index", "Home");
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login([Bind("UserName, PassWord")]LoginUser user)
+        public IActionResult Login([Bind("accountName, passWord")]LoginAccount requestAccount, string returnUrl)
         {
             if(ModelState.IsValid)
             {
-                var User = _context.User.FirstOrDefault(m => m.UserName == user.UserName && m.PassWord == user.PassWord && m.Actived == true);
-                if(User != null)
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == requestAccount.accountName && p.passWord == Utility.CreateMD5(requestAccount.passWord) && p.isActived == true);
+                if(account != null)
                 {
-                    HttpContext.Session.SetString("UserName", User.UserName);
-                    HttpContext.Session.SetString("TypeAccount", Convert.ToString(User.TypeAccount));
+                    HttpContext.Session.SetString("AccountName", account.accountName);
+                    HttpContext.Session.SetString("TypeAccount", Convert.ToString(account.typeAccount));
+                    if(!string.IsNullOrEmpty(returnUrl))
+                    {
+                        returnUrl = System.Net.WebUtility.UrlDecode(returnUrl);
+                        if(!returnUrl.Contains("Login") && !returnUrl.Contains("SignUp"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -56,103 +67,57 @@ namespace PBL3.Controllers
             }
             return View();
         }
-
         public IActionResult SignUp()
         {
             return View();
         }
-        public static string Encrypt(string text)
-        {
-            using (var md5 = new MD5CryptoServiceProvider())
-            {
-                using (var tdes = new TripleDESCryptoServiceProvider())
-                {
-                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
-                    tdes.Mode = CipherMode.ECB;
-                    tdes.Padding = PaddingMode.PKCS7;
 
-                    using (var transform = tdes.CreateEncryptor())
-                    {
-                        byte[] textBytes = UTF8Encoding.UTF8.GetBytes(text);
-                        byte[] bytes = transform.TransformFinalBlock(textBytes, 0, textBytes.Length);
-                        return Convert.ToBase64String(bytes, 0, bytes.Length);
-                    }
-                }
-            }
-        }
-
-        public static string Decrypt(string cipher)
-        {
-            using (var md5 = new MD5CryptoServiceProvider())
-            {
-                using (var tdes = new TripleDESCryptoServiceProvider())
-                {
-                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
-                    tdes.Mode = CipherMode.ECB;
-                    tdes.Padding = PaddingMode.PKCS7;
-
-                    using (var transform = tdes.CreateDecryptor())
-                    {
-                        byte[] cipherBytes = Convert.FromBase64String(cipher);
-                        byte[] bytes = transform.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
-                        return UTF8Encoding.UTF8.GetString(bytes);
-                    }
-                }
-            }
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SignUp([Bind("UserName", "PassWord", "Email")]User User, string ConfirmPassword, string LastName, string FirstName)
+        public IActionResult SignUp([Bind("accountName", "passWord", "email", "lastName", "firstName")]Account reqAccount, string ConfirmPassword, string LastName, string FirstName)
         {
             if(ModelState.IsValid)
             {
-                var user = _context.User.FirstOrDefault(a => a.UserName == User.UserName);
-                if(user != null)
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == reqAccount.accountName);
+                if(account != null)
                 {
                     return NotFound();
                 }
-                if(!String.IsNullOrEmpty(User.Email))
+                if(!String.IsNullOrEmpty(reqAccount.email))
                 {
-                    User.TimeCreate = DateTime.Now;
-                    User.Token = Encrypt(User.UserName);
-                    User.TypeAccount = 3;
+                    reqAccount.timeCreate = DateTime.Now;
+                    reqAccount.token = Utility.CreateMD5(reqAccount.accountName);
+                    reqAccount.passWord = Utility.CreateMD5(reqAccount.passWord);
+                    reqAccount.typeAccount = 3;
 
-                    _context.User.Add(User);
+                    var message = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + reqAccount.token + "&&email=" + reqAccount.email;
+                    
+                    _context.Accounts.Add(reqAccount);
                     _context.SaveChangesAsync();
 
-                    var smtpClient = new SmtpClient("smtp.gmail.com")
-                    {
-                        Port = 587,
-                        Credentials = new NetworkCredential("CodeTop1.Net@gmail.com", "codetop1"),
-                        EnableSsl = true,
-                    };
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress("CodeTop1.Net@gmail.com"),
-                        Subject = "Wellcome to CodeTop1",
-                        Body = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + User.Token + "&&Email=" + User.Email,
-                    };
-                    mailMessage.To.Add(User.Email);
-                    smtpClient.Send(mailMessage);
+                    Utility.sendMail(reqAccount.email, message);
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
-            return View(User);
+            return View(reqAccount);
         }
-        public IActionResult VerifyMail(string token, string Email)
+        public IActionResult VerifyMail(string token, string email)
         {
-            var User = (from acc in _context.User where acc.UserName == Decrypt(token) && acc.Email == Email select acc).FirstOrDefault();
-            if(User != null)
+            var account = _context.Accounts.FirstOrDefault(p => p.token == token && p.email == email && p.isActived == false);
+
+            if(account != null)
             {
-                if(DateTime.Compare(User.TimeCreate.AddHours(4), DateTime.Now) >= 0)
+                if(DateTime.Compare(account.timeCreate.AddHours(4), DateTime.Now) >= 0)
                 {
-                    User.Actived = true;
-                    _context.Update(User);
+                    account.isActived = true;
+                    _context.Update(account);
                     _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    _context.User.Remove(User);
+                    _context.Accounts.Remove(account);
                     _context.SaveChanges();
                 }
             }

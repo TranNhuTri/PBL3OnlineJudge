@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/jpg" href="/img/favicon.jpg"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+
+    <link rel="stylesheet" href="/css/Layout.css">
+    <link rel="stylesheet" href="/css/Base.css">
+    <link rel="stylesheet" href="/css/Home.css">
+    <link rel="stylesheet" href="/css/Admin.css">
+    <link rel="stylesheet" href="/css/ListProblems.css">
+    <link rel="stylesheet" href="/css/ListAdminObjects.css">
+    <link rel="stylesheet" href="/css/AddEdit.css">
+
+    <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css"/>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/vs.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+</head>
+<body>
+    <div class="appContainer">
+        <header class = "appHeader">
+            <div class="grid ">
+                <div class="appHeader_row grid_row" style="height: 45px;">
+                    <div class="grid_column" style="display: flex; justify-content: space-between;">
+                        <ul class="appHeader_list">
+                            <li class="appHeader_item">
+                                <div class="appHeader_logo">
+                                    <a asp-action = "Index" asp-controller = "Home" class ="appHeader_link" ><img src="/img/logo.png" alt=""></a>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="appHeader_list">
+                            @if(string.IsNullOrEmpty(Context.Session.GetString("AccountName")) == false)
+                            {
+                                <li class="appHeader_item">
+                                    <div class="appHeader_bellIcon">
+                                        <i class="fas fa-bell"></i>
+                                        <div class="appHeader_dropdown">
+                                            <ul class="appHeader_dropdown_list">
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="">
+                                                        <p class="appHeader_notiText">Alo alo alo alo</p>
+                                                    </a>
+                                                </li>
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="">
+                                                        <p class="appHeader_notiText">Alo alo alo alo</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="appHeader_item">
+                                    <div class="appHeader_avarIcon">
+                                        <i class="fas fa-user-circle"></i>
+                                        <div class="appHeader_dropdown">
+                                            <ul class="appHeader_dropdown_list">
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/">
+                                                        <i class="appHeader_dropdown_icon fas fa-user"></i>
+                                                        @Context.Session.GetString("AccountName")
+                                                    </a>
+                                                </li>
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/Admin">
+                                                        <i class="appHeader_dropdown_icon fas fa-cogs"></i>
+                                                        Admin
+                                                    </a>
+                                                </li>
+                                                <li class="appHeader_dropdown_item">
+                                                    <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                        <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
+                                                        Đăng xuất
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="appHeader_item">
+                                    <a href="/Account/Login" class = "login_link">Đăng nhập</a>
+                                </li>
+                                <li class="appHeader_item">
+                                    <a href="/Account/SignUp" class = "register_link">Đăng ký</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="appBody">
+            <div class="adminPage">
+                <div class="grid">
+                    <div class="grid_row">
+                        <div class="grid_column-2">
+                            <div class="adminCategory">
+                                <div class="adminCategory_header">
+                                    <h1>Danh mục Admin</h1>
+                                </div>
+                                <ul class="adminCategory_list">
+                                    <li class="adminCategory_item">
+                                        <a  asp-action = "ListProblems" asp-controller = "Admin"  class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                                <p class="adminCategory_mainmenu_text">Bài tập</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                            </div>
+                                        </a>
+                                        <div class="adminCategory_submenu @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu--active")">
+                                            <ul class="adminCategory_submenu_list">
+                                                <a asp-action = "ListProblemCategories" asp-controller = "Admin" style="text-decoration: none;">
+                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu_item--active")">Dạng bài tập</li>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="adminCategory_item">
+                                        <a href="" class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu">
+                                                <p class="adminCategory_mainmenu_text">Bài viết</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon"></i>
+                                                <p class="adminCategory_mainmenu_subicon">-</p>
+                                            </div>
+                                        </a>
+                                        <div class="adminCategory_submenu">
+                                            <ul class="adminCategory_submenu_list">
+                                                <li class="adminCategory_submenu_item">Nhóm bài viết</li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="adminCategory_item">
+                                        <a asp-action = "ListSubmissions" asp-controller = "Admin" class="adminCategory_link">
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                                <p class="adminCategory_mainmenu_text">Bài nộp</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                            </div>
+                                        </a>
+                                        <div class="adminCategory_submenu">
+                                            <ul class="adminCategory_submenu_list">
+                                                <li class="adminCategory_submenu_item">Dạng bài tập</li>
+                                                <li class="adminCategory_submenu_item">Nhóm bài tập</li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="adminCategory_item">
+                                        <a asp-action = "ListAccounts" asp-controller = "Admin" class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                                <p class="adminCategory_mainmenu_text">Người dùng</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                            </div>
+                                        </a>
+                                        <div class="adminCategory_submenu">
+                                            <ul class="adminCategory_submenu_list">
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="grid_column-10">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+        </footer>
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+            window.addEventListener('load', (event) => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    if(block.classList == "")
+                        block.classList.add("plaintext");
+                    hljs.highlightBlock(block);
+                });
+            });
+    </script>
+</body>
+</html>

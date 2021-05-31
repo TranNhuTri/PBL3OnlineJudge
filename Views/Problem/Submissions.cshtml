@@ -1,17 +1,17 @@
 @{
-    ViewData["Title"] = "Danh sách bài nộp";
+    ViewData["Title"] = "Bài nộp của tôi";
 }
 @model List<Submission>
-<div class="SubmissionsPage">
+<div class="submissionsPage">
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
-                <div class="SubmissionsContainer">
-                    <h1 class="Submissions_Header">Tất cả bài nộp</h1>
-                    <table cellspacing="0" cellpadding="0" class="Submissions_Table">
-                        <thead class = "Submissions_Table_Header">
+                <div class="submissionsContainer">
+                    <h1 class="submissions_header">Tất cả bài nộp</h1>
+                    <table cellspacing="0" cellpadding="0" class="submissions_table">
+                        <thead class = "submissions_table_header">
                             <tr>
-                                <th>ID</th>
+                                <th class = "submissionID">ID</th>
                                 <th>Ngày nộp</th>
                                 <th style="width: 35%">Bài</th>
                                 <th>Trạng thái</th>
@@ -22,13 +22,23 @@
                         <tbody>
                             @for(int i = 0; i < Model.Count; i++)
                             {
+                                string color = "";
                                 <tr>
-                                    <td class = "link SubmissionID">@Model[i].ID</td>
-                                    <td>@Model[i].TimeCreate</td>
-                                    <td><a asp-action = "Problem" asp-route-id = "@Model[i].Problem.ID" asp-controller = "ListProblems" class = "link">@Model[i].Problem.Title</a></td>
-                                    <td class = "SubmissionStatus">@Model[i].Status</td>
-                                    <td class = "SubmissionTime">?</td>
-                                    <td>@Model[i].Language</td>
+                                    <td class = "link submissionID">@Model[i].ID</td>
+                                    <td>@Model[i].timeCreate</td>
+                                    <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "ListProblems" class = "link">@Model[i].problem.title</a></td>
+                                    @if(Model[i].status == "Accepted")
+                                    {
+                                        color = "#00bb00";
+                                    }
+                                    else
+                                        if(@Model[i].status == "Wrong Answer")
+                                        {
+                                            color = "#ff0000ba";
+                                        }
+                                    <td class = "submissionStatus" style= "color: @color">@Model[i].status</td>
+                                    <td class = "submissionTime">@Model[i].time</td>
+                                    <td>@Model[i].language</td>
                                 </tr>
                             }
                         </tbody>
@@ -38,10 +48,10 @@
         </div>
     </div>
 </div>
-<div class="Overlay">
-    <div class="DetailSubmissionContainer">
-        <i class="fas fa-times DetailSubmissionIcon"></i>
-        <div class="DetailSubmissionContent">
+<div class="overlay">
+    <div class="detailSubmissionContainer">
+        <i class="fas fa-times detailSubmissionIcon"></i>
+        <div class="detailSubmissionContent">
         </div>
     </div>
 </div>

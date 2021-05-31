@@ -1,0 +1,17 @@
+@using PBL3.Models
+@{
+    Layout = null;
+}
+@model List<Notification>
+@foreach (var item in Model)
+{
+    <li class="appHeader_dropdown_item">
+        <a class="appHeader_dropdown_link" href="">
+            <p class="appHeader_notiText">@Html.Raw(@item.content)</p>
+        </a>
+        @if(item.seen == false)
+        {
+            <span class="appHeader_dropdown_item-dot"></span>
+        }
+    </li>
+}

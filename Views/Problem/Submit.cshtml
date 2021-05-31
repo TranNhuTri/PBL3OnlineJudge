@@ -1,24 +1,25 @@
 @model Problem
 @{
-    ViewData["Title"] = "Nộp bài " + Model.Title;
+    ViewData["Title"] = "Nộp bài " + Model.title;
 }
-<div class="SubmitProblemPage">
+<div class="submitProblemPage">
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
-                <div class="SubmitProblemForm">
-                    <form asp-action = "Submit" asp-route-id = "@Model.ID" asp-controller = "Problem">
-                        <h1 class = "SubmitProblemPage_Header">Nộp bài @Model.Title</h1>
+                <div class="submitProblemForm">
+                    <form asp-action = "submit" asp-route-id = "@Model.ID" asp-controller = "Problem">
+                        <h1 class = "submitProblemPage_Header">Nộp bài @Model.title</h1>
                         <textarea name="ProblemSolution" id="codemirror" cols="30" rows="10" class = "ProblemSolution"></textarea>
-                        <div class="SubmitProblem_Inputs">
-                            <div class="LanguageSubmit">
-                                <label for="LanguageSubmit">Language: </label>
-                                <select name="Language" id="LanguageSubmit">
+                        <div class="submitProblemInfor">
+                            <div class="languageSubmit">
+                                <label for="languageSubmit">Language: </label>
+                                <select name="Language" id="languageSubmit">
                                     <option value="cpp17">C++</option>
                                     <option value="python3">Python 3</option>
                                 </select>
+                            </div>
+                            <input type="submit" value="Nộp bài" class = "button submitProblemButton">
                         </div>
-                        <input type="submit" value="Nộp bài" class = "button SubmitProblemButton">
                     </form>
                 </div>
             </div>
@@ -36,6 +37,21 @@
             autoCloseBrackets: true,
             foldGutter: true,
             gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        })
+        var languageSubmit = document.querySelector("#languageSubmit");
+        languageSubmit.addEventListener("change", function()
+        {
+            switch(languageSubmit.value)
+            {
+                case "cpp17":
+                    codemirror.setOption("mode", "text/x-c++src");
+                    break;
+                case "python3":
+                    codemirror.setOption("mode", "python");
+                    break;
+                default:
+                    break;
+            }
         })
     </script>
 }
