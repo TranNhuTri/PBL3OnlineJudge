@@ -5,13 +5,13 @@
 @model List<Notification>
 @foreach (var item in Model)
 {
-    <li class="appHeader_dropdown_item">
-        <a class="appHeader_dropdown_link" href="">
+    <a asp-action = "ViewNotification" asp-controller = "Notification" asp-route-id = "@item.ID" class="appHeader_dropdown_link">
+        <li class="appHeader_dropdown_item">
             <p class="appHeader_notiText">@Html.Raw(@item.content)</p>
-        </a>
-        @if(item.seen == false)
-        {
-            <span class="appHeader_dropdown_item-dot"></span>
-        }
-    </li>
+            @if(item.seen == false)
+            {
+                <span class="appHeader_dropdown_item-dot"></span>
+            }
+        </li>
+    </a>
 }

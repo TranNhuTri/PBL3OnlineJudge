@@ -2,10 +2,10 @@
     Layout = "_AdminLayout";
 }
 @model List<Problem>
-<div class="listAdminObjectsPage" style="padding: 0;">
+<div class="listObjectsPage" style="padding: 0;">
     <div class="grid_row">
         <div class="grid_column">
-            <div class="listAdminObjectsPage_header">
+            <div class="listObjectsPage_header">
                 <div style="display: flex">
                     <h1>Danh sách bài tập</h1>
                     <a asp-action = "Add" asp-controller = "ListProblems" style="text-decoration: none;">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             @await Html.PartialAsync("_SearchProblemForm2", ViewData[""])
-            <table cellspacing="0" cellpadding="0" class="table listProblems_table">
+            <table cellspacing="0" cellpadding="0" class="table">
                 <thead>
                     <tr>
                         <th>Mã bài</th>

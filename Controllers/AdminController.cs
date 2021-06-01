@@ -30,6 +30,7 @@ namespace PBL3.Controllers
             
             var listProblems = _context.Problems.Include(p => p.problemAuthors)
                                                 .ThenInclude(p => p.author)
+                                                .Where(p => p.isDeleted == false)
                                                 .ToList();
 
             if(authorId != 0)
@@ -139,9 +140,9 @@ namespace PBL3.Controllers
         }
         public IActionResult EditProblemCategory(int id)
         {
-            ViewData["ListProblems"] = _context.Problems.ToList();
+            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
 
-            ViewData["ListChosenProblemIds"] = _context.ProblemClassifications.Where(p => p.categoryID == id).Select(p => p.problemID).ToList();
+            ViewData["ListChosenProblemIds"] = _context.ProblemClassifications.Where(p => p.categoryID == id && p.isDeleted == false).Select(p => p.problemID).ToList();
 
             var problemCategory = _context.Categories.FirstOrDefault(p =>p .ID == id);
 

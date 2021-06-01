@@ -40,12 +40,6 @@
                 }
                 for(int i = from; i <= end; i++)
                 {
-                    var parms = new Dictionary<string, string>
-                    {
-                        {"problemID", Convert.ToString(123)},
-                        {"accountName", Context.Session.GetString("AccountName")},
-                    };
-                    parms.Add("id", Convert.ToString(i));
                     if(i == currentPage)
                     {
                         <li class="pagination-item pagination-item--active">
@@ -55,7 +49,7 @@
                     else
                     {
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" asp-all-route-data = "parms" class="pagination-item_link">@i</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
                         </li>
                     }
                 }

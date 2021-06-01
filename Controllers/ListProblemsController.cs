@@ -20,13 +20,14 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(int? id, string problemName, bool hideSolvedProblem, List<int> listCategoryIds, int? minDifficult, int? maxDifficult)
+        public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> listCategoryIds, int? minDifficult, int? maxDifficult)
         {
             ViewData["listCategories"] = _context.Categories.ToList();
 
             var listProblems = _context.Problems.Include(p => p.problemClassifications)
                                                 .Include(p => p.submissions)
                                                 .ThenInclude(s => s.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
+                                                .Where(p => p.isDeleted == false)
                                                 .ToList();
             
             if(!String.IsNullOrEmpty(problemName))
@@ -85,14 +86,13 @@ namespace PBL3.Controllers
             }
 
             //pagination
-            int page;
-            if(id == null)
+            if(page == null)
             {
                 page = 1;
             }
             else
             {
-                page = (int)id;
+                page = (int)page;
             }
             int limit = Utility.limitData;
             int start = (int)(page - 1)*limit;
@@ -179,18 +179,20 @@ namespace PBL3.Controllers
         }
         public IActionResult Problem(int id)
         {
-            var problem = _context.Problems.Include(p => p.problemAuthors)
+            var problem = _context.Problems.Where(p => p.ID == id)
+                                            .Include(p => p.problemAuthors)
                                             .ThenInclude(p => p.author)
                                             .Include(p => p.problemClassifications)
                                             .ThenInclude(p => p.category)
                                             .Include(p => p.submissions)
                                             .ThenInclude(s => s.account)
-                                            .AsSplitQuery()
-                                            .OrderByDescending(p => p.timeCreate)
-                                            .FirstOrDefault(p => p.ID == id);
+                                            .FirstOrDefault();
+
             ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1)
                                                         .Include(p => p.account)
                                                         .Include(p => p.child)
+                                                        .Include(p => p.likes)
+                                                        .ThenInclude(p => p.account)
                                                         .ToList();
             if(problem == null)
             {
@@ -206,12 +208,35 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problems.Where(p => p.ID == id)
+                                            .Include(p => p.problemAuthors)
+                                            .Include(p => p.problemClassifications)
+                                            .Include(p => p.submissions)
+                                            .FirstOrDefault();
 
             if(problem == null)
                 return NotFound();
 
             problem.isDeleted = true;
+
+            foreach(var item in problem.problemClassifications)
+            {
+                item.isDeleted = true;
+                _context.Update(item);
+            }
+
+            foreach(var item in problem.problemAuthors)
+            {
+                item.isDeleted = true;
+                _context.Update(item);
+            }
+
+            foreach(var item in problem.submissions)
+            {
+                item.isDeleted = true;
+                _context.Update(item);
+            }
+
             _context.Update(problem);
 
             await _context.SaveChangesAsync();

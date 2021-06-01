@@ -1,8 +1,8 @@
 @model Problem
 @{
     ViewData["Title"] = Model.title;
-    var listAuthors = Model.problemAuthors.Select(p => p.author);
-    var listCategories = Model.problemClassifications.Select(p => p.category);
+    var listAuthors = Model.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.author);
+    var listCategories = Model.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.category);
     var listSubmissions = Model.submissions.ToList();
     var listComments = (List<Comment>)ViewData["ListComments"];
 }

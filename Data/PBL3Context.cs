@@ -14,6 +14,7 @@ namespace PBL3.Data
         public DbSet<Comment> Comments{get; set;}
         public DbSet<TestCase> TestCases{get; set;}
         public DbSet<Notification> Notifications{get; set;}
+        public DbSet<TypeNotification> typeNotifications{get; set;}
         public DbSet<Submission> Submissions {get; set;}
         public DbSet<SubmissionResult> SubmissionResults {get; set;}
         public DbSet<Category> Categories{get; set;}
@@ -21,6 +22,7 @@ namespace PBL3.Data
         public DbSet<ProblemAuthor> ProblemAuthors{get; set;}
         public DbSet<ProblemClassification> ProblemClassifications{get; set;}
         public DbSet<ArticleAuthor> ArticleAuthors{get; set;}
+        public DbSet<Like> Likes{get; set;}
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

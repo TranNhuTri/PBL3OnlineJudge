@@ -32,7 +32,39 @@ namespace PBL3.Controllers
             var account = _context.Accounts.Include(p => p.notifications).FirstOrDefault(p => p.accountName == accountName);
             if(account == null)
                 return NotFound();
-            return View(account.notifications.OrderByDescending(p => p.timeCreate).ToList());
+            return View(account.notifications.OrderByDescending(p => p.timeCreate).Take(10).ToList());
+        }
+        public IActionResult ViewNotification(int id)
+        {
+            var notication = _context.Notifications.FirstOrDefault(p => p.ID == id);
+
+            notication.seen = true;
+            _context.SaveChanges();
+
+            var tmpt = _context.Comments.FirstOrDefault(p => p.ID == notication.objectID);
+            if(tmpt != null)
+            {
+                if(_context.Problems.FirstOrDefault(p => p.ID == tmpt.postID) != null)
+                {
+                    return RedirectToAction("Problem", "ListProblems", new{id = tmpt.postID});
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                if(_context.Problems.FirstOrDefault(p => p.ID == notication.objectID) != null)
+                {
+                    return RedirectToAction("Problem", "ListProblems", new{id = notication.objectID});
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

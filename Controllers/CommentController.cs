@@ -20,8 +20,11 @@ namespace PBL3.Controllers
         }
         public IActionResult GetComment(int id)
         {
-            var comment = _context.Comments.Include(p => p.account)
+            var comment = _context.Comments.Where(p => p.ID == id)
+                                            .Include(p => p.account)
                                             .Include(p => p.child)
+                                            .Include(p => p.likes)
+                                            .ThenInclude(p => p.account)
                                             .FirstOrDefault(p => p.ID == id);
             if(comment == null)
                 return NotFound();
@@ -67,7 +70,8 @@ namespace PBL3.Controllers
                         content = "<b>" + account.accountName + "</b> đã trả lời bình luận của bạn",
                         timeCreate = DateTime.Now,
                         accountID = parentComment.accountID,
-                        objectID = comment.ID
+                        objectID = comment.ID,
+                        typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Comment Reply")
                     };
 
                     _context.Update(parentComment.account);
@@ -82,24 +86,26 @@ namespace PBL3.Controllers
                 if(_context.Articles.FirstOrDefault(p => p.ID == postID) != null)
                 {
                     var article = _context.Articles.Include(p => p.articleAuthors).FirstOrDefault(p => p.ID == postID);
-                    listAuthorIDs = article.articleAuthors.Select(p => p.authorID).ToList();
+                    listAuthorIDs = article.articleAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
                 }
                 else
                 {
                     var problem = _context.Problems.Include(p => p.problemAuthors).FirstOrDefault(p => p.ID == postID);
-                    listAuthorIDs = problem.problemAuthors.Select(p => p.authorID).ToList();
+                    listAuthorIDs = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
                 }
 
                 foreach(int id in listAuthorIDs)
                 {
                     if(listAuthorIDs.Contains(account.ID))
                         continue;
+                    
                     var noti = new Notification()
                     {
-                        content = "<b>" + account.accountName + "</b> đã bình luận bài viết của bạn",
+                        content = "<b>" + account.accountName + "</b> đã bình luận đề bài của bạn",
                         timeCreate = DateTime.Now,
                         accountID = id,
-                        objectID = comment.ID
+                        objectID = comment.ID,
+                        typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Problem Comment")
                     };
 
                     var acc = _context.Accounts.FirstOrDefault(p => p.ID == id);
@@ -121,6 +127,8 @@ namespace PBL3.Controllers
             var listComment = _context.Comments.Where(p => p.rootCommentID == id)
                                                 .Include(p => p.account)
                                                 .Include(p => p.child)
+                                                .Include(p => p.likes)
+                                                .ThenInclude(p => p.account)
                                                 .ToList();
             return View(listComment);
         }
@@ -174,6 +182,76 @@ namespace PBL3.Controllers
                 return true;
             }
             return false;
+        }
+        public void LikeComment(int commentID)
+        {
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+            if(account == null)
+            {
+                return;
+            }
+            var accountReceiveNotiID = _context.Comments.FirstOrDefault(p => p.ID == commentID).accountID;
+            var like = _context.Likes.FirstOrDefault(p => p.commentID == commentID && p.accountID == accountReceiveNotiID);
+            if(like != null)
+            {
+                if(like.status == true)
+                {
+                    like.status = false;
+                }
+                else
+                {
+                    like.status = true;
+                }
+                _context.Update(like);
+            }
+            else
+            {
+                _context.Add(new Like()
+                {
+                    commentID = commentID,
+                    accountID = account.ID,
+                    status = true
+                });
+                if(account.ID != accountReceiveNotiID)
+                {
+                    var notification = _context.Notifications.Where(p => p.accountID == accountReceiveNotiID && p.objectID == commentID).Include(p => p.typeNotification).FirstOrDefault(p => p.typeNotification.name == "New Like Comment");
+                    if(notification != null)
+                    {
+                        int numberLikes = _context.Likes.Where(p => p.commentID == commentID && p.status == true).ToList().Count();
+                        if(numberLikes >= 1)
+                        {
+                            notification.content = "<b>" + account.accountName + "</b> và " + numberLikes.ToString() + " người khác đã thích bình luận của bạn";
+                        }
+                        else
+                        {
+                            notification.content = "<b>" + account.accountName + "</b> đã thích bình luận của bạn";
+                        }
+                        notification.timeCreate = DateTime.Now;
+                        notification.seen = false;
+                        _context.Update(notification);
+                    }
+                    else
+                    {
+                        var noti = new Notification()
+                        {
+                            accountID = accountReceiveNotiID,
+                            objectID = commentID,
+                            content = "<b>" + account.accountName + "</b> đã thích bình luận của bạn",
+                            timeCreate = DateTime.Now,
+                            typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Like Comment")
+                        };
+                        _context.Add(noti);
+                    }
+                }
+            }
+            _context.SaveChanges();
+        }
+        public int GetNumberLikesOfComment(int id)
+        {
+            var comment = _context.Comments.Where(p => p.ID == id).Include(p => p.likes).FirstOrDefault();
+            if(comment == null || comment.likes.Where(p => p.status == true) == null)
+                return 0;
+            return comment.likes.Where(p => p.status == true).ToList().Count;
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

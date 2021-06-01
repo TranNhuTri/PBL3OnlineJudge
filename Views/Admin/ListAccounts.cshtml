@@ -1,11 +1,12 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
 }
 @model List<Account>
-<div class="listAdminObjectsPage">
+<div class="listObjectsPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class="listAdminObjectsPage_header">
+            <div class="listObjectsPage_header">
                 <h1>Danh sách tất cả tài khoản</h1>
             </div>
             @await Html.PartialAsync("_SearchAccountForm", ViewData[""])

@@ -114,15 +114,6 @@
   top: -8px;
   left: 10px;
   opacity: 0;
-  transition: all 0.1s ease-in;
-}
-
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_avarIcon:hover .appHeader_dropdown {
-  transform: scale(1);
-}
-
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_bellIcon:hover .appHeader_dropdown {
-  transform: scale(1);
 }
 
 .appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown {
@@ -130,13 +121,10 @@
   right: -20px;
   top: 170%;
   width: 250px;
-  padding: 10px 0;
   box-shadow: 0 0 5px #63636394;
   border-radius: 5px;
   background-color: #fff;
-  transform: scale(0);
-  transform-origin: 90% 0;
-  transition: all 0.2s ease-in;
+  display: none;
   z-index: 1;
 }
 
@@ -152,6 +140,15 @@
   display: none;
   z-index: 1;
   max-height: 400px;
+  overflow-y: auto;
+}
+
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_notifications_dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_notifications_dropdown::-webkit-scrollbar-thumb {
+  background-color: #e4e4e4;
 }
 
 .appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list {
@@ -159,25 +156,25 @@
   padding: 0;
 }
 
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item {
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_link {
+  text-decoration: none;
+  color: #636363de;
+}
+
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_link .appHeader_dropdown_item {
   font-size: 16px;
   padding: 12px 10px;
   display: flex;
   align-items: center;
-}
-
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item .appHeader_dropdown_link {
-  text-decoration: none;
-  color: #636363de;
   width: 100%;
-  display: block;
+  user-select: none;
 }
 
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item .appHeader_dropdown_link .appHeader_dropdown_icon {
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_link .appHeader_dropdown_item .appHeader_dropdown_icon {
   padding: 0 10px;
 }
 
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item .appHeader_dropdown_link .appHeader_notiText {
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_link .appHeader_dropdown_item .appHeader_notiText {
   font-size: 14px;
   margin: 0;
   padding-left: 10px;
@@ -185,12 +182,13 @@
   user-select: none;
 }
 
-.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item .appHeader_dropdown_item-dot {
+.appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_link .appHeader_dropdown_item .appHeader_dropdown_item-dot {
   background: #008eff;
   width: 8px;
   height: 8px;
   display: block;
   border-radius: 50%;
+  margin-left: auto;
 }
 
 .appHeader .appHeader_row .appHeader_list .appHeader_item .appHeader_dropdown_list .appHeader_dropdown_item:hover .appHeader_dropdown_link {

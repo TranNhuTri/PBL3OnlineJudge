@@ -82,6 +82,19 @@ namespace PBL3.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TypeNotification",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TypeNotification", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -111,30 +124,6 @@ namespace PBL3.Migrations
                         principalTable: "Comments",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    seen = table.Column<bool>(type: "bit", nullable: false),
-                    accountID = table.Column<int>(type: "int", nullable: false),
-                    objectID = table.Column<int>(type: "int", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Notifications_Accounts_accountID",
-                        column: x => x.accountID,
-                        principalTable: "Accounts",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,26 +262,57 @@ namespace PBL3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Like",
+                name: "Notifications",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    seen = table.Column<bool>(type: "bit", nullable: false),
+                    accountID = table.Column<int>(type: "int", nullable: false),
+                    objectID = table.Column<int>(type: "int", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    typeNotificationID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Accounts_accountID",
+                        column: x => x.accountID,
+                        principalTable: "Accounts",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notifications_TypeNotification_typeNotificationID",
+                        column: x => x.typeNotificationID,
+                        principalTable: "TypeNotification",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Likes",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     accountID = table.Column<int>(type: "int", nullable: false),
                     commentID = table.Column<int>(type: "int", nullable: true),
-                    liked = table.Column<bool>(type: "bit", nullable: false)
+                    status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Like", x => x.ID);
+                    table.PrimaryKey("PK_Likes", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Like_Accounts_accountID",
+                        name: "FK_Likes_Accounts_accountID",
                         column: x => x.accountID,
                         principalTable: "Accounts",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Like_Comments_commentID",
+                        name: "FK_Likes_Comments_commentID",
                         column: x => x.commentID,
                         principalTable: "Comments",
                         principalColumn: "ID",
@@ -351,19 +371,24 @@ namespace PBL3.Migrations
                 column: "rootCommentID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Like_accountID",
-                table: "Like",
+                name: "IX_Likes_accountID",
+                table: "Likes",
                 column: "accountID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Like_commentID",
-                table: "Like",
+                name: "IX_Likes_commentID",
+                table: "Likes",
                 column: "commentID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_accountID",
                 table: "Notifications",
                 column: "accountID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_typeNotificationID",
+                table: "Notifications",
+                column: "typeNotificationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProblemAuthors_authorID",
@@ -417,7 +442,7 @@ namespace PBL3.Migrations
                 name: "ArticleAuthors");
 
             migrationBuilder.DropTable(
-                name: "Like");
+                name: "Likes");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -436,6 +461,9 @@ namespace PBL3.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "TypeNotification");
 
             migrationBuilder.DropTable(
                 name: "Categories");

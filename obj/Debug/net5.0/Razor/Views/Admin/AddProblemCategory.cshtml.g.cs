@@ -20,48 +20,48 @@ using PBL3;
 #nullable disable
 #nullable restore
 #line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3.Models;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+using PBL3.Models;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"fe4856c0176db8b5f8bde9de429a29892e8b57bc", @"/Views/Admin/AddProblemCategory.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"88ef4445784557569207a2fe6f7175411bc82564", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_AddProblemCategory : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Category>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("type", "text", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);

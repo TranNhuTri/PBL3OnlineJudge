@@ -2,10 +2,10 @@
     Layout = "_AdminLayout";
 }
 @model List<Category>
-<div class="listAdminObjectsPage">
+<div class="listObjectsPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class="listAdminObjectsPage_header">
+            <div class="listObjectsPage_header">
                 <div style="display: flex">
                     <h1>Danh sách dạng bài tập</h1>
                     <a asp-action = "AddProblemCategory" asp-controller = "Admin" style="text-decoration: none;">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             @await Html.PartialAsync("_SearchProblemCategoryForm")
-            <table cellspacing="0" cellpadding="0" class="table listProblemCategories_table">
+            <table cellspacing="0" cellpadding="0" class="table">
                 <thead>
                     <tr>
                         <th>#</th>

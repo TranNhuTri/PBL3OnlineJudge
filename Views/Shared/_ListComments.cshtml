@@ -91,4 +91,33 @@
             }
         })
     }
+    function LikeComment(commentId)
+    {
+        document.querySelector("#comment_tool_like" + commentId).classList.toggle("comment_tool_like--active");
+
+        let data = new URLSearchParams();
+        data.append("commentID", commentId);
+
+        fetch("https://localhost:5001/Comment/LikeComment", {
+            method :'post',
+            body : data
+        })
+        .then(res => {
+            fetch("https://localhost:5001/Comment/GetNumberLikesOfComment/" + commentId)
+            .then(res => res.text())
+            .then(data => {
+                if(data > 0)
+                {
+                    console.log(data);
+                    $('#comment_likes' + commentId).css("opacity", "1");
+                }
+                else
+                {
+                    console.log(data);
+                    $('#comment_likes' + commentId).css("opacity", "0");
+                }
+                $('#comment_numlikes' + commentId).html(data)
+            })
+        })
+    }
 </script>

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/css/Login.css">
     <link rel="stylesheet" href="/css/SignUp.css">
     <link rel="stylesheet" href="/css/ListSubmissions.css">
+    <link rel="stylesheet" href="/css/ListObjects.css">
     <link rel="stylesheet" href="/css/General.css">
     
     <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
@@ -83,7 +84,7 @@
                             {
                                 accountName = Context.Session.GetString("AccountName");
                                 <li class="appHeader_item">
-                                    <div class="appHeader_bellIcon" onclick="showNotifications('@accountName')">
+                                    <div class="appHeader_bellIcon" onclick="showNotifications()">
                                         <i class="fas fa-bell"></i>
                                         <div class="appHeader_notifications_dropdown">
                                             <ul class="appHeader_dropdown_list" id = "notification-list">
@@ -93,28 +94,28 @@
                                     </div>
                                 </li>
                                 <li class="appHeader_item">
-                                    <div class="appHeader_avarIcon">
+                                    <div class="appHeader_avarIcon" onclick="showUserTool()">
                                         <i class="fas fa-user-circle"></i>
                                         <div class="appHeader_dropdown">
                                             <ul class="appHeader_dropdown_list">
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/">
+                                                <a class="appHeader_dropdown_link" href="/">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-user"></i>
                                                         @Context.Session.GetString("AccountName")
-                                                    </a>
-                                                </li>
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/Admin">
+                                                    </li>
+                                                </a>
+                                                <a class="appHeader_dropdown_link" href="/Admin">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-cogs"></i>
                                                         Admin
-                                                    </a>
-                                                </li>
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                    </li>
+                                                </a>
+                                                <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
                                                         Đăng xuất
-                                                    </a>
-                                                </li>
+                                                    </li>
+                                                </a>
                                             </ul>
                                         </div>
                                     </div>
@@ -164,9 +165,14 @@
             });
     </script>
     <script>
-        function showNotifications(accountName)
+        function showNotifications()
         {
             $('.appHeader_notifications_dropdown').toggle();
+        }
+
+        function showUserTool()
+        {
+            $('.appHeader_dropdown').toggle();
         }
 
         fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + '@accountName')
@@ -190,9 +196,8 @@
             .then(numberOfNotifications => {
                 if(numberOfNotifications >= 0)
                 {
-                    console.log(numberOfNotifications, $(".number_notifi").text())
-                    if(String(numberOfNotifications) != $(".number_notifi").text())
-                    {
+                    @* if(String(numberOfNotifications) != $(".number_notifi").text())
+                    { *@
                         fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
                         .then(res => res.text())
                         .then(data => {
@@ -205,7 +210,8 @@
                                 $('#notification-list').html(data);
                             }
                         })
-                    }
+                    @* } *@
+                    
                     if(numberOfNotifications > 0)
                     {
                         $(".number_notifi").html(numberOfNotifications);
@@ -230,14 +236,21 @@
         window.addEventListener('click', function(e){
 
             var bellIcon = document.querySelector(".appHeader_bellIcon");
+            var avarIcon = document.querySelector(".appHeader_avarIcon");
 
             if(bellIcon != null)
             {
                 let top = bellIcon.offsetTop, left = bellIcon.offsetLeft;
                 let height = bellIcon.offsetHeight, width = bellIcon.offsetWidth;
-
                 if(e.clientX < left || e.clientX > left + width || e.clientY < top || e.clientY > top + height)
                     $('.appHeader_notifications_dropdown').css("display", "none");
+            }
+            if(avarIcon != null)
+            {
+                let top = avarIcon.offsetTop, left = avarIcon.offsetLeft;
+                let height = avarIcon.offsetHeight, width = avarIcon.offsetWidth;
+                if(e.clientX < left || e.clientX > left + width || e.clientY < top || e.clientY > top + height)
+                    $('.appHeader_dropdown').css("display", "none");
             }
         })
     </script>

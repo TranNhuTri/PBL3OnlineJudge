@@ -61,7 +61,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-image: url(https://th.bing.com/th/id/Rc5469d9d60dc2e14ef73f2240fd48a7c?rik=wcKDgHrR0qaekw&pid=ImgRaw);
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1LCcfD_jjhno3IC7VwOHLv6KLNPAq_wfqzA&usqp=CAU);
 }
 
 .comment_item .comment_container {
@@ -127,6 +127,28 @@
   padding: 0 10px;
 }
 
+.comment_item .comment_likes {
+  position: absolute;
+  background-color: #dcdcdc;
+  font-size: 14rem;
+  padding: 0 5px;
+  border-radius: 15px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  bottom: -6px;
+  right: -14px;
+}
+
+.comment_item .comment_likes i {
+  color: #008eff;
+  font-size: 12rem;
+}
+
+.comment_item .comment_likes span {
+  margin-left: 4px;
+}
+
 .comment_item .comment_dot:hover .comment_extern-tool {
   opacity: 1;
 }
@@ -159,10 +181,15 @@
 .comment_tool .comment_tool_like {
   text-decoration: none;
   font-size: 14rem;
-  color: #444444 !important;
+  color: #444444;
   font-weight: bold;
   margin-right: 5px;
   user-select: none;
+  cursor: pointer;
+}
+
+.comment_tool .comment_tool_like--active {
+  color: #008eff;
 }
 
 .comment_tool .comment_tool_like:hover {

@@ -1,3 +1,6 @@
+@{
+    var accountName = "";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +16,7 @@
     <link rel="stylesheet" href="/css/Home.css">
     <link rel="stylesheet" href="/css/Admin.css">
     <link rel="stylesheet" href="/css/ListProblems.css">
-    <link rel="stylesheet" href="/css/ListAdminObjects.css">
+    <link rel="stylesheet" href="/css/ListObjects.css">
     <link rel="stylesheet" href="/css/AddEdit.css">
 
     <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
@@ -25,6 +28,8 @@
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/vs.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <div class="appContainer">
@@ -42,48 +47,40 @@
                         <ul class="appHeader_list">
                             @if(string.IsNullOrEmpty(Context.Session.GetString("AccountName")) == false)
                             {
+                                accountName = Context.Session.GetString("AccountName");
                                 <li class="appHeader_item">
-                                    <div class="appHeader_bellIcon">
+                                    <div class="appHeader_bellIcon" onclick="showNotifications()">
                                         <i class="fas fa-bell"></i>
-                                        <div class="appHeader_dropdown">
-                                            <ul class="appHeader_dropdown_list">
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="">
-                                                        <p class="appHeader_notiText">Alo alo alo alo</p>
-                                                    </a>
-                                                </li>
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="">
-                                                        <p class="appHeader_notiText">Alo alo alo alo</p>
-                                                    </a>
-                                                </li>
+                                        <div class="appHeader_notifications_dropdown">
+                                            <ul class="appHeader_dropdown_list" id = "notification-list">
                                             </ul>
                                         </div>
+                                        <div class="number_notifi"></div>
                                     </div>
                                 </li>
                                 <li class="appHeader_item">
-                                    <div class="appHeader_avarIcon">
+                                    <div class="appHeader_avarIcon" onclick="showUserTool()">
                                         <i class="fas fa-user-circle"></i>
                                         <div class="appHeader_dropdown">
                                             <ul class="appHeader_dropdown_list">
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/">
+                                                <a class="appHeader_dropdown_link" href="/">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-user"></i>
                                                         @Context.Session.GetString("AccountName")
-                                                    </a>
-                                                </li>
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/Admin">
+                                                    </li>
+                                                </a>
+                                                <a class="appHeader_dropdown_link" href="/Admin">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-cogs"></i>
                                                         Admin
-                                                    </a>
-                                                </li>
-                                                <li class="appHeader_dropdown_item">
-                                                    <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                    </li>
+                                                </a>
+                                                <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                    <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
                                                         Đăng xuất
-                                                    </a>
-                                                </li>
+                                                    </li>
+                                                </a>
                                             </ul>
                                         </div>
                                     </div>
@@ -196,6 +193,96 @@
                     hljs.highlightBlock(block);
                 });
             });
+    </script>
+        <script>
+        function showNotifications()
+        {
+            $('.appHeader_notifications_dropdown').toggle();
+        }
+
+        function showUserTool()
+        {
+            $('.appHeader_dropdown').toggle();
+        }
+
+        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + '@accountName')
+        .then(res => res.text())
+        .then(data => {
+            if(data == "")
+            {
+                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                $(".number_notifi").html(0);
+            }
+            else
+            {
+                $('#notification-list').html(data);
+            }
+        })
+
+        function getNotificationData(accountName)
+        {   
+            fetch("https://localhost:5001/Notification/GetNumberUnSeenNotification?accountName=" + accountName)
+            .then(res => res.text())
+            .then(numberOfNotifications => {
+                if(numberOfNotifications >= 0)
+                {
+                    @* if(String(numberOfNotifications) != $(".number_notifi").text())
+                    { *@
+                        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                        .then(res => res.text())
+                        .then(data => {
+                            if(data == "")
+                            {
+                                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                            }
+                            else
+                            {
+                                $('#notification-list').html(data);
+                            }
+                        })
+                    @* } *@
+                    
+                    if(numberOfNotifications > 0)
+                    {
+                        $(".number_notifi").html(numberOfNotifications);
+                        $(".number_notifi").css("opacity", "1");
+                    }
+                    else
+                    {
+                        $(".number_notifi").css("opacity", "0");
+                        $(".number_notifi").html(0);
+                    }
+                }
+
+                setTimeout(function()
+                {
+                    getNotificationData('@accountName')
+                }, 4000);
+            })
+        }
+        getNotificationData('@accountName');
+    </script>
+    <script>
+        window.addEventListener('click', function(e){
+
+            var bellIcon = document.querySelector(".appHeader_bellIcon");
+            var avarIcon = document.querySelector(".appHeader_avarIcon");
+
+            if(bellIcon != null)
+            {
+                let top = bellIcon.offsetTop, left = bellIcon.offsetLeft;
+                let height = bellIcon.offsetHeight, width = bellIcon.offsetWidth;
+                if(e.clientX < left || e.clientX > left + width || e.clientY < top || e.clientY > top + height)
+                    $('.appHeader_notifications_dropdown').css("display", "none");
+            }
+            if(avarIcon != null)
+            {
+                let top = avarIcon.offsetTop, left = avarIcon.offsetLeft;
+                let height = avarIcon.offsetHeight, width = avarIcon.offsetWidth;
+                if(e.clientX < left || e.clientX > left + width || e.clientY < top || e.clientY > top + height)
+                    $('.appHeader_dropdown').css("display", "none");
+            }
+        })
     </script>
 </body>
 </html>

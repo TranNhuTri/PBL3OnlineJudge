@@ -25,20 +25,20 @@
   border-bottom-right-radius: 4px;
 }
 
-.listAdminObjectsPage {
+.listObjectsPage {
   box-shadow: 0 0 3px #ccc;
   background-color: #fff;
   border-radius: 4px;
 }
 
-.listAdminObjectsPage .listAdminObjectsPage_header {
+.listObjectsPage .listObjectsPage_header {
   padding: 20px;
 }
 
-.listAdminObjectsPage .listAdminObjectsPage_header h1 {
+.listObjectsPage .listObjectsPage_header h1 {
   font-size: 20rem;
   line-height: 25rem;
   margin: 0;
   color: #444444;
 }
-/*# sourceMappingURL=ListAdminObjects.css.map */
+/*# sourceMappingURL=ListObjects.css.map */

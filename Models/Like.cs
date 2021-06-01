@@ -10,6 +10,6 @@ namespace PBL3.Models
         public Account account{get; set;}
         public int? commentID {get; set;}
         public Comment comment{get; set;}
-        public bool liked{get; set;}
+        public bool status{get; set;}
     } 
 }

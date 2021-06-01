@@ -88,15 +88,6 @@
                     top: -8px;
                     left: 10px;
                     opacity: 0;
-                    transition: all 0.1s ease-in;
-                }
-                .appHeader_avarIcon:hover .appHeader_dropdown
-                {
-                    transform: scale(1);
-                }
-                .appHeader_bellIcon:hover .appHeader_dropdown
-                {
-                    transform: scale(1);
                 }
                 .appHeader_dropdown
                 {
@@ -104,13 +95,10 @@
                     right: -20px;
                     top: 170%;
                     width: 250px;
-                    padding: 10px 0;
                     box-shadow: 0 0 5px #63636394;
                     border-radius: 5px;
                     background-color: $white-color;
-                    transform: scale(0);
-                    transform-origin: 90% 0;
-                    transition: all 0.2s ease-in;
+                    display: none;
                     z-index: 1;
                 }
                 .appHeader_notifications_dropdown
@@ -126,23 +114,32 @@
                     display: none;
                     z-index: 1;
                     max-height: 400px;
+                    overflow-y: auto;
+                }
+                .appHeader_notifications_dropdown::-webkit-scrollbar
+                {
+                    width: 6px;
+                }
+                .appHeader_notifications_dropdown::-webkit-scrollbar-thumb
+                {
+                    background-color: rgb(228, 228, 228);
                 }
                 .appHeader_dropdown_list
                 {
                     list-style: none;
                     padding: 0;
-                    .appHeader_dropdown_item
+                    .appHeader_dropdown_link
                     {
-                        font-size: 16px;
-                        padding: 12px 10px;
-                        display: flex;
-                        align-items: center;
-                        .appHeader_dropdown_link
+                        text-decoration: none;
+                        color: #636363de;
+                        .appHeader_dropdown_item
                         {
-                            text-decoration: none;
-                            color: #636363de;
+                            font-size: 16px;
+                            padding: 12px 10px;
+                            display: flex;
+                            align-items: center;
                             width: 100%;
-                            display: block;
+                            user-select: none;
                             .appHeader_dropdown_icon
                             {
                                 padding: 0 10px;
@@ -155,14 +152,15 @@
                                 color: rgba(0, 0, 0, 0.7);
                                 user-select: none;
                             }
-                        }
-                        .appHeader_dropdown_item-dot
-                        {
-                            background:$blue-color;
-                            width: 8px;
-                            height: 8px;
-                            display: block;
-                            border-radius: 50%;
+                            .appHeader_dropdown_item-dot
+                            {
+                                background:$blue-color;
+                                width: 8px;
+                                height: 8px;
+                                display: block;
+                                border-radius: 50%;
+                                margin-left: auto;
+                            }
                         }
                     }
                     .appHeader_dropdown_item:hover .appHeader_dropdown_link

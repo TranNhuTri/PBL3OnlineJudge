@@ -10,7 +10,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    [Migration("20210531124350_init")]
+    [Migration("20210601022944_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,7 +193,7 @@ namespace PBL3.Migrations
                     b.Property<int?>("commentID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("liked")
+                    b.Property<bool>("status")
                         .HasColumnType("bit");
 
                     b.HasKey("ID");
@@ -202,7 +202,7 @@ namespace PBL3.Migrations
 
                     b.HasIndex("commentID");
 
-                    b.ToTable("Like");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("PBL3.Models.Notification", b =>
@@ -230,9 +230,14 @@ namespace PBL3.Migrations
                     b.Property<DateTime>("timeCreate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("typeNotificationID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("accountID");
+
+                    b.HasIndex("typeNotificationID");
 
                     b.ToTable("Notifications");
                 });
@@ -434,6 +439,21 @@ namespace PBL3.Migrations
                     b.ToTable("TestCases");
                 });
 
+            modelBuilder.Entity("PBL3.Models.TypeNotification", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("TypeNotification");
+                });
+
             modelBuilder.Entity("PBL3.Models.ArticleAuthor", b =>
                 {
                     b.HasOne("PBL3.Models.Article", "article")
@@ -495,7 +515,15 @@ namespace PBL3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Models.TypeNotification", "typeNotification")
+                        .WithMany("notifications")
+                        .HasForeignKey("typeNotificationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("account");
+
+                    b.Navigation("typeNotification");
                 });
 
             modelBuilder.Entity("PBL3.Models.ProblemAuthor", b =>
@@ -634,6 +662,11 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
                 {
                     b.Navigation("submitResults");
+                });
+
+            modelBuilder.Entity("PBL3.Models.TypeNotification", b =>
+                {
+                    b.Navigation("notifications");
                 });
 #pragma warning restore 612, 618
         }

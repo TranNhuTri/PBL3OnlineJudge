@@ -33,9 +33,9 @@ namespace PBL3.Controllers
 
             ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
 
-            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Select(p => p.authorID).ToList();
+            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
 
-            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Select(p => p.categoryID).ToList();
+            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
 
             return View(problem);
         }
@@ -80,17 +80,18 @@ namespace PBL3.Controllers
                 problem.timeLimit = reqProblem.timeLimit;
                 problem.memoryLimit = reqProblem.memoryLimit;
 
-                foreach(var item in problem.problemAuthors)
+                foreach(var item in problem.problemAuthors)// old problem.problemAuthors     new reqListAuthorIds
                 {
-                    //xoa
+                    //delete
                     if(reqListAuthorIds.Any(p => p == item.authorID) == false)
                     {
-                        _context.Remove(item);
+                        item.isDeleted = true;
+                        _context.Update(item);
                     }
                 }
                 foreach(var item in reqListAuthorIds)
                 {
-                    //them
+                    //add
                     if(problem.problemAuthors.Any(p => p.authorID == item) == false)
                     {
                         _context.Add(new ProblemAuthor()
@@ -99,19 +100,26 @@ namespace PBL3.Controllers
                             problem = problem
                         });
                     }
+                    else
+                    {
+                        var tmpt = problem.problemAuthors.FirstOrDefault(p => p.authorID == item);
+                        tmpt.isDeleted = false;
+                        _context.Update(tmpt);
+                    }
                 }
 
                 foreach(var item in problem.problemClassifications)
                 {
-                    //xoa
+                    //delete
                     if(reqListCategoryIds.Any(p => p == item.categoryID) == false)
                     {
-                        _context.Remove(item);
+                        item.isDeleted= true;
+                        _context.Update(item);
                     }
                 }
                 foreach(var item in reqListCategoryIds)
                 {
-                    //them
+                    //add
                     if(problem.problemClassifications.Any(p => p.categoryID == item) == false)
                     {
                         _context.Add(new ProblemClassification()
@@ -119,6 +127,12 @@ namespace PBL3.Controllers
                             categoryID = item,
                             problem = problem
                         });
+                    }
+                    else
+                    {
+                        var tmpt = problem.problemClassifications.FirstOrDefault(p => p.categoryID == item);
+                        tmpt.isDeleted = false;
+                        _context.Update(tmpt);
                     }
                 }
 
