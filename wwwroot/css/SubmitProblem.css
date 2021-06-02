@@ -34,7 +34,8 @@
   background-color: #fff;
   padding: 20px;
   margin: 30px 0;
-  box-shadow: 0 0 5px #ccc;
+  -webkit-box-shadow: 0 0 5px #ccc;
+          box-shadow: 0 0 5px #ccc;
   border-radius: 4px;
   font-size: 16rem;
 }
@@ -59,8 +60,12 @@
 
 .submitProblemPage .submitProblemForm .submitProblemInfor {
   padding-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .submitProblemPage .submitProblemForm .submitProblemInfor #languageSubmit {
@@ -78,7 +83,8 @@
 
 .submitProblemPage .submitProblemForm .submitProblemInfor #languageSubmit:focus {
   border: 1px solid #ccc;
-  box-shadow: 0 0 5px #52a8eccc;
+  -webkit-box-shadow: 0 0 5px #52a8eccc;
+          box-shadow: 0 0 5px #52a8eccc;
 }
 
 .submitProblemPage .submitProblemForm .submitProblemButton {

@@ -91,11 +91,11 @@ namespace PBL3.Controllers
                     reqAccount.typeAccount = 3;
 
                     var message = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + reqAccount.token + "&&email=" + reqAccount.email;
-                    
-                    _context.Accounts.Add(reqAccount);
-                    _context.SaveChangesAsync();
 
                     Utility.sendMail(reqAccount.email, message);
+
+                    _context.Accounts.Add(reqAccount);
+                    _context.SaveChangesAsync();
 
                     return RedirectToAction("Index", "Home");
                 }

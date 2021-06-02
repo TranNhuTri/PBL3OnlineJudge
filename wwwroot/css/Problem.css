@@ -37,7 +37,8 @@
 .problemPage .problemContent {
   padding: 20px;
   background-color: #fff;
-  box-shadow: 0 0 4px #ccc;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
   border-radius: 4px;
   word-break: break-word;
 }
@@ -75,14 +76,19 @@
 .problemPage .problemMenu {
   font-family: "Arial",serif;
   background-color: #fff;
-  box-shadow: 0 0 4px #ccc;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
   border-radius: 4px;
   padding: 15px;
 }
 
 .problemPage .problemMenu .problemMenu_Buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link {
@@ -93,6 +99,7 @@
 .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton, .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton {
   border: none;
   color: #fff;
+  -webkit-transition: all 0.05s ease-in;
   transition: all 0.05s ease-in;
   width: 130px;
   padding: 10px 0;
@@ -103,7 +110,8 @@
 }
 
 .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton:hover, .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemStatistictButton:hover {
-  transform: scale(1.04);
+  -webkit-transform: scale(1.04);
+          transform: scale(1.04);
 }
 
 .problemPage .problemMenu .problemMenu_Buttons .problemMenu_Link .problemSubmitButton {
@@ -146,7 +154,8 @@
   margin-top: 25px;
   padding: 10px 15px;
   background-color: #fff;
-  box-shadow: 0 0 4px #ccc;
+  -webkit-box-shadow: 0 0 4px #ccc;
+          box-shadow: 0 0 4px #ccc;
   border-radius: 4px;
   font-family: 'Arial', sans-serif;
   font-size: 16rem;
@@ -184,8 +193,12 @@
 
 .confirmDeleteProblem .confirmDeleteProblem_buttons {
   padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .confirmDeleteProblem .confirmDeleteProblem_buttons .deleteProblem_button {

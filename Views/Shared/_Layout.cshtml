@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/css/SignUp.css">
     <link rel="stylesheet" href="/css/ListSubmissions.css">
     <link rel="stylesheet" href="/css/ListObjects.css">
+    <link rel="stylesheet" href="/css/ListArticles.css">
     <link rel="stylesheet" href="/css/General.css">
     
     <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
@@ -73,9 +74,9 @@
                                     <a href="/ListSubmissions" class ="appHeader_link" >Bài nộp</a>
                                 </div>
                             </li>
-                            <li class="appHeader_item">
+                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "ListArticles", cssClass: "appHeader_item--active")" >
                                 <div class="appHeader_text">
-                                    <a href="/" class ="appHeader_link" >Bài viết</a>
+                                    <a href="/ListArticles" class ="appHeader_link" >Bài viết</a>
                                 </div>
                             </li>
                         </ul>

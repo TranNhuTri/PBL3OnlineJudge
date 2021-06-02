@@ -34,7 +34,8 @@
   width: 360px;
   height: 540px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px #ccc;
+  -webkit-box-shadow: 0 2px 5px #ccc;
+          box-shadow: 0 2px 5px #ccc;
   position: relative;
   overflow: hidden;
   font-size: 14rem;
@@ -43,12 +44,20 @@
 
 .signUpPage .signUpContainer .signUpForm {
   width: 280px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   position: absolute;
   top: 65px;
   left: 40px;
+  -webkit-transition: .8s;
   transition: .8s;
 }
 
@@ -95,15 +104,23 @@
 }
 
 .signUpPage .signUpContainer .signUpForm .signUpForm_buttonBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin-top: 40px;
 }
 
 .signUpPage .signUpContainer .signUpForm .GmailConfirm {
   margin-top: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .signUpPage .signUpContainer .signUpForm .GmailConfirm .signUpForm_textBox {
@@ -121,8 +138,12 @@
 .signUpPage .signUpContainer .signUpPage_step--row {
   width: 100%;
   height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border: none;
   border-bottom: 1px solid #ccc;
 }
@@ -132,6 +153,7 @@
   width: calc(1/2*360px);
   position: absolute;
   background-color: #1dbfaf;
+  -webkit-transition: .8s;
   transition: .8s;
 }
 
