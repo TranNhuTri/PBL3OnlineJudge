@@ -25,7 +25,7 @@
   border-bottom-right-radius: 4px;
 }
 
-.AddEditPage {
+.addEditPage {
   box-shadow: 0 0 3px #ccc;
   background-color: #fff;
   border-radius: 4px;
@@ -33,68 +33,68 @@
   color: #444444;
 }
 
-.AddEditPage .AddEditPage_header h1 {
+.addEditPage .addEditPage_header h1 {
   font-size: 20rem;
   font-weight: normal;
   margin-bottom: 20px;
 }
 
-.AddEditPage .AddEditPage_input .formGroup {
+.formGroup {
   margin: 15px 0;
 }
 
-.AddEditPage .AddEditPage_input .formGroup input {
+.formGroup input {
   width: 250px;
 }
 
-.AddEditPage .AddEditPage_input .formGroup .ss-main {
+.formGroup .ss-main {
   font-size: 14rem;
 }
 
-.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-single-selected {
+.formGroup .ss-main .ss-single-selected {
   border: 1px solid #afafaf;
 }
 
-.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-multi-selected {
+.formGroup .ss-main .ss-multi-selected {
   border: 1px solid #afafaf !important;
 }
 
-.AddEditPage .AddEditPage_input .formGroup .ss-main .ss-disabled {
+.formGroup .ss-main .ss-disabled {
   color: #ccc !important;
 }
 
-.AddEditPage .AddEditPage_input .formGroup label {
+.formGroup label {
   width: 150px;
   display: inline-block;
 }
 
-.AddEditPage .AddEditPage_input .formSubmitGroup {
+.formSubmitGroup {
   display: flex;
   justify-content: left;
   padding: 10px 0;
 }
 
-.AddEditPage .AddEditPage_input .formSubmit {
+.formSubmit {
   margin-left: 20px;
   display: flex;
   justify-content: center;
 }
 
-.AddEditPage .AddEditPage_input .formSubmit .submitButton {
+.formSubmit .submitButton {
   padding: 10px 40px;
   border: none;
   font-size: 16rem;
 }
 
-.AddEditPage .AddEditPage_input .formSubmit .submitButton p {
+.formSubmit .submitButton p {
   margin: 0;
 }
 
-.AddEditPage .AddEditPage_input .formSubmit .submitButton i {
+.formSubmit .submitButton i {
   margin-right: 10px;
 }
 
-.AddEditPage .AddEditPage_input .formSubmit:first-child {
+.formSubmit:first-child {
   margin-left: 0;
 }
 

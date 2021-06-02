@@ -71,7 +71,7 @@ namespace PBL3.Controllers
                         timeCreate = DateTime.Now,
                         accountID = parentComment.accountID,
                         objectID = comment.ID,
-                        typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Comment Reply")
+                        typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Comment Reply")
                     };
 
                     _context.Update(parentComment.account);
@@ -105,7 +105,7 @@ namespace PBL3.Controllers
                         timeCreate = DateTime.Now,
                         accountID = id,
                         objectID = comment.ID,
-                        typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Problem Comment")
+                        typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Problem Comment")
                     };
 
                     var acc = _context.Accounts.FirstOrDefault(p => p.ID == id);
@@ -238,7 +238,7 @@ namespace PBL3.Controllers
                             objectID = commentID,
                             content = "<b>" + account.accountName + "</b> đã thích bình luận của bạn",
                             timeCreate = DateTime.Now,
-                            typeNotification = _context.typeNotifications.FirstOrDefault(p => p.name == "New Like Comment")
+                            typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Like Comment")
                         };
                         _context.Add(noti);
                     }

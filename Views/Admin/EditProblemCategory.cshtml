@@ -4,16 +4,16 @@
     var listChosenProblemIds = (List<int>)ViewData["ListChosenProblemIds"];
 }
 @model Category
-<div class = "AddEditPage">
+<div class = "addEditPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class = "AddEditPage_header">
+            <div class = "addEditPage_header">
                 <h1>
                     Chỉnh sửa dạng bài
                 </h1>
             </div>
             <form asp-action = "EditProblemCategory">
-                <div class = "AddEditPage_input">
+                <div class = "addEditPage_input">
                     <div class="formGroup">
                         <label for="Name" style="width: 150px; display: inline-block;">Tên dạng bài:</label>
                         <input type="text" asp-for = "name" placeholder="Nhập tên dạng bài">

@@ -8,64 +8,16 @@ using PBL3.Models;
 using PBL3.DTO;
 using PBL3.Data;
 using PBL3.General;
+using System.Threading.Tasks;
 
 namespace PBL3.Controllers
 {
     public class AccountController : Controller
     {
-        static string key { get; set; } = "trannhutri0703phandinhkhoi2312nhatlong2509dosanh0804";
         private readonly PBL3Context _context;
         public AccountController(PBL3Context context)
         {
             _context = context;
-        }
-        public IActionResult Login()
-        {
-            string returnUrl;
-            if (Request.Headers["Referer"].ToString() != null)
-            {
-                returnUrl = System.Net.WebUtility.UrlEncode(Request.Headers["Referer"].ToString());
-                ViewBag.ReturnURL = returnUrl;
-            }
-
-            return View();
-        }
-
-        public IActionResult Logout()
-        {
-            HttpContext.Session.SetString("AccountName", string.Empty);
-            HttpContext.Session.SetString("TypeAccount", String.Empty);
-            return RedirectToAction("Index", "Home");
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login([Bind("accountName, passWord")]LoginAccount requestAccount, string returnUrl)
-        {
-            if(ModelState.IsValid)
-            {
-                var account = _context.Accounts.FirstOrDefault(p => p.accountName == requestAccount.accountName && p.passWord == Utility.CreateMD5(requestAccount.passWord) && p.isActived == true);
-                if(account != null)
-                {
-                    HttpContext.Session.SetString("AccountName", account.accountName);
-                    HttpContext.Session.SetString("TypeAccount", Convert.ToString(account.typeAccount));
-                    if(!string.IsNullOrEmpty(returnUrl))
-                    {
-                        returnUrl = System.Net.WebUtility.UrlDecode(returnUrl);
-                        if(!returnUrl.Contains("Login") && !returnUrl.Contains("SignUp"))
-                        {
-                            return Redirect(returnUrl);
-                        }
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không hợp lệ !");
-                    return View();
-                }
-            }
-            return View();
         }
         public IActionResult SignUp()
         {
@@ -123,7 +75,6 @@ namespace PBL3.Controllers
             }
             return NotFound();
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

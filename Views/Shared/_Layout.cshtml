@@ -63,14 +63,14 @@
                                     <a href="/" class ="appHeader_link" >Trang Chủ</a>
                                 </div>
                             </li>
-                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "ListProblems", cssClass: "appHeader_item--active")">
+                            <li class="appHeader_item @Html.IsSelected(actions: "Page", controllers: "Problems", cssClass: "appHeader_item--active")">
                                 <div class="appHeader_text">
-                                    <a href="/ListProblems" class ="appHeader_link" >Bài Tập</a>
+                                    <a href="/Problems" class ="appHeader_link" >Bài Tập</a>
                                 </div>
                             </li>
-                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "ListSubmissions", cssClass: "appHeader_item--active")">
+                            <li class="appHeader_item @Html.IsSelected(actions: "Page", controllers: "Submissions", cssClass: "appHeader_item--active")">
                                 <div class="appHeader_text">
-                                    <a href="/ListSubmissions" class ="appHeader_link" >Bài nộp</a>
+                                    <a href="/Submissions" class ="appHeader_link" >Bài nộp</a>
                                 </div>
                             </li>
                             <li class="appHeader_item">
@@ -110,7 +110,7 @@
                                                         Admin
                                                     </li>
                                                 </a>
-                                                <a class="appHeader_dropdown_link" href="/Account/Logout">
+                                                <a class="appHeader_dropdown_link" href="/Logout">
                                                     <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
                                                         Đăng xuất
@@ -124,7 +124,7 @@
                             else
                             {
                                 <li class="appHeader_item">
-                                    <a href="/Account/Login" class = "login_link">Đăng nhập</a>
+                                    <a href="/Home/Login" class = "login_link">Đăng nhập</a>
                                 </li>
                                 <li class="appHeader_item">
                                     <a href="/Account/SignUp" class = "register_link">Đăng ký</a>
@@ -196,21 +196,18 @@
             .then(numberOfNotifications => {
                 if(numberOfNotifications >= 0)
                 {
-                    @* if(String(numberOfNotifications) != $(".number_notifi").text())
-                    { *@
-                        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
-                        .then(res => res.text())
-                        .then(data => {
-                            if(data == "")
-                            {
-                                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
-                            }
-                            else
-                            {
-                                $('#notification-list').html(data);
-                            }
-                        })
-                    @* } *@
+                    fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                    .then(res => res.text())
+                    .then(data => {
+                        if(data == "")
+                        {
+                            $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                        }
+                        else
+                        {
+                            $('#notification-list').html(data);
+                        }
+                    })
                     
                     if(numberOfNotifications > 0)
                     {

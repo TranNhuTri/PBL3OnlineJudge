@@ -24,7 +24,7 @@ namespace PBL3.Controllers
         {
             return View();
         }
-        public IActionResult ListProblems(int? page, int authorId, int? isPublic, string searchText)
+        public IActionResult Problems(int? page, int authorId, int? isPublic, string searchText)
         {
             ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
             
@@ -73,7 +73,7 @@ namespace PBL3.Controllers
 
             return View(listProblems.OrderByDescending(p => p.timeCreate).ToList());
         }
-        public IActionResult ListProblemCategories(int? page, string categoryName)
+        public IActionResult ProblemCategories(int? page, string categoryName)
         {
             var listProblemCategories = _context.Categories.ToList();
 
@@ -209,93 +209,7 @@ namespace PBL3.Controllers
 
             return View(reqCategory);
         }
-        public IActionResult ListAccounts(int? page, int? isActived, int typeAccount, string searchText)
-        {
-            var listAccounts = _context.Accounts.OrderBy(p => p.accountName).ToList();
-
-            if(typeAccount != 0)
-            {
-                listAccounts = listAccounts.Where(p => p.typeAccount == typeAccount).ToList();
-            }
-            if(isActived == 1)
-            {
-                listAccounts = listAccounts.Where(p => p.isActived == true).ToList();
-            }
-            else
-                if(isActived == 0)
-                {
-                    listAccounts = listAccounts.Where(p => p.isActived == false).ToList();
-                }
-            if(!string.IsNullOrEmpty(searchText))
-            {
-                listAccounts = listAccounts.Where(p => p.accountName.ToLower().Contains(searchText.ToLower()) || p.email.ToLower().Contains(searchText.ToLower()) || (p.lastName + " " + p.firstName).ToLower().Contains(searchText.ToLower())).ToList();
-            }
-
-            if(page == null)
-            {
-                page = 1;
-            }
-            
-            int limit = Utility.limitData;
-
-            int start = (int)(page - 1)*limit;
-
-            ViewBag.currentPage = page;
-
-            ViewBag.totalPage = (int)Math.Ceiling((float)listAccounts.Count/limit);
-
-            listAccounts = listAccounts.Skip(start).Take(limit).ToList();
-
-            return View(listAccounts);
-        }
-        public IActionResult EditAccount(int id)
-        {
-            var account = _context.Accounts.FirstOrDefault(p => p.ID == id);
-
-            if(account == null)
-            {
-                return NotFound();
-            }
-
-            return View(new EditAccount()
-            {
-                accountName = account.accountName,
-                email = account.email,
-                typeAccount = account.typeAccount,
-                isActived = account.isActived,
-                lastName = account.lastName,
-                firstName = account.firstName
-            });
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAccount(int id, [Bind("accountName", "email", "isActived", "typeAccount", "lastName", "firstName")] EditAccount reqEditAccount)
-        {
-            if(ModelState.IsValid)
-            {
-                var account = _context.Accounts.FirstOrDefault(p => p.ID == id);
-
-                if(_context.Accounts.FirstOrDefault(p => p.accountName == reqEditAccount.accountName && p.accountName != account.accountName) != null)
-                {
-                    ModelState.AddModelError("", "Tên đăng nhập đã tồn tại");
-                    return View();
-                }
-
-                account.accountName = reqEditAccount.accountName;
-                account.email = reqEditAccount.email;
-                account.isActived = reqEditAccount.isActived;
-                account.typeAccount = reqEditAccount.typeAccount;
-                account.lastName = reqEditAccount.lastName;
-                account.firstName = reqEditAccount.firstName;
-
-                _context.Update(account);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("ListAccounts");
-            }
-            return View();
-        }
-        public IActionResult ListSubmissions(int? page, string language, string status, string searchText)
+        public IActionResult Submissions(int? page, string language, string status, string searchText)
         {
             var listSubmissions = _context.Submissions.Include(p => p.problem).Include(p => p.account).OrderByDescending(p => p.timeCreate).ToList();
             if(language != "all" && !string.IsNullOrEmpty(language))
@@ -328,7 +242,7 @@ namespace PBL3.Controllers
 
             return View(listSubmissions);
         }
-        public IActionResult Submission(int id)
+        public IActionResult EditSubmission(int id)
         {
             var submission = _context.Submissions.Include(p => p.problem).Include(p => p.account).Include(p => p.submissionResults).FirstOrDefault(p => p.ID == id);
 

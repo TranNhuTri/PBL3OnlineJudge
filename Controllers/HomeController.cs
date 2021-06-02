@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PBL3.Models;
 using PBL3.Data;
+using PBL3.General;
+using PBL3.DTO;
 
 namespace PBL3.Controllers
 {
@@ -25,6 +27,46 @@ namespace PBL3.Controllers
                 ViewData["ACSubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "Accepted").ToList().Count;
                 ViewData["WASubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "Wrong Answer").ToList().Count;
                 ViewData["TLESubmissions"] = _context.Submissions.Where(s => s.account.accountName == accountName && s.status == "TLE").ToList().Count;
+            }
+            return View();
+        }
+        public IActionResult Login()
+        {
+            string returnUrl;
+            if (Request.Headers["Referer"].ToString() != null)
+            {
+                returnUrl = System.Net.WebUtility.UrlEncode(Request.Headers["Referer"].ToString());
+                ViewBag.ReturnURL = returnUrl;
+            }
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login([Bind("accountName, passWord")]LoginAccount requestAccount, string returnUrl)
+        {
+            if(ModelState.IsValid)
+            {
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == requestAccount.accountName && p.passWord == Utility.CreateMD5(requestAccount.passWord) && p.isActived == true);
+                if(account != null)
+                {
+                    HttpContext.Session.SetString("AccountName", account.accountName);
+                    HttpContext.Session.SetString("TypeAccount", Convert.ToString(account.typeAccount));
+                    if(!string.IsNullOrEmpty(returnUrl))
+                    {
+                        returnUrl = System.Net.WebUtility.UrlDecode(returnUrl);
+                        if(!returnUrl.Contains("Login") && !returnUrl.Contains("SignUp"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không hợp lệ !");
+                    return View();
+                }
             }
             return View();
         }

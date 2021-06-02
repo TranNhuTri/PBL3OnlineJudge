@@ -4,16 +4,16 @@
     var listProblems = (List<Problem>)ViewData["ListProblems"];
     var listChosenProblemIds = (List<int>)ViewData["ListChosenProblemIds"];
 }
-<div class = "AddEditPage">
+<div class = "addEditPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class = "AddEditPage_header">
+            <div class = "addEditPage_header">
                 <h1>
                     Tạo dạng bài mới
                 </h1>
             </div>
             <form asp-action = "AddProblemCategory">
-                <div class = "AddEditPage_input">
+                <div class = "addEditPage_input">
                     <div class="formGroup">
                         <label for="name" style="width: 150px; display: inline-block;">Tên dạng bài:</label>
                         <input type="text" asp-for = "name" placeholder="Nhập tên dạng bài">
