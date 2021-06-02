@@ -1,12 +1,12 @@
 @import 'var.scss';
-.AddEditPage
+.addEditPage
 {
     box-shadow: 0 0 3px $shadow-color;
     background-color: $white-color;
     border-radius: 4px;
     padding: 15px 20px;
     color: $text-color;
-    .AddEditPage_header
+    .addEditPage_header
     {
         h1 
         {
@@ -15,68 +15,66 @@
             margin-bottom: 20px;
         }
     }
-    .AddEditPage_input
+}
+
+.formGroup
+{
+    margin: 15px 0;
+    input 
     {
-        .formGroup
+        width: 250px;
+    }
+    .ss-main
+    {
+        font-size: 14rem;
+        .ss-single-selected
         {
-            margin: 15px 0;
-            input 
-            {
-                width: 250px;
-            }
-            .ss-main
-            {
-                font-size: 14rem;
-                .ss-single-selected
-                {
-                    border: 1px solid #afafaf;
-                }
-                .ss-multi-selected
-                {
-                    border: 1px solid #afafaf !important;
-                }
-                .ss-disabled
-                {
-                    color: #ccc !important;
-                }
-            }
-            label 
-            {
-                width: 150px; 
-                display: inline-block;
-            }
+            border: 1px solid #afafaf;
         }
-        .formSubmitGroup
+        .ss-multi-selected
         {
-            display: flex;
-            justify-content: left;
-            padding: 10px 0;
+            border: 1px solid #afafaf !important;
         }
-        .formSubmit
+        .ss-disabled
         {
-            margin-left: 20px;
-            display: flex;
-            justify-content: center;
-            .submitButton
-            {
-                padding: 10px 40px;
-                border: none;
-                font-size: 16rem;
-                p 
-                {
-                    margin: 0;
-                }
-                i 
-                {
-                    margin-right: 10px;
-                }
-            }
-        }
-        .formSubmit:first-child
-        {
-            margin-left: 0;
+            color: #ccc !important;
         }
     }
+    label 
+    {
+        width: 150px; 
+        display: inline-block;
+    }
+}
+.formSubmitGroup
+{
+    display: flex;
+    justify-content: left;
+    padding: 10px 0;
+}
+.formSubmit
+{
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    .submitButton
+    {
+        padding: 10px 40px;
+        border: none;
+        font-size: 16rem;
+        p 
+        {
+            margin: 0;
+        }
+        i 
+        {
+            margin-right: 10px;
+        }
+    }
+}
+.formSubmit:first-child
+{
+    margin-left: 0;
 }
 
 //problem editor

@@ -12,7 +12,7 @@
                 if(from > 1)
                 {
                     <li class="pagination-item">
-                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "1" class="pagination-item_link">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "1" class="pagination-item_link">
                             <i class="pagination-item__icon fas fa-angle-double-left">
                             </i>
                         </a>
@@ -20,11 +20,11 @@
                     if(from > denta)
                     {
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "1" class="pagination-item_link">1</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "1" class="pagination-item_link">1</a>
                         </li>
 
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "2" class="pagination-item_link">2</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "2" class="pagination-item_link">2</a>
                         </li>
                         <li class="pagination-item pagination-item_icon">...</li>
                     }
@@ -33,7 +33,7 @@
                         for(int i = 1; i < from; i++)
                         {
                             <li class="pagination-item">
-                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
                             </li>
                         }
                     }
@@ -43,13 +43,13 @@
                     if(i == currentPage)
                     {
                         <li class="pagination-item pagination-item--active">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
                         </li>
                     }
                     else
                     {
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
                         </li>
                     }
                 }
@@ -59,11 +59,11 @@
                     {
                         <li class="pagination-item pagination-item_icon">...</li>
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@(totalPage - 1)" class="pagination-item_link">@(totalPage - 1)</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@(totalPage - 1)" class="pagination-item_link">@(totalPage - 1)</a>
                         </li>
 
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@(totalPage)" class="pagination-item_link">@(totalPage)</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@(totalPage)" class="pagination-item_link">@(totalPage)</a>
                         </li>
                     }
                     else
@@ -71,12 +71,12 @@
                         for(int i = end + 1; i <= totalPage; i++)
                         {
                             <li class="pagination-item">
-                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@i" class="pagination-item_link">@i</a>
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
                             </li>
                         }
                     }
                     <li class="pagination-item">
-                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-page = "@totalPage" class="pagination-item_link">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@totalPage" class="pagination-item_link">
                             <i class="pagination-item__icon fas fa-angle-double-right">
                             </i>
                         </a>

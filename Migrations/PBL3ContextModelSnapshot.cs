@@ -449,7 +449,7 @@ namespace PBL3.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("typeNotifications");
+                    b.ToTable("TypeNotifications");
                 });
 
             modelBuilder.Entity("PBL3.Models.ArticleAuthor", b =>

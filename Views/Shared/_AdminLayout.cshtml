@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/css/ListProblems.css">
     <link rel="stylesheet" href="/css/ListObjects.css">
     <link rel="stylesheet" href="/css/AddEdit.css">
+    <link rel="stylesheet" href="/css/Delete.css">
 
     <script type="text/javascript" src="/ckeditor/ckeditor.js" charset="utf-8"></script>
 
@@ -111,17 +112,17 @@
                                 </div>
                                 <ul class="adminCategory_list">
                                     <li class="adminCategory_item">
-                                        <a  asp-action = "ListProblems" asp-controller = "Admin"  class="adminCategory_link"> 
-                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                        <a  asp-action = "Problems" asp-controller = "Admin"  class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "Problems,ProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
                                                 <p class="adminCategory_mainmenu_text">Bài tập</p>
-                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
-                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "Problems,ProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "Problems,ProblemCategories", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
                                             </div>
                                         </a>
-                                        <div class="adminCategory_submenu @Html.IsSelected(actions: "ListProblems,ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu--active")">
+                                        <div class="adminCategory_submenu @Html.IsSelected(actions: "Problems,ProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu--active")">
                                             <ul class="adminCategory_submenu_list">
-                                                <a asp-action = "ListProblemCategories" asp-controller = "Admin" style="text-decoration: none;">
-                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "ListProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu_item--active")">Dạng bài tập</li>
+                                                <a asp-action = "ProblemCategories" asp-controller = "Admin" style="text-decoration: none;">
+                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "ProblemCategories", controllers: "Admin", cssClass: "adminCategory_submenu_item--active")">Dạng bài tập</li>
                                                 </a>
                                             </ul>
                                         </div>
@@ -141,11 +142,11 @@
                                         </div>
                                     </li>
                                     <li class="adminCategory_item">
-                                        <a asp-action = "ListSubmissions" asp-controller = "Admin" class="adminCategory_link">
-                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                        <a asp-action = "Submissions" asp-controller = "Admin" class="adminCategory_link">
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "Submissions", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
                                                 <p class="adminCategory_mainmenu_text">Bài nộp</p>
-                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
-                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListSubmissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "Submissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "Submissions", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
                                             </div>
                                         </a>
                                         <div class="adminCategory_submenu">
@@ -156,11 +157,11 @@
                                         </div>
                                     </li>
                                     <li class="adminCategory_item">
-                                        <a asp-action = "ListAccounts" asp-controller = "Admin" class="adminCategory_link"> 
-                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu--active")">
+                                        <a asp-action = "Page" asp-controller = "Accounts" class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: "Page", controllers: "Accounts", cssClass: "adminCategory_mainmenu--active")">
                                                 <p class="adminCategory_mainmenu_text">Người dùng</p>
-                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu_icon--active")"></i>
-                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "ListAccounts", controllers: "Admin", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: "Page", controllers: "Accounts", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: "Page", controllers: "Accounts", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
                                             </div>
                                         </a>
                                         <div class="adminCategory_submenu">
@@ -226,21 +227,18 @@
             .then(numberOfNotifications => {
                 if(numberOfNotifications >= 0)
                 {
-                    @* if(String(numberOfNotifications) != $(".number_notifi").text())
-                    { *@
-                        fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
-                        .then(res => res.text())
-                        .then(data => {
-                            if(data == "")
-                            {
-                                $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
-                            }
-                            else
-                            {
-                                $('#notification-list').html(data);
-                            }
-                        })
-                    @* } *@
+                    fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                    .then(res => res.text())
+                    .then(data => {
+                        if(data == "")
+                        {
+                            $('#notification-list').html('<p style = "text-align: center;margin: 0;font-size: 16rem; padding: 10px 0;">Không có thông báo mới !</p>')
+                        }
+                        else
+                        {
+                            $('#notification-list').html(data);
+                        }
+                    })
                     
                     if(numberOfNotifications > 0)
                     {

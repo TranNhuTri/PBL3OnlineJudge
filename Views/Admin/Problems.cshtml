@@ -1,0 +1,105 @@
+@{
+    Layout = "_AdminLayout";
+}
+@model List<Problem>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách bài tập</h1>
+                    <a asp-action = "Add" asp-controller = "ListProblems" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm bài mới</div>
+                    </a>
+                </div>
+            </div>
+            @await Html.PartialAsync("_SearchProblemForm2", ViewData[""])
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>Mã bài</th>
+                        <th style="text-align: left">
+                            Tên Bài
+                        </th>
+                        <th>
+                            Tác giả
+                        </th>
+                        <th>
+                            Công khai
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller = "Problems" asp-action = "EditProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.code</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <a asp-controller = "Problems" asp-action = "EditProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.title</a>
+                            </td>
+                            @{
+                                var author = "";
+                                foreach(var problAuthor in item.problemAuthors)
+                                {
+                                    author = author + problAuthor.author.accountName + ", ";
+                                }
+                                author = author.Substring(0, author.Length - 2);
+                            }
+                            <td>@author</td>
+                            @if(item.isPublic)
+                            {
+                                <td style="color: #00bb00;"><i class="fas fa-check-circle"></i></td>
+                            }
+                            else
+                            {
+                                <td style="color: #ff0000ba;"><i class="fas fa-times-circle"></i></td>
+                            }
+                            <td>
+                                <a asp-controller = "Problems" asp-action = "Problem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none; padding: 5px;" title="Xem đề bài">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"ListProblems", "Admin"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#authorSelect',
+            placeholder: 'Chọn tác giả',
+            searchText: 'Không tìm thấy',
+        })
+        new SlimSelect({
+            select: '#isPublic',
+            showSearch: false,
+        })
+        var statusSelect = document.querySelector("#isPublic");
+        var authorSelect = document.querySelector('#authorSelect');
+        var submitButton = document.querySelector(".searchForm_submit");
+
+        statusSelect.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+        authorSelect.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+    </script>
+}

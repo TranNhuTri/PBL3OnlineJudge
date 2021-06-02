@@ -1,0 +1,79 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+}
+@model EditAccount
+<div class="addEditPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="addEditPage_header">
+                <h1>Sửa thông tin tài khoản</h1>
+            </div>
+            <form asp-action = "EditAccount">
+                <div class = "addEditPage_input">
+                    <div class="formGroup">
+                        <label for="accountName" style="width: 180px; display: inline-block;">Tên tài khoản:</label>
+                        <input asp-for = "accountName" type="text" placeholder="Nhập tên tài khoản">
+                        <span asp-validation-for="accountName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="lastName" style="width: 180px; display: inline-block;">Họ:</label>
+                        <input type="text" placeholder="Nhập họ" asp-for = "lastName">
+                        <span asp-validation-for="lastName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="lastName" style="width: 180px; display: inline-block;">Tên:</label>
+                        <input type="text" placeholder="Nhập tên" asp-for = "firstName">
+                        <span asp-validation-for="firstName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="email" style="width: 180px; display: inline-block;">Email:</label>
+                        <input asp-for = "email" type="text" placeholder="Nhập email">
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                    <div class = "formGroup">
+                        <input asp-for = "isActived" type="checkbox" style="width: 15px;" value = "True">
+                        <label for="isActived">Kích hoạt tài khoản</label>
+                    </div>
+                    <div class="formGroup">
+                        <label for="typeAccount" style="width: 180px; display: inline-block;">Loại tài khoản:</label>
+                        <div style="width: 100px; display: inline-block">
+                            <select id="typeAccount" asp-for = "typeAccount">
+                                <option value="1">Admin</option>
+                                <option value="2">Author</option>
+                                <option value="3">User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                        <div class="formSubmit">
+                            <button type="submit" class="submitButton button">
+                                <i class="fas fa-save"></i>
+                                <p>Lưu thay đổi</p>
+                            </button>
+                        </div>
+                        <div class="formSubmit" style="margin-left: 40px;">
+                            <a style="text-decoration: none;">
+                                <div class="submitButton button" style="background-color: #dc3545">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <p>Xóa tài khoản</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#typeAccount',
+            showSearch: false,
+        })
+    </script>
+    <script src="/js/Validation.js"></script>
+}
