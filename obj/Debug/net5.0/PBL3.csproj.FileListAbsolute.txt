@@ -200,3 +200,6 @@ D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Admin\Problems.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Admin\ProblemCategories.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Admin\EditSubmission.cshtml.g.cs
 D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Account\SignUp.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Admin\DeletedProblems.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Shared\_Problem.cshtml.g.cs
+D:\Web\PBL3\obj\Debug\net5.0\Razor\Views\Admin\RestoreProblem.cshtml.g.cs

@@ -13,55 +13,48 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"52bee1dcd873df10730896124e89ff9e0dfa981d", @"/Views/Admin/EditSubmission.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_EditSubmission : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Submission>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("type", "text", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -106,9 +99,9 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("<div class=\"addEditPage\">\r\n    <div class=\"grid_row\">\r\n        <div class=\"grid_column\">\r\n            <div class=\"addEditPage_header\">\r\n                <h1>Thông tin bài nộp</h1>\r\n            </div>\r\n            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d6132", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d6001", async() => {
                 WriteLiteral("\r\n                <div class = \"addEditPage_input\">\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"problem.code\" style=\"width: 150px; display: inline-block;\">Mã bài:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d6636", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d6505", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -134,7 +127,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"problem.title\" style=\"width: 150px; display: inline-block;\">Tên bài:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d8856", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d8725", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -160,7 +153,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"account.accountName\" style=\"width: 150px; display: inline-block;\">Người nộp:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d11085", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d10954", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -186,7 +179,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"timeCreate\" style=\"width: 150px; display: inline-block;\">Ngày nộp:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d13311", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d13180", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -217,9 +210,9 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                         <label for=""language"" style=""width: 150px; display: inline-block;"">Ngôn ngữ:</label>
                         <div style=""width: 250px; margin-left: 5px;"">
                             ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("select", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d15642", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("select", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d15511", async() => {
                     WriteLiteral("\r\n                                ");
-                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d15943", async() => {
+                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d15812", async() => {
                         WriteLiteral("C++");
                     }
                     );
@@ -235,7 +228,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                     Write(__tagHelperExecutionContext.Output);
                     __tagHelperExecutionContext = __tagHelperScopeManager.End();
                     WriteLiteral("\r\n                                ");
-                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d17260", async() => {
+                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52bee1dcd873df10730896124e89ff9e0dfa981d17129", async() => {
                         WriteLiteral("Python 3");
                     }
                     );
@@ -272,7 +265,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_SelectTagHelper.For = ModelExpressionProvi
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"status\" style=\"width: 150px; display: inline-block;\">Trạng thái:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d20158", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d20027", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -298,7 +291,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"time\" style=\"width: 150px; display: inline-block;\">Thời gian thực hiện:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d22376", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d22245", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();
@@ -324,7 +317,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper.For = ModelExpressionProvid
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                    </div>\r\n                    <div class=\"formGroup\">\r\n                        <label for=\"memory\" style=\"width: 150px; display: inline-block;\">Bộ nhớ sử dụng:</label>\r\n                        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d24589", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "52bee1dcd873df10730896124e89ff9e0dfa981d24458", async() => {
                 }
                 );
                 __Microsoft_AspNetCore_Mvc_TagHelpers_InputTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper>();

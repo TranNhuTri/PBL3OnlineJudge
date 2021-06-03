@@ -8,8 +8,11 @@
             <div class="listObjectsPage_header">
                 <div style="display: flex">
                     <h1>Danh sách bài tập</h1>
-                    <a asp-action = "Add" asp-controller = "ListProblems" style="text-decoration: none;">
+                    <a asp-action = "AddProblem" asp-controller = "Problems" style="text-decoration: none;">
                         <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm bài mới</div>
+                    </a>
+                    <a asp-action = "DeletedProblems" asp-controller = "Admin" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các bài đã xóa</div>
                     </a>
                 </div>
             </div>
@@ -72,7 +75,7 @@
 <div class="grid_row">
     <div class="grid_column">
         @{
-            string[] param = {"ListProblems", "Admin"};
+            string[] param = {"Problems", "Admin"};
         }
         @await Html.PartialAsync("_Pagination", param)
     </div>

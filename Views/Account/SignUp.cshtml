@@ -42,6 +42,8 @@
                 <input type="text" asp-for="email" placeholder="Email" class="signUpForm_textBox">
                 <span asp-validation-for="email" class="text-danger"></span>
 
+                <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
+
                 <div class="signUpForm_buttonBox">
                     <button type="button" class="button signUpForm_button" id="signUpForm_BackButton--1"  onclick="back()">
                         Back

@@ -13,55 +13,48 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"954985c4a88866dc22e6efb9b78104dff0846dcc", @"/Views/Problem/Submit.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
     public class Views_Problem_Submit : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Problem>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("value", "cpp17", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -103,7 +96,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("<div class=\"submitProblemPage\">\r\n    <div class=\"grid\">\r\n        <div class=\"grid_row\">\r\n            <div class=\"grid_column\">\r\n                <div class=\"submitProblemForm\">\r\n                    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc5489", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc5358", async() => {
                 WriteLiteral("\r\n                        <h1 class = \"submitProblemPage_Header\">Nộp bài ");
 #nullable restore
 #line 11 "D:\Web\PBL3\Views\Problem\Submit.cshtml"
@@ -119,7 +112,7 @@ using PBL3.Models;
                                 <label for=""languageSubmit"">Language: </label>
                                 <select name=""Language"" id=""languageSubmit"">
                                     ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc6533", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc6402", async() => {
                     WriteLiteral("C++");
                 }
                 );
@@ -135,7 +128,7 @@ using PBL3.Models;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                                    ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc7789", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("option", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "954985c4a88866dc22e6efb9b78104dff0846dcc7658", async() => {
                     WriteLiteral("Python 3");
                 }
                 );

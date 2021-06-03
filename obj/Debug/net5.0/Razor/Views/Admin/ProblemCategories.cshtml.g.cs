@@ -13,55 +13,48 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"b22ecc4a4af68de4848cb8ce24af534e10860b7e", @"/Views/Admin/ProblemCategories.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_ProblemCategories : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<List<Category>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-action", "AddProblemCategory", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -108,7 +101,7 @@ using PBL3.Models;
                 <div style=""display: flex"">
                     <h1>Danh sách dạng bài tập</h1>
                     ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b22ecc4a4af68de4848cb8ce24af534e10860b7e5774", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b22ecc4a4af68de4848cb8ce24af534e10860b7e5643", async() => {
                 WriteLiteral("\r\n                        <div class=\"button\" style=\"width: 150px; padding: 5px; margin-left: 20px;\">Thêm dạng bài mới</div>\r\n                    ");
             }
             );
@@ -163,7 +156,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("</td>\r\n                            <td>\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b22ecc4a4af68de4848cb8ce24af534e10860b7e8589", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b22ecc4a4af68de4848cb8ce24af534e10860b7e8458", async() => {
                 WriteLiteral("\r\n                                    ");
 #nullable restore
 #line 33 "D:\Web\PBL3\Views\Admin\ProblemCategories.cshtml"

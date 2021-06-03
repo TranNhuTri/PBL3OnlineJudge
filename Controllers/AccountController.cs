@@ -33,7 +33,13 @@ namespace PBL3.Controllers
                 var account = _context.Accounts.FirstOrDefault(p => p.accountName == reqAccount.accountName);
                 if(account != null)
                 {
-                    return NotFound();
+                    ModelState.AddModelError("", "Tên đăng nhập đã tồn tại");
+                    return View(reqAccount);
+                }
+                if(ConfirmPassword != reqAccount.passWord)
+                {
+                    ModelState.AddModelError("", "Mật khẩu không khớp nhau");
+                    return View(reqAccount);
                 }
                 if(!String.IsNullOrEmpty(reqAccount.email))
                 {

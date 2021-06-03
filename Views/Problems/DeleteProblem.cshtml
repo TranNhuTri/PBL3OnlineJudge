@@ -1,6 +1,7 @@
 @{
     Layout = "_AdminLayout";
 }
+@using PBL3.Models
 @model Problem
 <div class="grow">
     <div class="grid_row">
@@ -18,8 +19,68 @@
                         <label for="tilte">Tên bài :</label>
                         <input type="text" asp-for = "title">
                     </div>
+                    <p class="deletePage_warning">
+                        Việc xóa có thể dẫn tới mất các dữ liệu sau !!!
+                    </p>
+                    <p>Các bài nộp :</p>
+                    <table cellspacing="0" cellpadding="0" class="table submissions_table">
+                        <thead>
+                            <tr>
+                                <th class="submissionID">ID</th>
+                                <th>Ngày nộp</th>
+                                <th>Người nộp</th>
+                                <th>Trạng thái</th>
+                                <th>CPU</th>
+                                <th>Ngôn ngữ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.submissions)
+                            {
+                                string color = "";
+                                <tr>
+                                    <td class = "link submissionID" style="text-decoration: underline;">@item.ID</td>
+                                    <td>@item.timeCreate</td>
+                                    <td><a href="" class = "link">@item.account.accountName</a></td>
+                                    @if(item.status == "Accepted")
+                                    {
+                                        color = "#00bb00";
+                                    }
+                                    else
+                                        if(@item.status == "Wrong Answer")
+                                        {
+                                            color = "#ff0000ba";
+                                        }
+                                    <td class = "submissionStatus" style= "color: @color">@item.status</td>
+                                    <td class = "submissionTime">@item.time</td>
+                                    <td>@item.language</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <form asp-action = "DeleteProblem">
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" style="background-color: #dc3545">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <p>Xóa bài tập</p>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="overlay">
+    <div class="detailSubmissionContainer">
+        <i class="fas fa-times detailSubmissionIcon"></i>
+        <div class="detailSubmissionContent">
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src = "/js/Submission.js"></script>
+}

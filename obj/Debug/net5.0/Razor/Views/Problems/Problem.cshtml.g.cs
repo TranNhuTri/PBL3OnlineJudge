@@ -13,55 +13,48 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"cb59b553b2fa04788aa0ace10dd9d89333d748bb", @"/Views/Problems/Problem.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
     public class Views_Problems_Problem : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Problem>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-controller", "Problem", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -162,7 +155,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                        </div>\r\n                        <div class=\"comment_box\" style=\"display: block;\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb9920", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb9789", async() => {
                 WriteLiteral("\r\n                                <textarea name=\"content\" id=\"editor\" data-first = \"1\" cols=\"30\" rows=\"10\"></textarea>\r\n                                <button class=\"button comment_button\">Gửi</button>\r\n                            ");
             }
             );
@@ -198,7 +191,7 @@ AddHtmlAttributeValue("", 1355, Model.ID, 1355, 9, false);
                 <div class=""problemMenu"">
                     <div class=""problemMenu_Buttons"">
                         ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb12316", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb12185", async() => {
                 WriteLiteral("\r\n                            <div class=\"problemSubmitButton button\">\r\n                                <i class=\"fas fa-upload\"> </i>\r\n                                Nộp bài\r\n                            </div>\r\n                        ");
             }
             );
@@ -261,7 +254,7 @@ AddHtmlAttributeValue("", 1355, Model.ID, 1355, 9, false);
 #line hidden
 #nullable disable
             WriteLiteral("                                    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb16578", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb16447", async() => {
                 WriteLiteral("Lời giải của tôi");
             }
             );
@@ -299,7 +292,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_AnchorTagHelper.RouteValues = parms;
 #line hidden
 #nullable disable
             WriteLiteral("                                    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb18850", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb18719", async() => {
                 WriteLiteral("Lời giải của tôi");
             }
             );
@@ -338,7 +331,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_AnchorTagHelper.RouteValues = parms;
 #line hidden
 #nullable disable
             WriteLiteral("                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb21203", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb21072", async() => {
                 WriteLiteral("Sửa đề bài");
             }
             );
@@ -372,7 +365,7 @@ __Microsoft_AspNetCore_Mvc_TagHelpers_AnchorTagHelper.RouteValues = parms;
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb23696", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "cb59b553b2fa04788aa0ace10dd9d89333d748bb23565", async() => {
                 WriteLiteral("Xóa đề bài");
             }
             );

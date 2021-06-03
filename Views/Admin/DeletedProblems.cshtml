@@ -1,0 +1,50 @@
+@{
+    Layout = "_AdminLayout";
+}
+@model List<Problem>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách bài tập đã xóa</h1>
+                </div>
+            </div>
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>Mã bài</th>
+                        <th>
+                            Tên Bài
+                        </th>
+                        <th>
+                            Ngày xóa
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller = "Admin" asp-action = "RestoreProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.code</a>
+                            </td>
+                            <td>
+                                <a asp-controller = "Admin" asp-action = "RestoreProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.title</a>
+                            </td>
+                            <td>Ngày xóa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"ListProblems", "Admin"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>

@@ -139,12 +139,12 @@ namespace PBL3.Controllers
                     ModelState.AddModelError("", "Bạn cần chọn dạng bài");
                     return View();
                 }
-                if(_context.Problems.FirstOrDefault(p => p.code == reqProblem.code) != null)
+                if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.code == reqProblem.code) != null)
                 {
                     ModelState.AddModelError("", "Mã bài đã tồn tại");
                     return View();
                 }
-                if(_context.Problems.FirstOrDefault(p => p.title == reqProblem.title) != null)
+                if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.title == reqProblem.title) != null)
                 {
                     ModelState.AddModelError("", "Tên bài đã tồn tại");
                     return View();
@@ -175,8 +175,9 @@ namespace PBL3.Controllers
                 {
                     return RedirectToAction("Edit", "Problem", new {id = reqProblem.ID});
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Problems", "Admin");
             }
+            ModelState.AddModelError("", "Hãy sửa các thông tin không đúng yêu cầu");
             return View();
         }
         public IActionResult Problem(int id)
@@ -204,7 +205,12 @@ namespace PBL3.Controllers
         }
         public IActionResult DeleteProblem(int? id)
         {
-            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+            var problem = _context.Problems.Where(p => p.ID == id)
+                                            .Include(p => p.submissions)
+                                            .ThenInclude(p => p.account)
+                                            .Include(p => p.testCases)
+                                            .AsSplitQuery().OrderByDescending(p => p.timeCreate)
+                                            .FirstOrDefault();
             return View(problem);
         }
         [HttpPost]
@@ -212,28 +218,13 @@ namespace PBL3.Controllers
         public async Task<IActionResult> DeleteProblem(int id)
         {
             var problem = _context.Problems.Where(p => p.ID == id)
-                                            .Include(p => p.problemAuthors)
-                                            .Include(p => p.problemClassifications)
                                             .Include(p => p.submissions)
-                                            .AsSplitQuery().OrderByDescending(p => p.timeCreate)
                                             .FirstOrDefault();
 
             if(problem == null)
                 return NotFound();
 
             problem.isDeleted = true;
-
-            foreach(var item in problem.problemClassifications)
-            {
-                item.isDeleted = true;
-                _context.Update(item);
-            }
-
-            foreach(var item in problem.problemAuthors)
-            {
-                item.isDeleted = true;
-                _context.Update(item);
-            }
 
             foreach(var item in problem.submissions)
             {
@@ -245,7 +236,7 @@ namespace PBL3.Controllers
 
             await _context.SaveChangesAsync();
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Problems", "Admin");
         }
 
         public IActionResult EditProblem(int id)
@@ -370,9 +361,9 @@ namespace PBL3.Controllers
                 }
                 return RedirectToAction("Problems", "Admin");
             }
+            ModelState.AddModelError("", "Hãy sửa các thông tin không đúng yêu cầu");
             return View(reqProblem);
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
