@@ -270,6 +270,69 @@ namespace PBL3.Controllers
 
             return RedirectToAction("ListSubmissions");
         }
+        public IActionResult DeletedProblems()
+        {
+            var problems = _context.Problems.Where(p => p.isDeleted == true).ToList();
+            return View(problems);
+        }
+        public IActionResult RestoreProblem(int id)
+        {
+            var problem = _context.Problems.Include(p => p.problemAuthors)
+                                            .Include(problem => problem.problemClassifications)
+                                            .AsSplitQuery().OrderBy(p => p.title)
+                                            .FirstOrDefault(p => p.ID == id);
+            
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+
+            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+
+            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
+
+            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
+
+            if(problem == null)
+            {
+                return NotFound();
+            }
+            return View(problem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RestoreProblem(int? id)
+        {
+            var problem = _context.Problems.Include(p => p.problemAuthors)
+                                            .Include(problem => problem.problemClassifications)
+                                            .Include(p => p.submissions)
+                                            .AsSplitQuery().OrderBy(p => p.title)
+                                            .FirstOrDefault(p => p.ID == id);
+            
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+
+            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+
+            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
+
+            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
+
+            if(problem == null)
+            {
+                return NotFound();
+            }
+            if(_context.Problems.FirstOrDefault(p => p.title == problem.title || p.code == problem.code) != null)
+            {
+                ModelState.AddModelError("", "Không thể khôi phục bài vì đã có bài trùng tên hoặc mã bài");
+                return View(problem);
+            }
+            problem.isDeleted = false;
+            _context.Update(problem);
+            foreach(var item in problem.submissions)
+            {
+                item.isDeleted = false;
+                _context.Update(item);
+            }
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Problems));
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

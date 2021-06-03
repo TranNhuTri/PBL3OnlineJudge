@@ -12,7 +12,7 @@
                 <table cellspacing="0" cellpadding="0" class="table submissions_table">
                     <thead>
                         <tr>
-                            <th class="submissionID">ID</th>
+                            <th class="submissionID">#</th>
                             <th>Ngày nộp</th>
                             <th>Người nộp</th>
                             <th style="width: 35%">Bài</th>
@@ -30,7 +30,7 @@
                         {
                             string color = "";
                             <tr>
-                                <td class = "link submissionID" style="text-decoration: underline;">@Model[i].ID</td>
+                                <td class = "link submissionID" style="text-decoration: underline;">@(ViewBag.currentPage + i)</td>
                                 <td>@Model[i].timeCreate</td>
                                 <td><a href="" class = "link">@Model[i].account.accountName</a></td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>

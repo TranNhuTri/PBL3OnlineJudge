@@ -122,7 +122,7 @@ namespace PBL3.Controllers
                 {"accountName", account.accountName},
             });
         } 
-        public IActionResult Submissions(int problemID, string accountName)
+        public IActionResult Submissions(int page, int problemID, string accountName)
         {
             if(accountName == null)
             {

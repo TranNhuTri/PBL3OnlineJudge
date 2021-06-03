@@ -24,7 +24,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Page(int? id)
         {
-            var listSubmissions = _context.Submissions.Include(p => p.account).Include(p => p.problem).OrderByDescending(p => p.timeCreate).ToList();
+            var listSubmissions = _context.Submissions.Where(p => p.isDeleted == false).Include(p => p.account).Include(p => p.problem).OrderByDescending(p => p.timeCreate).ToList();
             int page = 1;
             if(id != null)
             {

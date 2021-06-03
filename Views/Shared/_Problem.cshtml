@@ -1,0 +1,168 @@
+@{
+    var listAuthors = (List<Account>)ViewData["ListAuthors"];
+
+    var listCategories = (List<Category>)ViewData["ListCategories"];
+
+    var listChosenAuthors = (List<int>)ViewData["ListChosenAuthorIds"];
+        
+    var listChosenCategories = (List<int>)ViewData["ListChosenCategoryIds"];
+}
+@model Problem
+<div class="formGroup">
+    <label for="code">Mã bài :</label>
+    <input type="text" asp-for = "code">
+    <span asp-validation-for="code" class="text-danger"></span>
+</div>
+<div class="formGroup">
+    <label for="tilte">Tên bài :</label>
+    <input type="text" asp-for = "title">
+    <span asp-validation-for="title" class="text-danger"></span>
+</div>
+<div class = "formGroup">
+    <label for="authors">Tác giả :</label>
+    <div style="min-width: 250px; display: inline-block">
+        <select name="reqListAuthorIds" id="authors" multiple>
+            @if(listAuthors != null)
+            {
+                @if(listChosenAuthors != null)
+                {
+                    @foreach (var account in listAuthors)
+                    {
+                        if(listChosenAuthors.IndexOf(account.ID) != -1)
+                        {
+                            <option value="@account.ID" selected>@account.accountName</option>
+                        }
+                        else
+                        {
+                            <option value="@account.ID">@account.accountName</option>
+                        }
+                    }
+                }
+                else
+                {
+                    @foreach (var account in listAuthors)
+                    {
+                        <option value="@account.ID">@account.accountName</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+</div>
+<div class="formGroup">
+    <label>Đề bài :</label>
+    <div class="editor">
+        <textarea id="editor" rows="10" cols="80" asp-for = "@Model.content">
+        </textarea>
+    </div>
+    <div class="preview">
+        <div class="previewButton" id = "previewButton">
+            Update Preview
+        </div>
+        <div class="previewContent">
+        </div>
+    </div>
+</div>
+<div class = "formGroup" style="display: flex; align-items: center">
+    <label for="categories">Dạng bài :</label>
+    <div style="min-width: 250px; display: inline-block">
+        <select name="reqListCategoryIds" id="categories" multiple>
+            @if(listCategories != null)
+            {
+                @if(listChosenCategories != null)
+                {
+                    @foreach (var cate in listCategories)
+                    {
+                        if(listChosenCategories.IndexOf(cate.ID) != -1)
+                        {
+                            <option value="@cate.ID" selected>@cate.name</option>
+                        }
+                        else
+                        {
+                            <option value="@cate.ID">@cate.name</option>
+                        }
+                    }
+                }
+                else
+                {
+                    @foreach (var cate in listCategories)
+                    {
+                        <option value="@cate.ID">@cate.name</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <a asp-action = "AddProblemCategory" asp-controller = "Admin"><i class="far fa-edit" style="margin-left: 15px; color: #1dbfaf;"></i></a>
+</div>
+<div class = "formGroup">
+    <input type="checkbox" asp-for = "isPublic" style="width: 15px;" value = "True">
+    <label for="isPublic">Công khai</label>
+</div>
+<div class="formGroup">
+    <label for="timeLimit">Giới hạn thời gian :</label>
+    <input type="text" asp-for = "timeLimit" style="width: 200px;"><span style="margin-left: 10px; color: #7b7b7b;">s</span>
+    <span asp-validation-for="timeLimit" class="text-danger"></span>
+</div>
+<div class="formGroup">
+    <label for="memoryLimit">Giới hạn bộ nhớ :</label>
+    <input type="text" asp-for = "memoryLimit" style="width: 200px;"><span style="margin-left: 10px; color: #7b7b7b;">KB</span>
+    <span asp-validation-for="memoryLimit" class="text-danger"></span>
+</div>
+<div class="formGroup">
+    <label for="difficulity">Độ khó :</label>
+    <input type="text" asp-for = "difficulty" style="width: 200px;">
+    <span asp-validation-for="difficulty" class="text-danger"></span>
+</div>
+ <script>
+    CKEDITOR.replace('editor');
+    var previewBtn = document.getElementById("previewButton");
+    previewBtn.addEventListener('click', function(e)
+    {
+        var html = CKEDITOR.instances.editor.getData();
+
+        html = html.replaceAll("~", "$");
+
+        var previewContent = document.getElementsByClassName("previewContent")[0];
+        
+        previewContent.innerHTML = html;
+
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+        });
+        
+        CKEDITOR.instances.editor.setData("", function()
+        {
+            CKEDITOR.instances.editor.insertHtml(html);
+            var frame = document.querySelector(".cke_wysiwyg_frame");
+            var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+            frame.contentWindow.document.querySelector("head").innerHTML += css;
+        });
+
+        document.querySelectorAll('pre code').forEach((block) => {
+            if(block.classList == "")
+                block.classList.add("plaintext");
+            hljs.highlightBlock(block);
+        });
+            
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    });
+    CKEDITOR.on("instanceReady", function(event)
+    {
+        previewBtn.click();
+        var frame = document.querySelector(".cke_wysiwyg_frame");
+        var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+        frame.contentWindow.document.querySelector("head").innerHTML += css;
+    });
+    new SlimSelect({
+        select: '#authors',
+        placeholder: 'Chọn tác giả',
+        searchText: 'Không thể tìm thấy',
+    })
+    new SlimSelect({
+        select: '#categories',
+        placeholder: 'Chọn dạng bài',
+        searchText: 'Không thể tìm thấy',
+    })
+</script>
+<script src="/js/Validation.js"></script>

@@ -25,7 +25,7 @@
                         {
                             string color = "";
                             <tr>
-                                <td class = "link submissionID" style="text-decoration: underline;">@Model[i].ID</td>
+                                <td class = "link submissionID" style="text-decoration: underline;">@(ViewBag.currentPage + i)</td>
                                 <td>@Model[i].timeCreate</td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>
                                 @if(Model[i].status == "Accepted")

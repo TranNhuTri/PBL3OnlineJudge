@@ -13,55 +13,48 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\Web\PBL3\Views\_ViewImports.cshtml"
-using PBL3;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.DTO;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 2 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 3 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 4 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using System;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 5 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.General;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\Web\PBL3\Views\_ViewImports.cshtml"
+#line 6 "D:\Web\PBL3\Views\_ViewImports.cshtml"
 using PBL3.Models;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"132b25c3591492f09ffeeef379f24db2605f4ac9", @"/Views/Shared/_Pagination.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"58fbd7b8abab6ff8cf758a0fa310e6c6feef7956", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared__Pagination : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<string[]>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-route-id", "1", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -116,7 +109,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                    <li class=\"pagination-item\">\r\n                        ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac95409", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac95278", async() => {
                 WriteLiteral("\r\n                            <i class=\"pagination-item__icon fas fa-angle-double-left\">\r\n                            </i>\r\n                        ");
             }
             );
@@ -168,7 +161,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                        <li class=\"pagination-item\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac98734", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac98603", async() => {
                 WriteLiteral("1");
             }
             );
@@ -212,7 +205,7 @@ using PBL3.Models;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                        </li>\r\n");
             WriteLiteral("                        <li class=\"pagination-item\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac911730", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac911599", async() => {
                 WriteLiteral("2");
             }
             );
@@ -267,7 +260,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                            <li class=\"pagination-item\">\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac915101", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac914970", async() => {
 #nullable restore
 #line 36 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                      Write(i);
@@ -339,7 +332,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                        <li class=\"pagination-item pagination-item--active\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac919191", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac919060", async() => {
 #nullable restore
 #line 46 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                  Write(i);
@@ -407,7 +400,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                        <li class=\"pagination-item\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac923106", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac922975", async() => {
 #nullable restore
 #line 52 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                  Write(i);
@@ -478,7 +471,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                        <li class=\"pagination-item pagination-item_icon\">...</li>\r\n                        <li class=\"pagination-item\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac927210", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac927079", async() => {
 #nullable restore
 #line 62 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                                 Write(totalPage - 1);
@@ -537,7 +530,7 @@ using PBL3.Models;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                        </li>\r\n");
             WriteLiteral("                        <li class=\"pagination-item\">\r\n                            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac930968", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac930837", async() => {
 #nullable restore
 #line 66 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                             Write(totalPage);
@@ -607,7 +600,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                            <li class=\"pagination-item\">\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac935013", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac934882", async() => {
 #nullable restore
 #line 74 "D:\Web\PBL3\Views\Shared\_Pagination.cshtml"
                                                                                                                                      Write(i);
@@ -674,7 +667,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
             WriteLiteral("                    <li class=\"pagination-item\">\r\n                        ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac938918", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "132b25c3591492f09ffeeef379f24db2605f4ac938787", async() => {
                 WriteLiteral("\r\n                            <i class=\"pagination-item__icon fas fa-angle-double-right\">\r\n                            </i>\r\n                        ");
             }
             );

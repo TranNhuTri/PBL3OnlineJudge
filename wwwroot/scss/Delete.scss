@@ -15,4 +15,16 @@
             margin-bottom: 20px;
         }
     }
+    .deletePage_input
+    {
+        table 
+        {
+            border: 1px solid rgba(204, 204, 204, 0.5);
+            border-bottom: none;
+        }
+    }
+    .deletePage_warning
+    {
+        color: $red-color;
+    }
 }
