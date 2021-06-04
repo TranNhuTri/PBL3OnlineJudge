@@ -81,6 +81,20 @@ namespace PBL3.Controllers
             }
             return NotFound();
         }
+        public IActionResult AccountProfile(string accountName)
+        {
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == accountName);
+            if(account == null)
+                return NotFound();
+            return View(account);
+        }
+        public IActionResult EditAccountProfile(string accountName)
+        {
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == accountName);
+            if(account == null)
+                return NotFound();
+            return View(account);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

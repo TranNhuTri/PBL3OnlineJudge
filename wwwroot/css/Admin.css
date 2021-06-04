@@ -5,7 +5,8 @@
 
 .adminPage .adminCategory {
   background-color: #fff;
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
   border-radius: 4px;
   font-size: 14rem;
   line-height: 20rem;
@@ -31,16 +32,25 @@
 }
 
 .adminPage .adminCategory .adminCategory_list .adminCategory_item .adminCategory_link .adminCategory_mainmenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 10px 20px;
 }
 
 .adminPage .adminCategory .adminCategory_list .adminCategory_item .adminCategory_link .adminCategory_mainmenu .adminCategory_mainmenu_text {
   margin: 0;
   font-size: 16rem;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .adminPage .adminCategory .adminCategory_list .adminCategory_item .adminCategory_link .adminCategory_mainmenu .adminCategory_mainmenu_icon {
@@ -54,7 +64,10 @@
 .adminPage .adminCategory .adminCategory_list .adminCategory_item .adminCategory_link .adminCategory_mainmenu .adminCategory_mainmenu_subicon {
   margin: 0;
   font-size: 20rem;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   display: none;
 }
 
@@ -89,7 +102,10 @@
   color: #636363bf;
   cursor: pointer;
   font-size: 16rem;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   padding: 10px 0 0 0;
 }
 
@@ -120,20 +136,30 @@ code {
 .searchForm {
   padding: 0 20px;
   padding-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   font-size: 14rem;
   color: #444444;
 }
 
 .searchForm .searchForm_select {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
 .searchForm .searchForm_select .searchForm_select_item {
   margin-left: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .searchForm .searchForm_select .searchForm_select_item:first-child {
@@ -141,6 +167,8 @@ code {
 }
 
 .searchForm .searchForm_search {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 

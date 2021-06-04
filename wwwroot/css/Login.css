@@ -1,8 +1,10 @@
 .login {
   width: 360px;
   margin: 40px auto;
-  box-sizing: border-box;
-  box-shadow: 0 1px 10px #ccc;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 0 1px 10px #ccc;
+          box-shadow: 0 1px 10px #ccc;
   text-align: center;
   border-radius: 4px;
   padding: 24px;
@@ -40,7 +42,8 @@
   top: 50%;
   left: 0;
   border-top: 1px solid #e1e6eb;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
   z-index: -1;
 }
 

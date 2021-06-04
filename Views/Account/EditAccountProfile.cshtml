@@ -1,0 +1,62 @@
+@model Account
+@* <h1>@Model.accountName</h1> *@
+
+<div class="grid">
+    <div class="postPage-layout">
+        <div class="grid_row">
+            <div class="grid_column-6 postPage">
+                <div class="infor">
+                    <h3 class="infor__title">Thông tin người dùng</h3>
+                    <form class="infor__content">
+                        <div class="infor__content--avatar" style="background-image: url(https://codelearn.io/Themes/TheCodeCampPro/Resources/Images/code-learn/img-preview-bg.png);"></div>
+                        <div class="infor__content--input">
+                            <div class="input-row">
+                                <label for="" class="input__title" >Tên tài khoản</label>
+                                <input type="text" placeholder="" value="@Model.accountName">
+                            </div>
+                            <div class="input-row">
+                                <label for="" class="input__title">Họ</label>
+                                <input type="text" placeholder="" value="@Model.lastName">
+                            </div>
+                            <div class="input-row">
+                                <label for="" class="input__title">Tên</label>
+                                <input type="text" placeholder="" value="@Model.firstName">                                   
+                            </div>
+                            <div class="input-row">
+                                <label for="" class="input__title">Email</label>
+                                <input type="text" placeholder="" value="@Model.email">                                 
+                            </div>
+                            <div class="infor__function">
+                                <a href="" class="infor__function--link password">Đổi mật khẩu</a>
+                            </div>
+                            <div class="infor__save">
+                                <button class="infor__save--button">Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var inputElement = document.querySelectorAll('.input-row input');
+        var btnEdit = document.querySelector('.infor__save .infor-btn.edit');
+        @* console.log(inputElement);
+        console.log(btnEdit);
+        btnEdit.addEventListener('click',function(e){
+            for(var i = 0;i<inputElement.length;i++)
+            {
+                inputElement[i].removeAttribute('readonly');
+            }
+        });  *@
+        function enableReadOnly(){
+            Array.from(inputElement).forEach(element => {
+                element.removeAttribute('readonly');
+                element.style.border  = '1px solid #cdcdcd';
+            });
+            return false;
+        }
+    </script>
+}

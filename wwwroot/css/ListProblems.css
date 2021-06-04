@@ -3,15 +3,22 @@
 }
 
 .listProblemsPage .listProblems_container {
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
   background-color: #fff;
   border-radius: 4px;
 }
 
 .listProblemsPage .listProblems_container .listProblems_header {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 20px;
 }
 
@@ -51,7 +58,8 @@
 
 .problemFilter {
   background-color: #fff;
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
   border-radius: 4px;
   padding: 10px 15px;
   font-size: 14rem;
@@ -111,8 +119,12 @@
 
 .problemFilter .problemFillterSubmit {
   margin: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .problemFilter .problemFillterSubmit .problemFillterSubmit_button {

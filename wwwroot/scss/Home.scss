@@ -47,7 +47,7 @@
                     content: "";
                     height: 20px;
                     width: 1px;
-                    background-color: $light-text-color;
+                    background-color: #e3e2e2;
                     position: absolute;
                     top: -20%;
                     right: -24%;
@@ -92,11 +92,13 @@
                 .appHeader_dropdown
                 {
                     position: absolute;
-                    right: -20px;
+                    right: 0px;
                     top: 170%;
                     width: 250px;
                     box-shadow: 0 0 5px #63636394;
                     border-radius: 5px;
+                    transform-origin: calc(100% - 10px) top;
+                    animation: dropListGrowth ease-in 0.2s;
                     background-color: $white-color;
                     display: none;
                     z-index: 1;
@@ -105,7 +107,7 @@
                 {
                     width: 400px !important;
                     position: absolute;
-                    right: -20px;
+                    right: 0px;
                     top: 170%;
                     width: 250px;
                     box-shadow: 0 0 5px #63636394;
@@ -113,6 +115,8 @@
                     background-color: #fff;
                     display: none;
                     z-index: 1;
+                    transform-origin: calc(100% - 10px) top;
+                    animation: dropListGrowth ease-in 0.2s;
                     max-height: 400px;
                     overflow-y: auto;
                 }
@@ -185,10 +189,6 @@
             .appHeader_item:first-child
             {
                 padding-left: 0;
-            }
-            .appHeader_item:last-child
-            {
-                padding-right: 0;
             }
             .appHeader_item:hover .appHeader_link
             {
