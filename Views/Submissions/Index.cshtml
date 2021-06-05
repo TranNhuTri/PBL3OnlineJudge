@@ -32,7 +32,7 @@
                             <tr>
                                 <td class = "link submissionID" style="text-decoration: underline;">@(ViewBag.currentPage + i)</td>
                                 <td>@Model[i].timeCreate</td>
-                                <td><a asp-action = "AccountProfile" asp-controller = "Account" asp-route-accountName = "@Model[i].account.accountName" class = "link">@Model[i].account.accountName</a></td>
+                                <td><a asp-action = "AccountProfile" asp-controller = "Account" asp-route-id = "@Model[i].ID" class = "link">@Model[i].account.accountName</a></td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>
                                 @if(Model[i].status == "Accepted")
                                 {
@@ -56,7 +56,7 @@
                 </table>
             </div>
             @{
-                string[] param = {"Page", "Submissions"};
+                string[] param = {"Index", "Submissions"};
             }
             @await Html.PartialAsync("_Pagination", param)
         </div>

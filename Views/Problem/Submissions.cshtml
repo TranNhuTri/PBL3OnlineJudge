@@ -18,6 +18,10 @@
                             <th>Trạng thái</th>
                             <th>CPU</th>
                             <th>Ngôn ngữ</th>
+                            @if(Context.Session.GetString("TypeAccount") == "1" && Model.Count > 0)
+                            {
+                                <th></th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -40,11 +44,19 @@
                                 <td class = "submissionStatus" style= "color: @color">@Model[i].status</td>
                                 <td class = "submissionTime">@Model[i].time</td>
                                 <td>@Model[i].language</td>
+                                @if(Context.Session.GetString("TypeAccount") == "1" && Model.Count > 0)
+                                {
+                                    <td class = "submissionEdit"><a asp-action = "EditSubmission" asp-controller = "Admin" asp-route-id = "@Model[i].ID" class = "submissionEdit_link"><i class="far fa-edit"></i></a></td>
+                                }
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
+            @{
+                string[] param = {"Submissions", "Problem"};
+            }
+            @await Html.PartialAsync("_Pagination", param)
         </div>
     </div>
 </div>

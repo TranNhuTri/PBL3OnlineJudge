@@ -20,13 +20,11 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return RedirectToAction(nameof(Page));
-        }
-        public IActionResult Page(int? id, string problemName, bool hideSolvedProblem, List<int> listCategoryIds, int? minDifficult, int? maxDifficult)
+        public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> categoryIds, int? minDifficult, int? maxDifficult)
         {
             ViewData["listCategories"] = _context.Categories.ToList();
+            
+            var paramater = new Dictionary<string, string>();
 
             var listProblems = _context.Problems.Include(p => p.problemClassifications)
                                                 .Include(p => p.submissions)
@@ -37,16 +35,17 @@ namespace PBL3.Controllers
             if(!String.IsNullOrEmpty(problemName))
             {
                 listProblems = listProblems.Where(p => p.title.ToLower().Contains(problemName.ToLower())).ToList();
+                paramater.Add("problemName", problemName);
             }
             
-            if(listCategoryIds.Count > 0)
+            if(categoryIds.Count > 0)
             {
                 var lstTmpt = new List<Problem>();
                 foreach(var item in listProblems)
                 {
                     var tmpt = item.problemClassifications.Select(p => p.category.ID).ToList();
                     bool check = true;
-                    foreach(int Id in listCategoryIds)
+                    foreach(int Id in categoryIds)
                     {
                         if(tmpt.IndexOf(Id) == -1)
                         {
@@ -67,16 +66,22 @@ namespace PBL3.Controllers
                 if(minDifficult != null)
                 {
                     listProblems = listProblems.Where(p => p.difficulty >= minDifficult).ToList();
+                    paramater.Add("minDifficult", minDifficult.ToString());
                 }
                 if(maxDifficult != null)
                 {
                     listProblems = listProblems.Where(p => p.difficulty <= maxDifficult).ToList();
+                    paramater.Add("maxDifficult", maxDifficult.ToString());
                 }
             }
             if(hideSolvedProblem)
             {
                 listProblems = listProblems.Where(p => p.submissions.Where(s => s.status == "Accepted").ToList().Count() == 0).ToList();
+                paramater.Add("hideSolvedProblem", hideSolvedProblem.ToString());
             }
+
+            ViewBag.paginationParams = paramater;
+
             ViewData["SearchProblemInfor"] = new SearchProblemInfor
             {
                 problemName = problemName,
@@ -84,16 +89,17 @@ namespace PBL3.Controllers
                 maxDifficult = maxDifficult,
                 hideSolvedProblem = hideSolvedProblem
             };
-            if(string.IsNullOrEmpty(HttpContext.Session.GetString("TypeAccount")) || Convert.ToInt32(HttpContext.Session.GetString("typeAccount")) == 3)
+
+
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString("TypeAccount")) || Convert.ToInt32(HttpContext.Session.GetString("TypeAccount")) == 3)
             {
                 listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
             }
 
             //pagination
-            int page = 1;
-            if(id != null)
+            if(page == null)
             {
-                page = (int)id;
+                page = 1;
             }
 
             int limit = Utility.limitData;
@@ -119,9 +125,9 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProblem([Bind("code, title, content, difficulty, timeLimit, memoryLimit, isPublic")] Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategorieIds, string next)
         {
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.typeAccount == 2 || p.typeAccount == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
 
-            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+            ViewData["ListCategories"] = _context.Categories.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
 
             ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
@@ -132,11 +138,6 @@ namespace PBL3.Controllers
                 if(reqListAuthorIds.Count == 0)
                 {
                     ModelState.AddModelError("", "Bạn cần chọn tác giả");
-                    return View();
-                }
-                if(reqListCategorieIds.Count == 0)
-                {
-                    ModelState.AddModelError("", "Bạn cần chọn dạng bài");
                     return View();
                 }
                 if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.code == reqProblem.code) != null)
@@ -167,7 +168,16 @@ namespace PBL3.Controllers
                         categoryID = id
                     });
                 }
+
                 _context.Add(reqProblem);
+
+                var action = new PBL3.Models.Action()
+                {
+                    account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName")),
+                    objectID = reqProblem.ID,
+                    dateTime = DateTime.Now,
+                    action = "Tạo mới"
+                };
 
                 await _context.SaveChangesAsync();
 
@@ -234,6 +244,14 @@ namespace PBL3.Controllers
 
             _context.Update(problem);
 
+            _context.Add(new PBL3.Models.Action()
+            {
+                account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName")),
+                objectID = problem.ID,
+                dateTime = DateTime.Now,
+                action = "Xóa bài tập"
+            });
+
             await _context.SaveChangesAsync();
             
             return RedirectToAction("Problems", "Admin");
@@ -246,9 +264,9 @@ namespace PBL3.Controllers
                                             .AsSplitQuery().OrderBy(p => p.title)
                                             .FirstOrDefault(p => p.ID == id);
             
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.typeAccount == 2 || p.typeAccount == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
 
-            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+            ViewData["ListCategories"] = _context.Categories.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
 
             ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
 
@@ -264,9 +282,9 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.typeAccount == 2 || p.typeAccount == 1).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.typeAccount == 2 || p.typeAccount == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
 
-            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+            ViewData["ListCategories"] = _context.Categories.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
 
             ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
@@ -279,25 +297,118 @@ namespace PBL3.Controllers
                     ModelState.AddModelError("", "Bạn cần chọn tác giả");
                     return View(reqProblem);
                 }
-                if(reqListCategoryIds.Count == 0)
-                {
-                    ModelState.AddModelError("", "Bạn cần chọn dạng bài");
-                    return View(reqProblem);
-                }
                 var problem =  _context.Problems.Include(p => p.problemAuthors)
                                                 .Include(p => p.problemClassifications)
                                                 .AsSplitQuery().OrderBy(p => p.title)
                                                 .FirstOrDefault(p => p.ID == id);
                 
-                problem.code = reqProblem.code;
-                problem.title = reqProblem.title;
-                problem.content = reqProblem.content;
-                problem.difficulty = reqProblem.difficulty;
-                problem.isPublic = reqProblem.isPublic;
-                problem.timeLimit = reqProblem.timeLimit;
-                problem.memoryLimit = reqProblem.memoryLimit;
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+                if(problem.code != reqProblem.code)
+                {
+                    problem.code = reqProblem.code;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa mã bài"
+                    };
+                    _context.Add(action);
+                }
 
-                foreach(var item in problem.problemAuthors)// old problem.problemAuthors     new reqListAuthorIds
+                if(problem.title != reqProblem.title)
+                {
+                    problem.title = reqProblem.title;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa tên bài"
+                    };
+                    _context.Add(action);
+                }
+
+                if(problem.content != reqProblem.content)
+                {
+                    problem.content = reqProblem.content;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa đề bài"
+                    };
+                    _context.Add(action);
+                }
+
+                if(problem.difficulty != reqProblem.difficulty)
+                {
+                    problem.difficulty = reqProblem.difficulty;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa độ khó"
+                    };
+                    _context.Add(action);
+                }
+
+                if(problem.isPublic != reqProblem.isPublic)
+                {
+                    problem.isPublic = reqProblem.isPublic;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa trạng thái bài"
+                    };
+                    _context.Add(action);
+                }
+
+                if(problem.timeLimit != reqProblem.timeLimit)
+                {
+                    problem.timeLimit = reqProblem.timeLimit;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa thời gian giới hạn"
+                    };
+                    _context.Add(action);
+                }
+
+                if(problem.memoryLimit != reqProblem.memoryLimit)
+                {
+                    problem.memoryLimit = reqProblem.memoryLimit;
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa giới hạn bộ nhớ"
+                    };
+                    _context.Add(action);
+                }
+                
+                var listProblemAuthors = problem.problemAuthors.Where(p => p.isDeleted == false).ToList();
+
+                if(Utility.DifferentList(reqListAuthorIds, listProblemAuthors.Select(p => p.authorID).ToList()))
+                {
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa tác giả"
+                    };
+                    _context.Add(action);
+                }
+
+                foreach(var item in listProblemAuthors)// old listProblemAuthors     new reqListAuthorIds
                 {
                     //delete
                     if(reqListAuthorIds.Any(p => p == item.authorID) == false)
@@ -309,7 +420,7 @@ namespace PBL3.Controllers
                 foreach(var item in reqListAuthorIds)
                 {
                     //add
-                    if(problem.problemAuthors.Any(p => p.authorID == item) == false)
+                    if(listProblemAuthors.Any(p => p.authorID == item) == false)
                     {
                         _context.Add(new ProblemAuthor()
                         {
@@ -325,7 +436,33 @@ namespace PBL3.Controllers
                     }
                 }
 
-                foreach(var item in problem.problemClassifications)
+                var listProblemClassifications = problem.problemClassifications.Where(p => p.isDeleted == false).ToList();
+
+                if(Utility.DifferentList(reqListCategoryIds, listProblemClassifications.Select(p => p.categoryID).ToList()))
+                {
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa dạng bài"
+                    };
+                    _context.Add(action);
+                }
+
+                if(Utility.DifferentList(reqListCategoryIds, listProblemClassifications.Select(p => p.categoryID).ToList()))
+                {
+                    var action = new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = problem.ID,
+                        dateTime = DateTime.Now,
+                        action = "Sửa dạng bài"
+                    };
+                    _context.Add(action);
+                }
+
+                foreach(var item in listProblemClassifications)
                 {
                     //delete
                     if(reqListCategoryIds.Any(p => p == item.categoryID) == false)
@@ -337,7 +474,7 @@ namespace PBL3.Controllers
                 foreach(var item in reqListCategoryIds)
                 {
                     //add
-                    if(problem.problemClassifications.Any(p => p.categoryID == item) == false)
+                    if(listProblemClassifications.Any(p => p.categoryID == item) == false)
                     {
                         _context.Add(new ProblemClassification()
                         {
@@ -363,6 +500,16 @@ namespace PBL3.Controllers
             }
             ModelState.AddModelError("", "Hãy sửa các thông tin không đúng yêu cầu");
             return View(reqProblem);
+        }
+        public IActionResult ProblemHistory(int id)
+        {
+            var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
+            if(problem == null)
+            {
+                return NotFound();
+            }
+            var listActions = _context.Actions.Where(p => p.objectID == id).Include(p => p.account).OrderByDescending(p => p.dateTime).ToList();
+            return View(listActions);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

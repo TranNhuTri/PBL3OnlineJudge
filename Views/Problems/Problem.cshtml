@@ -1,3 +1,5 @@
+@using PBL3.Models
+@using Microsoft.AspNetCore.Http
 @model Problem
 @{
     ViewData["Title"] = Model.title;
@@ -51,6 +53,7 @@
                         </a>
                     </div>
                     <div class="problemPropertyContainer">
+
                         @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
                         {
                             var parms = new Dictionary<string, string>
@@ -69,6 +72,9 @@
                                     <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem mySubmissions" style = "background-color: #ff000021">Lời giải của tôi</a>
                                 }
                             }
+
+                            <a asp-controller = "Problem" asp-action = "Submissions" asp-route-problemID = "@Model.ID" class = "CUDProblem">Tất cả bài nộp</a>
+
                             if(Convert.ToInt32(Context.Session.GetString("TypeAccount")) == 1)
                             {
                                 <a asp-controller = "Problems" asp-action = "EditProblem" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
@@ -76,7 +82,7 @@
                             }
                         }
                         
-                        <p class = "problemProperty"><b>Mã bài: </b>@Model.ID</p>
+                        <p class = "problemProperty"><b>Mã bài: </b>@Model.code</p>
                         <p class = "problemProperty"><b>Thời gian giới hạn: </b>@Model.timeLimit s</p>
                         <p class = "problemProperty"><b>Bộ nhớ giới hạn: </b>@Model.memoryLimit M</p>
                         <p class = "problemProperty"><b>Độ khó: </b>@Model.difficulty</p>

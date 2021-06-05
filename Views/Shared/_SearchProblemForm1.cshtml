@@ -2,7 +2,7 @@
     var listCategories = (List<Category>)ViewData["ListCategories"];
 }
 @model SearchProblemInfor
-<form asp-controller = "ListProblems" asp-action = "Index" method="GET">
+<form asp-controller = "Problems" asp-action = "Index" method="GET">
     <div class="problemFilter">
         <h1 class="problemFillter_header">Tìm Kiếm Bài Tập</h1>
         <div class="problemNameFillter">
@@ -16,8 +16,8 @@
             </div>
         }
         <div class="problemCategoryFillter">
-            <label for="categoryIds">Dạng bài</label><br>
-            <select name="CategoryIds" id="CategoryIds" multiple>
+            <label for="CategoryIds">Dạng bài</label><br>
+            <select name="categoryIds" id="CategoryIds" multiple>
                 @foreach (var cate in listCategories)
                 {
                     <option value="@cate.ID">@cate.name</option>

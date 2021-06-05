@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
 }
@@ -34,7 +35,7 @@
                         <tr>
                             <td>@(i + 1)</td>
                             <td style="text-align: left;">
-                                <a asp-action = "EditAccount" asp-controller = "Accounts" asp-route-id = "@Model[i].ID" style="color: #008eff; text-decoration: none">@Model[i].accountName</a>
+                                <a asp-action = "EditAccount" asp-controller = "Accounts" asp-route-id = "@Model[i].ID" class="link">@Model[i].accountName</a>
                             </td>
                             <td style="text-align: left;">@Model[i].email</td>
                             <td style="text-align: left;">@(Model[i].lastName + " " + Model[i].firstName)</td>
@@ -70,7 +71,7 @@
 <div class="grid_row">
     <div class="grid_column">
         @{
-            string[] param = {"Page", "Accounts"};
+            string[] param = {"Index", "Accounts"};
         }
         @await Html.PartialAsync("_Pagination", param)
     </div>
