@@ -31,31 +31,41 @@ namespace PBL3.Controllers
             var listProblems = _context.Problems.Include(p => p.problemAuthors)
                                                 .ThenInclude(p => p.author)
                                                 .Where(p => p.isDeleted == false)
+                                                .OrderByDescending(p => p.timeCreate)
                                                 .ToList();
-
+            var paramater = new Dictionary<string, string>();
             if(authorId != 0)
             {
                 listProblems =  listProblems.Where(p => p.problemAuthors.Select(p => p.authorID).ToList().Contains(authorId))
                                             .ToList();
+                paramater.Add("authorId", authorId.ToString());
             }
 
-            if(isPublic == 1)
+            if(isPublic != null)
             {
-                listProblems =  listProblems.Where(p => p.isPublic == true)
-                                            .ToList();
-            }
-            else
-                if(isPublic == 0)
+                if(isPublic == 1)
                 {
-                    listProblems =  listProblems.Where(problem => problem.isPublic == false)
+                    listProblems =  listProblems.Where(p => p.isPublic == true)
                                                 .ToList();
                 }
+                else
+                    if(isPublic == 0)
+                    {
+                        listProblems =  listProblems.Where(problem => problem.isPublic == false)
+                                                    .ToList();
+                    }
+                paramater.Add("isPublic", isPublic.ToString());
+            }
 
             if(!String.IsNullOrEmpty(searchText))
             {
                 listProblems =  listProblems.Where(problem => problem.title.ToLower().Contains(searchText.ToLower()) || problem.code.ToLower().Contains(searchText.ToLower()))
                                             .ToList();
+                paramater.Add("searchText", searchText);
             }
+
+            ViewBag.paginationParams = paramater;
+
             if(page == null)
             {
                 page = 1;
@@ -71,11 +81,11 @@ namespace PBL3.Controllers
 
             listProblems = listProblems.Skip(start).Take(limit).ToList();
 
-            return View(listProblems.OrderByDescending(p => p.timeCreate).ToList());
+            return View(listProblems);
         }
         public IActionResult ProblemCategories(int? page, string categoryName)
         {
-            var listProblemCategories = _context.Categories.ToList();
+            var listProblemCategories = _context.Categories.Where(p => p.isDeleted == false).ToList();
 
             if(!string.IsNullOrEmpty(categoryName))
             {
@@ -132,9 +142,18 @@ namespace PBL3.Controllers
                     };
                     _context.Add(problemClassification);
                 }
+
+                _context.Add(new PBL3.Models.Action()
+                {
+                    account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName")),
+                    objectID = reqCategory.ID,
+                    dateTime = DateTime.Now,
+                    action = "Tạo mới"
+                });
+
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("ListProblemCategories");
+                return RedirectToAction("ProblemCategories");
             }
             return View();
         }
@@ -152,7 +171,7 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProblemCategory(int id, [Bind("name")] Category reqCategory, List<int> reqListProblemIds)
         {
-            ViewData["ListProblems"] = _context.Problems.ToList();
+            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
 
             ViewData["ListChosenProblemIds"] = reqListProblemIds.ToList();
 
@@ -169,18 +188,33 @@ namespace PBL3.Controllers
                     ModelState.AddModelError("", "Dạng bài đã tồn tại");
                     return View(reqCategory);
                 }
-                var listProblemClassifications = _context.ProblemClassifications.Where(pc => pc.categoryID == id).ToList();
+
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+
+                var listProblemClassifications = _context.ProblemClassifications.Where(pc => pc.categoryID == id && pc.isDeleted == false).ToList();
 
                 // var lstTmpt = new List<ProblemClassification>();
 
                 // lstTmpt.AddRange(listProblemClassifications.Select(pc => pc));
+
+                if(Utility.DifferentList(reqListProblemIds, listProblemClassifications.Select(p => p.problemID).ToList()))
+                {
+                    _context.Add(new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = id,
+                        dateTime = DateTime.Now,
+                        action = "Sửa danh sách bài tập"
+                    });
+                }
 
                 foreach(var item in listProblemClassifications)
                 {
                     //xoa
                     if(reqListProblemIds.Any(p => p == item.problemID) == false)
                     {
-                        _context.Remove(item);
+                        item.isDeleted = true;
+                        _context.Update(item);
                     }
                 }
                 foreach(var item in reqListProblemIds)
@@ -194,9 +228,26 @@ namespace PBL3.Controllers
                             categoryID = id
                         });
                     }
+                    else
+                    {
+                        var tmpt = listProblemClassifications.FirstOrDefault(p => p.problemID == item);
+                        tmpt.isDeleted = false;
+                        _context.Update(tmpt);
+                    }
                 }
 
-                problemCategory.name = reqCategory.name;
+                if(problemCategory.name != reqCategory.name)
+                {
+                    problemCategory.name = reqCategory.name;
+                    _context.Add(new PBL3.Models.Action()
+                    {
+                        account = account,
+                        objectID = id,
+                        dateTime = DateTime.Now,
+                        action = "Sửa tên dạng bài"
+                    });
+                }
+                _context.Update(problemCategory);
 
                 // _context.ProblemClassifications.RemoveRange(listProblemClassifications);
 
@@ -204,7 +255,7 @@ namespace PBL3.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("ListProblemCategories");
+                return RedirectToAction("ProblemCategories");
             }
 
             return View(reqCategory);
@@ -212,18 +263,28 @@ namespace PBL3.Controllers
         public IActionResult Submissions(int? page, string language, string status, string searchText)
         {
             var listSubmissions = _context.Submissions.Include(p => p.problem).Include(p => p.account).OrderByDescending(p => p.timeCreate).ToList();
+            
+            var paramater = new Dictionary<string, string>();
+
             if(language != "all" && !string.IsNullOrEmpty(language))
             {
                 listSubmissions = listSubmissions.Where(p => p.language == language).ToList();
+                paramater.Add("language", language);
             }
-            if(status != "all" && !string.IsNullOrEmpty(language))
+            
+            if(status != "all" && !string.IsNullOrEmpty(status))
             {
                 listSubmissions = listSubmissions.Where(p => p.status == status).ToList();
+                paramater.Add("status", status);
             }
+            
             if(!string.IsNullOrEmpty(searchText))
             {
                 listSubmissions = listSubmissions.Where(p => p.problem.title.ToLower().Contains(searchText.ToLower()) || p.problem.code.ToLower().Contains(searchText.ToLower()) || p.account.accountName.ToLower().Contains(searchText.ToLower())).ToList();
+                paramater.Add("searchText", searchText);
             }
+
+            ViewBag.paginationParams = paramater;
             
             if(page == null)
             {
@@ -318,18 +379,31 @@ namespace PBL3.Controllers
             {
                 return NotFound();
             }
-            if(_context.Problems.FirstOrDefault(p => p.title == problem.title || p.code == problem.code) != null)
+
+            if(_context.Problems.FirstOrDefault(p => (p.title == problem.title || p.code == problem.code) && p.isDeleted == false) != null)
             {
                 ModelState.AddModelError("", "Không thể khôi phục bài vì đã có bài trùng tên hoặc mã bài");
                 return View(problem);
             }
+
             problem.isDeleted = false;
             _context.Update(problem);
+
             foreach(var item in problem.submissions)
             {
                 item.isDeleted = false;
                 _context.Update(item);
             }
+
+            var action = new PBL3.Models.Action()
+            {
+                account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName")),
+                objectID = problem.ID,
+                dateTime = DateTime.Now,
+                action = "Khôi phục đề bài"
+            };
+            _context.Add(action);
+            
             _context.SaveChanges();
             return RedirectToAction(nameof(Problems));
         }

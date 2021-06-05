@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
 }
@@ -10,6 +11,9 @@
                     <h1>Danh sách dạng bài tập</h1>
                     <a asp-action = "AddProblemCategory" asp-controller = "Admin" style="text-decoration: none;">
                         <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm dạng bài mới</div>
+                    </a>
+                    <a asp-action = "DeletedProblemCategories" asp-controller = "ProblemCategories" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các dạng bài đã xóa</div>
                     </a>
                 </div>
             </div>
@@ -43,7 +47,7 @@
 <div class="grid_row">
     <div class="grid_column">
         @{
-            string[] param = {"ListProblemCategories", "Admin"};
+            string[] param = {"ProblemCategories", "Admin"};
         }
         @await Html.PartialAsync("_Pagination", param)
     </div>

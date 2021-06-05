@@ -19,31 +19,40 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Page(int? id, int? isActived, int typeAccount, string searchText)
+        public IActionResult Index(int? page, int? isActived, int? typeAccount, string searchText)
         {
             var listAccounts = _context.Accounts.OrderBy(p => p.accountName).ToList();
 
-            if(typeAccount != 0)
+            var paramater = new Dictionary<string, string>();
+
+            if(typeAccount != null)
             {
                 listAccounts = listAccounts.Where(p => p.typeAccount == typeAccount).ToList();
+                paramater.Add("typeAccount", typeAccount.ToString());
             }
-            if(isActived == 1)
+            if(isActived != null)
             {
-                listAccounts = listAccounts.Where(p => p.isActived == true).ToList();
-            }
-            else
-                if(isActived == 0)
+                if(isActived == 1)
                 {
-                    listAccounts = listAccounts.Where(p => p.isActived == false).ToList();
+                    listAccounts = listAccounts.Where(p => p.isActived == true).ToList();
                 }
+                else
+                    if(isActived == 0)
+                    {
+                        listAccounts = listAccounts.Where(p => p.isActived == false).ToList();
+                    }
+                paramater.Add("isActived", isActived.ToString());
+            }
             if(!string.IsNullOrEmpty(searchText))
             {
                 listAccounts = listAccounts.Where(p => p.accountName.ToLower().Contains(searchText.ToLower()) || p.email.ToLower().Contains(searchText.ToLower()) || (p.lastName + " " + p.firstName).ToLower().Contains(searchText.ToLower())).ToList();
+                paramater.Add("searchText", searchText);
             }
 
-            int page = 1;
-            if(id != null)
-                page = (int)id;
+            ViewBag.paginationParams = paramater;
+
+            if(page == null)
+                page = 1;
             
             int limit = Utility.limitData;
 

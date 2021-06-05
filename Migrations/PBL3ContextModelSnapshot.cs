@@ -67,6 +67,32 @@ namespace PBL3.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("PBL3.Models.Action", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("accountID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("action")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("objectID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("accountID");
+
+                    b.ToTable("Actions");
+                });
+
             modelBuilder.Entity("PBL3.Models.Article", b =>
                 {
                     b.Property<int>("ID")
@@ -450,6 +476,17 @@ namespace PBL3.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("TypeNotifications");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Action", b =>
+                {
+                    b.HasOne("PBL3.Models.Account", "account")
+                        .WithMany()
+                        .HasForeignKey("accountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("account");
                 });
 
             modelBuilder.Entity("PBL3.Models.ArticleAuthor", b =>

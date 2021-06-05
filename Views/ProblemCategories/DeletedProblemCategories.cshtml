@@ -1,0 +1,47 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+}
+@model List<Category>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách dạng bài đã xóa</h1>
+                </div>
+            </div>
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Tên Dạng Bài
+                        </th>
+                        <th>
+                            Ngày xóa
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller = "ProblemCategories" asp-action = "RestoreProblemCategory" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.name</a>
+                            </td>
+                            <td>Ngày xóa</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"ListProblems", "Admin"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>

@@ -18,17 +18,12 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return RedirectToAction(nameof(Page));
-        }
-        public IActionResult Page(int? id)
+        public IActionResult Index(int? page)
         {
             var listSubmissions = _context.Submissions.Where(p => p.isDeleted == false).Include(p => p.account).Include(p => p.problem).OrderByDescending(p => p.timeCreate).ToList();
-            int page = 1;
-            if(id != null)
+            if(page == null)
             {
-                page = (int)id;
+                page = 1;
             }
 
             int limit = Utility.limitData;
