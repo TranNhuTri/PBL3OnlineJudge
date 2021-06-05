@@ -1,6 +1,7 @@
 using System.Text;
 using System.Net.Mail;
 using System.Net;
+using System.Collections.Generic;
 
 namespace PBL3.General
 {
@@ -40,6 +41,21 @@ namespace PBL3.General
             };
             mailMessage.To.Add(email);
             smtpClient.Send(mailMessage);
+        }
+        public static bool DifferentList(List<int> a, List<int> b)
+        {
+            if(a.Count != b.Count)
+            {
+                return true;
+            }
+            a.Sort();
+            b.Sort();
+            for(int i = 0; i < a.Count; i++)
+            {
+                if(a[i] != b[i])
+                    return true;
+            }
+            return false;
         }
     }
 }

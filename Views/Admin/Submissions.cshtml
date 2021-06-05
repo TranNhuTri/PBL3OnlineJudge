@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
 }
@@ -45,7 +46,19 @@
                                 @Model[i].account.accountName
                             </td>
                             <td>@Model[i].language</td>
-                            <td>@Model[i].status</td>
+                            @{
+                                var color = "";
+                            }
+                            @if(Model[i].status == "Accepted")
+                            {
+                                color = "#00bb00";
+                            }
+                            else
+                                if(@Model[i].status == "Wrong Answer")
+                                {
+                                    color = "#ff0000ba";
+                                }
+                            <td style="color: @color; font-weight: bold">@Model[i].status</td>
                         </tr>
                     }
                 </tbody>
@@ -56,7 +69,7 @@
 <div class="grid_row">
     <div class="grid_column">
         @{
-            string[] param = {"ListSubmissions", "Admin"};
+            string[] param = {"Submissions", "Admin"};
         }
         @await Html.PartialAsync("_Pagination", param)
     </div>

@@ -46,7 +46,7 @@ namespace PBL3.Controllers
             {
                 if(_context.Problems.FirstOrDefault(p => p.ID == tmpt.postID) != null)
                 {
-                    return RedirectToAction("Problem", "ListProblems", new{id = tmpt.postID});
+                    return RedirectToAction("Problem", "Problems", new{id = tmpt.postID});
                 }
                 else
                 {
@@ -57,7 +57,7 @@ namespace PBL3.Controllers
             {
                 if(_context.Problems.FirstOrDefault(p => p.ID == notication.objectID) != null)
                 {
-                    return RedirectToAction("Problem", "ListProblems", new{id = notication.objectID});
+                    return RedirectToAction("Problem", "Problems", new{id = notication.objectID});
                 }
                 else
                 {
