@@ -65,7 +65,7 @@
                                         <i class="fas fa-user-circle"></i>
                                         <div class="appHeader_dropdown">
                                             <ul class="appHeader_dropdown_list">
-                                                <a class="appHeader_dropdown_link" href="/">
+                                                <a asp-action = "EditAccountProfile" asp-controller = "Account" asp-route-accountName = "@Context.Session.GetString("AccountName")" class="appHeader_dropdown_link">
                                                     <li class="appHeader_dropdown_item">
                                                         <i class="appHeader_dropdown_icon fas fa-user"></i>
                                                         @Context.Session.GetString("AccountName")

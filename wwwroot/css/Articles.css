@@ -1,0 +1,126 @@
+@charset "UTF-8";
+.body {
+  padding-left: 0px;
+  margin-top: 30px;
+  background-color: #f1f1f1;
+}
+
+.post-item {
+  position: relative;
+  text-decoration: none;
+  color: var(--heading-color);
+  display: block;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 20px 5px 20px 0px;
+}
+
+.post-item::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 2px solid transparent;
+  position: absolute;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  top: 0;
+  left: 0;
+}
+
+.post-item:hover::after {
+  border-color: #1dbfaf;
+}
+
+.post-item::before {
+  content: "Chọn ngay";
+  position: absolute;
+  top: 98%;
+  width: 100%;
+  padding: 10px 0px;
+  color: #fff;
+  font-size: 14rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  background-color: #1dbfaf;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  opacity: 0;
+}
+
+.post-item:hover::before {
+  opacity: 1;
+}
+
+.post-item__title:hover {
+  color: #1dbfaf;
+}
+
+.post-list__heading {
+  margin-left: 10px;
+  width: 100%;
+}
+
+.post-list__heading h2 {
+  font-size: 20rem;
+  line-height: 25px;
+  letter-spacing: 0.5rem;
+  margin-bottom: 10px;
+  margin-top: 0px;
+  padding-top: 10px;
+}
+
+.post-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.post-item__img {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.post-item__img img {
+  max-height: 120px;
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+  opacity: .5;
+  -webkit-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.post-item:hover img {
+  -webkit-filter: grayscale(0);
+          filter: grayscale(0);
+  opacity: 1;
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+.post-item__title {
+  margin-top: 8px;
+  font-size: 18rem;
+  line-height: 20px;
+  display: inline-block;
+  margin-bottom: 30px;
+  -webkit-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+}
+
+.post-item:hover .post-item__title {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+.post-item__dicription {
+  padding: 20px 15px 0 15px;
+  background-color: #fff;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  text-align: center;
+}
+/*# sourceMappingURL=Articles.css.map */

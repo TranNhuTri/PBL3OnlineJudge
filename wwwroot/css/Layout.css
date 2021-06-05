@@ -1,4 +1,4 @@
-* 
+*,::after,::before
 {
     box-sizing: inherit;
 }
@@ -52,4 +52,46 @@ html
     padding-left: 10px;
     padding-right: 10px;
     width: 25%;
+}
+
+.grid_column-2-4{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 20%;
+}
+
+.grid_column-8{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 83.33333%;
+}
+
+.grid_column-2-5{
+    padding-left: 10px;
+	padding-right: 10px;
+	width:25%;
+}
+
+.grid_column-7-5{
+    padding-left: 10px;
+	padding-right: 10px;
+	width:74%;
+}
+
+.grid_column-3-6{
+    padding-left: 10px;
+	padding-right: 10px;
+	width:30%;
+}
+
+.grid_column-6-4{
+    padding-left: 10px;
+	padding-right: 10px;
+	width:70%;
+}
+
+.grid_column-6{
+    padding-left: 10px;
+	padding-right: 10px;
+	width:50%;
 }
