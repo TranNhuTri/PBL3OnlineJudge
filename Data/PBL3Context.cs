@@ -23,6 +23,7 @@ namespace PBL3.Data
         public DbSet<ProblemClassification> ProblemClassifications{get; set;}
         public DbSet<ArticleAuthor> ArticleAuthors{get; set;}
         public DbSet<Like> Likes{get; set;}
+        public DbSet<Action> Actions{get; set;}
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,0 +1,25 @@
+@model List<PBL3.Models.Action>
+<table cellspacing="0" cellpadding="0" class="table">
+    <thead>
+        <tr>
+            <th>Ngày giờ</th>
+            <th>Tài khoản</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.dateTime</td>
+                    <td>
+                        <a asp-action = "" asp-controller = "" class="link">@item.account.accountName</a>
+                    </td>
+                    <td>@item.action</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Sửa đề bài";
@@ -7,8 +8,11 @@
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
-                <div class="addEditPage_header">
+                <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h1>Chỉnh sửa đề bài</h1>
+                    <a asp-action="ProblemHistory" asp-route-id="@Model.ID" class="link">
+                        <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
+                    </a>
                 </div>
                 <div class="addEditPage_input">
                     <div asp-validation-summary="ModelOnly" class="div-danger"></div>

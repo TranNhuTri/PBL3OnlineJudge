@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Json;
+using PBL3.General;
 
 
 namespace PBL3.Controllers
@@ -122,16 +123,27 @@ namespace PBL3.Controllers
                 {"accountName", account.accountName},
             });
         } 
-        public IActionResult Submissions(int page, int problemID, string accountName)
+        public IActionResult Submissions(int? page, int problemID, string accountName)
         {
+            List<Submission> listSubmissions = new List<Submission>();
             if(accountName == null)
+                listSubmissions = _context.Submissions.Where(p => p.problemID == problemID).Include(p => p.account).Include(p => p.problem).OrderByDescending(p => p.timeCreate).ToList();
+            else
+                listSubmissions = (from submission in _context.Submissions.Include(p => p.account).Include(p => p.problem) where (submission.problem.ID == problemID && submission.account.accountName == accountName) select submission).OrderByDescending(p => p.timeCreate).ToList();
+
+            if(page == null)
             {
-                return NotFound();
+                page = 1;
             }
 
-            var listSubmissions = (from submission in _context.Submissions.Include(p => p.account).Include(p => p.problem) where (submission.problem.ID == problemID && submission.account.accountName == accountName) select submission).ToList();
-            
-            listSubmissions.Reverse();
+            int limit = Utility.limitData;
+            int start = (int)(page - 1)*limit;
+
+            ViewBag.currentPage = page;
+
+            ViewBag.totalPage = (int)Math.Ceiling((float)listSubmissions.Count/limit);
+
+            listSubmissions = listSubmissions.Skip(start).Take(limit).ToList();
             
             return View(listSubmissions);
         }
