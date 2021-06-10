@@ -8,6 +8,7 @@ using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
 using PBL3.General;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PBL3.Controllers
 {
@@ -33,7 +34,7 @@ namespace PBL3.Controllers
 
             ViewBag.totalPage = (int)Math.Ceiling((float)listSubmissions.Count/limit);
 
-            listSubmissions = listSubmissions.Skip(start).Take(limit).ToList();
+            listSubmissions = listSubmissions.Skip(start).Take(limit).OrderByDescending(p => p.timeCreate).ToList();
             
             return View(listSubmissions);
         }
@@ -49,17 +50,44 @@ namespace PBL3.Controllers
 
             return View(submission);
         }
-        public string GetSubmission(int? id)
+        public IActionResult GetSubmission(int? id)
         {
             var submission  = _context.Submissions.Include(s => s.account)
                                                 .Include(s => s.problem)
                                                 .Include(s => s.submissionResults)
                                                 .ThenInclude(sr => sr.testCase)
-                                                .Select(s => new{s.ID, s.account.accountName, s.problem.title, s.code, s.submissionResults, s.status, s.memory, s.time})
                                                 .FirstOrDefault(s => s.ID == id);
-            return JsonConvert.SerializeObject(submission, new JsonSerializerSettings() { 
-		        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-	        });
+            return View(submission);
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditSubmission(int id)
+        {
+            var submission = _context.Submissions.Include(p => p.problem).Include(p => p.account).Include(p => p.submissionResults).FirstOrDefault(p => p.ID == id);
+
+            if(submission == null)
+            {
+                return NotFound();
+            }
+
+            return View(submission);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteSubmission(int id)
+        {
+            var submission = _context.Submissions.Include(p => p.problem).Include(p => p.account).FirstOrDefault(p => p.ID == id);
+
+            if(submission == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(submission);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ListSubmissions");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

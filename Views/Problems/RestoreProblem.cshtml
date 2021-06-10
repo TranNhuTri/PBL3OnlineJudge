@@ -1,0 +1,31 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Sửa đề bài";
+}
+@model Problem
+<div class="addEditPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="addEditPage_header">
+                    <h1>Khôi phục đề bài</h1>
+                </div>
+                <div class="addEditPage_input">
+                    <div asp-validation-summary="ModelOnly" class="div-danger"></div>
+                    <form asp-action = "RestoreProblem">
+                        @await Html.PartialAsync("_Problem", Model)
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button">
+                                    <i class="fas fa-window-restore"></i>
+                                    Khôi phục
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

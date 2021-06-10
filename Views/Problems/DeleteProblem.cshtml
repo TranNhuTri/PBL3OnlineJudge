@@ -1,5 +1,6 @@
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Xóa bài tập";
 }
 @using PBL3.Models
 @model Problem
@@ -20,7 +21,7 @@
                         <input type="text" asp-for = "title">
                     </div>
                     <p class="deletePage_warning">
-                        Việc xóa có thể dẫn tới mất các dữ liệu sau !!!
+                        Việc xóa bài tập có thể dẫn tới mất các dữ liệu sau !!!
                     </p>
                     <p>Các bài nộp :</p>
                     <table cellspacing="0" cellpadding="0" class="table submissions_table">
@@ -39,7 +40,7 @@
                             {
                                 string color = "";
                                 <tr>
-                                    <td class = "link submissionID" style="text-decoration: underline;">@item.ID</td>
+                                    <td class = "link submissionID" style="text-decoration: underline;" data-id="@item.ID">@item.ID</td>
                                     <td>@item.timeCreate</td>
                                     <td><a href="" class = "link">@item.account.accountName</a></td>
                                     @if(item.status == "Accepted")

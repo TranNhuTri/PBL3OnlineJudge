@@ -1,5 +1,12 @@
+@using PBL3.DTO
+@using PBL3.Models
 @{
     var listCategories = (List<Category>)ViewData["ListCategories"];
+    var listChosenCategoryIds = new List<int>();
+    if(ViewData["ListChosenCategoryIds"] != null)
+    {
+        listChosenCategoryIds = (List<int>)ViewData["ListChosenCategoryIds"];
+    }
 }
 @model SearchProblemInfor
 <form asp-controller = "Problems" asp-action = "Index" method="GET">
@@ -8,7 +15,7 @@
         <div class="problemNameFillter">
             <input type="text" asp-for ="problemName" placeholder="Nhập tên bài">
         </div>
-        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+        @if(Context.User.Identity.IsAuthenticated)
         {
             <div class = "problemUnsolvedFillter">
                 <input type="checkbox" asp-for = "hideSolvedProblem" value = "true">
@@ -20,7 +27,14 @@
             <select name="categoryIds" id="CategoryIds" multiple>
                 @foreach (var cate in listCategories)
                 {
-                    <option value="@cate.ID">@cate.name</option>
+                    if(listChosenCategoryIds.Contains(cate.ID))
+                    {
+                        <option value="@cate.ID" selected>@cate.name</option>
+                    }
+                    else
+                    {
+                        <option value="@cate.ID">@cate.name</option>
+                    }
                 }
             </select>
         </div>

@@ -1,35 +1,63 @@
 using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using PBL3.Models;
 using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Json;
 using PBL3.General;
-
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PBL3.Controllers
 {
     public class ProblemController : Controller
     {
         private readonly PBL3Context _context;
-        public ProblemController(PBL3Context context)
+        private IWebHostEnvironment _hostEnvironment;
+        public ProblemController(PBL3Context context, IWebHostEnvironment env)
         {
             _context = context;
+            _hostEnvironment = env;
         }
+        public IActionResult UploadTestcase(int id)
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UploadTestcase(int id, List<IFormFile> files)
+        { 
+            if (ModelState.IsValid)
+            {
+                foreach (var file in files)
+                {   
+                    if (file.Length > 0)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+
+                        var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/" + InputFileName);
+
+                        using(var stream = new FileStream(ServerSavePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                            stream.Close();
+                        }
+                    }
+                }  
+            }
+            return RedirectToAction("EditProblem", "Problems", new {id = id});
+        }  
+        [Authorize]
         public IActionResult Submit(int id)
         {
-            if(String.IsNullOrEmpty(HttpContext.Session.GetString("AccountName")))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var problem = _context.Problems.FirstOrDefault(p => p.ID == id);
 
             if(problem == null)
@@ -39,14 +67,14 @@ namespace PBL3.Controllers
 
             return View(problem);
         }
-        
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Submit(int id, string problemSolution, string language)
         {
             var problem = _context.Problems.Include(p => p.testCases).FirstOrDefault(p => p.ID == id);
             
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
             var mySubmission = new Submission
             {
@@ -55,7 +83,7 @@ namespace PBL3.Controllers
                 timeCreate = DateTime.Now,
                 status = "Running",
                 problem = problem,
-                account = account
+                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID)
             };
             
             var code = new Code()
@@ -120,16 +148,26 @@ namespace PBL3.Controllers
             return RedirectToAction("Submissions", new Dictionary<string, string>
             {
                 {"problemID", Convert.ToString(id)},
-                {"accountName", account.accountName},
+                {"accountName", HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value},
             });
         } 
         public IActionResult Submissions(int? page, int problemID, string accountName)
         {
             List<Submission> listSubmissions = new List<Submission>();
+
+            var paramater = new Dictionary<string, string>();
+
             if(accountName == null)
                 listSubmissions = _context.Submissions.Where(p => p.problemID == problemID).Include(p => p.account).Include(p => p.problem).OrderByDescending(p => p.timeCreate).ToList();
             else
+            {
                 listSubmissions = (from submission in _context.Submissions.Include(p => p.account).Include(p => p.problem) where (submission.problem.ID == problemID && submission.account.accountName == accountName) select submission).OrderByDescending(p => p.timeCreate).ToList();
+                paramater.Add("accountName", accountName);
+            }
+
+            paramater.Add("problemID", problemID.ToString());
+
+            ViewBag.paginationParams = paramater;
 
             if(page == null)
             {
@@ -161,7 +199,7 @@ class Code
     public int versionIndex{get; set;}
     public string stdin{get; set;}
     public string clientId{get; set;} = "672651acf3fa819a1e0c27a9fb272658";
-    public string clientSecret{get; set;} = "eb951e6e38f239380084104d7629f1312d66345ec661a4da5bd62822ad3a842b";
+    public string clientSecret{get; set;} = "3045ce1542ce96ae95a70162e2bdb8595fe05d1ba50494255d05a15477836be8";
 }
 class Response
 {

@@ -1,3 +1,4 @@
+@import 'var.scss';
 .postPage-layout{
     padding-top: 30px;
 }
@@ -10,12 +11,12 @@
     background-color: #fff;
     padding-top: 25px;
     border-radius: 5px;
-    
+    box-shadow: 0 0 3px #ccc;
 }
 
 .infor__title{
     font-size: 20rem;;
-    color: #4d96ff;
+    color: $text-color;
     margin:15px 35px;
 
 }
@@ -51,7 +52,7 @@
 
 .input__title{
     font-size: 14rem;
-    color:#b0b0b0;
+    color:#828282;
     font-weight: 100;
     flex-basis: 25%;
     margin-top: 1px;
@@ -100,10 +101,8 @@
 .infor__save--button{
     border-radius: 20px;
     border: none;
-    font-size: 14rem;
-    background-color: #1dbfaf;
     padding: 8px 35px;
-    color: #fff;
+    margin: 0 auto;
 }
 
 
@@ -117,6 +116,7 @@
     text-decoration: none;
     transition: all linear 0.2s;
     display: block;
+    color: $blue-color;
 
 }
 
@@ -126,13 +126,13 @@
     background-color: #fff;
     border-radius: 5px;
     padding: 10px 10px;
+    box-shadow: 0 0 3px #ccc;
 }
 
 .inforUser__avatar{
     width: 120px;
     height: 120px;
     margin: 0px auto 15px auto;
-    /* text-align: center; */
     background-repeat: no-repeat;
     background-position: center;
     background-color: #d3d3d3;
@@ -157,19 +157,15 @@
     color: #444444;
 }
 
-.infor__function a:hover{
-    font-weight: bold;
-    color: #4d96ff;
-}
-
 .listProblemOfUser{
     background-color: #ffF;
     padding-top: 1px;
     border-radius: 3px;
+    box-shadow: 0 0 3px #ccc;
 }
 
 .listProblems_header h1{
-    color: #4d96ff;
+    color: $text-color;
     font-size: 18rem;
     margin-left: 15px;
 }

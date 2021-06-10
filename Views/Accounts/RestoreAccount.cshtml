@@ -1,0 +1,76 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Khôi phục tài khoản";
+}
+@using PBL3.Models
+@model Account
+<div class="addEditPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="addEditPage_header">
+                <h1>Khôi phục tài khoản</h1>
+            </div>
+            <form asp-action = "RestoreAccount">
+                <div class = "addEditPage_input">
+                    <div class="formGroup">
+                        <label for="accountName" style="width: 180px; display: inline-block;">Tên tài khoản:</label>
+                        <input asp-for = "accountName" type="text" placeholder="Nhập tên tài khoản">
+                        <span asp-validation-for="accountName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="lastName" style="width: 180px; display: inline-block;">Họ:</label>
+                        <input type="text" placeholder="Nhập họ" asp-for = "lastName">
+                        <span asp-validation-for="lastName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="lastName" style="width: 180px; display: inline-block;">Tên:</label>
+                        <input type="text" placeholder="Nhập tên" asp-for = "firstName">
+                        <span asp-validation-for="firstName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="email" style="width: 180px; display: inline-block;">Email:</label>
+                        <input asp-for = "email" type="text" placeholder="Nhập email">
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                    <div class = "formGroup">
+                        <input asp-for = "isActived" type="checkbox" style="width: 15px;" value = "True">
+                        <label for="isActived">Kích hoạt tài khoản</label>
+                    </div>
+                    <div class="formGroup">
+                        <label for="roleID" style="width: 180px; display: inline-block;">Loại tài khoản:</label>
+                        <div style="width: 100px; display: inline-block">
+                            <select id="roleID" asp-for = "roleID">
+                                <option value="1">Admin</option>
+                                <option value="2">Author</option>
+                                <option value="3">User</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="formGroup">
+                        <label for="timeCreate" style="width: 180px; display: inline-block;">Ngày tạo:</label>
+                        <input type="date" asp-for="timeCreate" style="cursor: pointer;" readonly>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                        <div class="formSubmit">
+                            <button type="submit" class="submitButton button">
+                                <i class="fas fa-save"></i>
+                                <p>Khôi phục</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#roleID',
+            showSearch: false,
+        })
+    </script>
+    <script src="/js/Validation.js"></script>
+}

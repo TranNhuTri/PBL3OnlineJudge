@@ -8,9 +8,12 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using PBL3.General;
 
 namespace PBL3.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly PBL3Context _context;
@@ -33,13 +36,14 @@ namespace PBL3.Controllers
         [HttpPost]
         public IActionResult PostComment(int postID, string content, int? rootCommentID)
         {
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
+            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+
             var comment = new Comment()
             {
                 content = content,
                 timeCreate = DateTime.Now,
                 postID = postID,
-                accountID = account.ID,
+                accountID = accountID,
             };
 
             _context.Add(comment);
@@ -63,15 +67,15 @@ namespace PBL3.Controllers
                     }
                 }
 
-                if(account.ID != parentComment.accountID)
+                if(accountID != parentComment.accountID)
                 {
                     var noti = new Notification()
                     {
-                        content = "<b>" + account.accountName + "</b> đã trả lời bình luận của bạn",
+                        content = "<b>" + HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value + "</b> đã trả lời bình luận của bạn",
                         timeCreate = DateTime.Now,
                         accountID = parentComment.accountID,
                         objectID = comment.ID,
-                        typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Comment Reply")
+                        typeNotification = Convert.ToInt32(TypeNotification.NewCommentReply)
                     };
 
                     _context.Update(parentComment.account);
@@ -96,21 +100,17 @@ namespace PBL3.Controllers
 
                 foreach(int id in listAuthorIDs)
                 {
-                    if(listAuthorIDs.Contains(account.ID))
+                    if(listAuthorIDs.Contains(accountID))
                         continue;
                     
                     var noti = new Notification()
                     {
-                        content = "<b>" + account.accountName + "</b> đã bình luận đề bài của bạn",
+                        content = "<b>" + HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value + "</b> đã bình luận đề bài của bạn",
                         timeCreate = DateTime.Now,
                         accountID = id,
                         objectID = comment.ID,
-                        typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Problem Comment")
+                        typeNotification = Convert.ToInt32(TypeNotification.NewProblemComment)
                     };
-
-                    var acc = _context.Accounts.FirstOrDefault(p => p.ID == id);
-
-                    _context.Update(acc);
 
                     _context.Add(noti);
                 }
@@ -128,7 +128,6 @@ namespace PBL3.Controllers
                                                 .Include(p => p.account)
                                                 .Include(p => p.child)
                                                 .Include(p => p.likes)
-                                                .ThenInclude(p => p.account)
                                                 .ToList();
             return View(listComment);
         }
@@ -185,12 +184,12 @@ namespace PBL3.Controllers
         }
         public void LikeComment(int commentID)
         {
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == HttpContext.Session.GetString("AccountName"));
-            if(account == null)
-            {
-                return;
-            }
+            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+
+            var accountName = HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value;
+
             var accountReceiveNotiID = _context.Comments.FirstOrDefault(p => p.ID == commentID).accountID;
+
             var like = _context.Likes.FirstOrDefault(p => p.commentID == commentID && p.accountID == accountReceiveNotiID);
             if(like != null)
             {
@@ -209,22 +208,22 @@ namespace PBL3.Controllers
                 _context.Add(new Like()
                 {
                     commentID = commentID,
-                    accountID = account.ID,
+                    accountID = accountID,
                     status = true
                 });
-                if(account.ID != accountReceiveNotiID)
+                if(accountID != accountReceiveNotiID)
                 {
-                    var notification = _context.Notifications.Where(p => p.accountID == accountReceiveNotiID && p.objectID == commentID).Include(p => p.typeNotification).FirstOrDefault(p => p.typeNotification.name == "New Like Comment");
+                    var notification = _context.Notifications.Where(p => p.accountID == accountReceiveNotiID && p.objectID == commentID).FirstOrDefault(p => p.typeNotification == Convert.ToInt32(TypeNotification.NewCommentLike));
                     if(notification != null)
                     {
                         int numberLikes = _context.Likes.Where(p => p.commentID == commentID && p.status == true).ToList().Count();
                         if(numberLikes >= 1)
                         {
-                            notification.content = "<b>" + account.accountName + "</b> và " + numberLikes.ToString() + " người khác đã thích bình luận của bạn";
+                            notification.content = "<b>" + accountName + "</b> và " + numberLikes.ToString() + " người khác đã thích bình luận của bạn";
                         }
                         else
                         {
-                            notification.content = "<b>" + account.accountName + "</b> đã thích bình luận của bạn";
+                            notification.content = "<b>" + accountName + "</b> đã thích bình luận của bạn";
                         }
                         notification.timeCreate = DateTime.Now;
                         notification.seen = false;
@@ -236,9 +235,9 @@ namespace PBL3.Controllers
                         {
                             accountID = accountReceiveNotiID,
                             objectID = commentID,
-                            content = "<b>" + account.accountName + "</b> đã thích bình luận của bạn",
+                            content = "<b>" + accountName + "</b> đã thích bình luận của bạn",
                             timeCreate = DateTime.Now,
-                            typeNotification = _context.TypeNotifications.FirstOrDefault(p => p.name == "New Like Comment")
+                            typeNotification = Convert.ToInt32(TypeNotification.NewCommentLike)
                         };
                         _context.Add(noti);
                     }

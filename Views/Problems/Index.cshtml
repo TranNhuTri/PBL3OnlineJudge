@@ -33,11 +33,12 @@
                                 @for (int i = 0; i < Model.Count; i++)
                                 {
                                     <tr class= "listProblemRow">
-                                        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+                                        @if(Context.User.Identity.IsAuthenticated)
                                         {
-                                            if(Model[i].submissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName")).ToList().Count > 0)
+                                            var accountID = Convert.ToInt32(Context.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+                                            if(Model[i].submissions.Where(s => s.accountID == accountID).ToList().Count > 0)
                                             {
-                                                if(Model[i].submissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName") && s.status == "Accepted").Select(s => s).ToList().Count > 0)
+                                                if(Model[i].submissions.Where(s => s.accountID == accountID && s.status == "Accepted").Select(s => s).ToList().Count > 0)
                                                 {
                                                     if(Model[i].isPublic == false)
                                                     {

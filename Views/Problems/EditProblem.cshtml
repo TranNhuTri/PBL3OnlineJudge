@@ -18,6 +18,15 @@
                     <div asp-validation-summary="ModelOnly" class="div-danger"></div>
                     <form asp-action = "EditProblem">
                         @await Html.PartialAsync("_Problem", Model)
+                        <div class="formGroup">
+                            <label for="timeCreate">Ngày tạo:</label>
+                            <input type="date" asp-for="timeCreate" style="cursor: pointer; width: 200px;" readonly>
+                        </div>
+                        <div class="formGroup">
+                            <label>Số lượng test case: </label>
+                            <span>@ViewBag.problemTestCases.Count</span>
+                        </div>
+                        <a asp-controller = "Problem" asp-action = "UploadTestcase" asp-route-id = "@Model.ID" class = "link">Tải test case lên</a>
                         <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
                             <div class="formSubmit">
                                 <button type="submit" class="submitButton button" name = "next" value = "save">

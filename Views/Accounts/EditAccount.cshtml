@@ -1,6 +1,7 @@
 @using PBL3.DTO
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Sửa đề bài";
 }
 @model EditAccount
 <div class="addEditPage">
@@ -36,14 +37,18 @@
                         <label for="isActived">Kích hoạt tài khoản</label>
                     </div>
                     <div class="formGroup">
-                        <label for="typeAccount" style="width: 180px; display: inline-block;">Loại tài khoản:</label>
+                        <label for="roleID" style="width: 180px; display: inline-block;">Loại tài khoản:</label>
                         <div style="width: 100px; display: inline-block">
-                            <select id="typeAccount" asp-for = "typeAccount">
+                            <select id="roleID" asp-for = "roleID">
                                 <option value="1">Admin</option>
                                 <option value="2">Author</option>
                                 <option value="3">User</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="formGroup">
+                        <label for="timeCreate" style="width: 180px; display: inline-block;">Ngày tạo:</label>
+                        <input type="date" asp-for="timeCreate" style="cursor: pointer;" readonly>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
@@ -54,7 +59,7 @@
                             </button>
                         </div>
                         <div class="formSubmit" style="margin-left: 40px;">
-                            <a style="text-decoration: none;">
+                            <a style="text-decoration: none;" asp-action="DeleteAccount" asp-controller="Accounts" asp-route-id="@Model.ID">
                                 <div class="submitButton button" style="background-color: #dc3545">
                                     <i class="fas fa-trash-alt"></i>
                                     <p>Xóa tài khoản</p>
@@ -71,7 +76,7 @@
 {
     <script>
         new SlimSelect({
-            select: '#typeAccount',
+            select: '#roleID',
             showSearch: false,
         })
     </script>

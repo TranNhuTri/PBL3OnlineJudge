@@ -13,7 +13,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.dateTime</td>
+                    <td>@item.dateTime.ToString("dd MMMM yyyy, HH:mm")</td>
                     <td>
                         <a asp-action = "" asp-controller = "" class="link">@item.account.accountName</a>
                     </td>

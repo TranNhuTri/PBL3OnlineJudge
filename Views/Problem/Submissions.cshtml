@@ -1,3 +1,5 @@
+@using PBL3.Models
+@using Microsoft.AspNetCore.Http
 @{
     ViewData["Title"] = "Bài nộp của tôi";
 }
@@ -18,7 +20,7 @@
                             <th>Trạng thái</th>
                             <th>CPU</th>
                             <th>Ngôn ngữ</th>
-                            @if(Context.Session.GetString("TypeAccount") == "1" && Model.Count > 0)
+                            @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.Count > 0)
                             {
                                 <th></th>
                             }
@@ -29,7 +31,7 @@
                         {
                             string color = "";
                             <tr>
-                                <td class = "link submissionID" style="text-decoration: underline;">@(ViewBag.currentPage + i)</td>
+                                <td class = "link submissionID" style="text-decoration: underline;" data-id="@Model[i].ID">@(ViewBag.currentPage + i)</td>
                                 <td>@Model[i].timeCreate</td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>
                                 @if(Model[i].status == "Accepted")
@@ -44,9 +46,9 @@
                                 <td class = "submissionStatus" style= "color: @color">@Model[i].status</td>
                                 <td class = "submissionTime">@Model[i].time</td>
                                 <td>@Model[i].language</td>
-                                @if(Context.Session.GetString("TypeAccount") == "1" && Model.Count > 0)
+                                @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.Count > 0)
                                 {
-                                    <td class = "submissionEdit"><a asp-action = "EditSubmission" asp-controller = "Admin" asp-route-id = "@Model[i].ID" class = "submissionEdit_link"><i class="far fa-edit"></i></a></td>
+                                    <td class = "submissionEdit"><a asp-action = "EditSubmission" asp-controller = "Submissions" asp-route-id = "@Model[i].ID" class = "submissionEdit_link"><i class="far fa-edit"></i></a></td>
                                 }
                             </tr>
                         }

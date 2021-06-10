@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     ViewData["Title"] = "Đăng ký tài khoản";
 }
@@ -18,7 +19,7 @@
                 <span asp-validation-for="passWord" class="text-danger"></span>
 
                 <p class="signUpForm_label">Nhập lại mật khẩu</p>
-                <input type="password" name="ComfirmPassword" placeholder="Confirm Password" class="signUpForm_textBox">
+                <input type="password" name="ConfirmPassword" placeholder="Confirm Password" class="signUpForm_textBox">
                 <div class="signUpForm_buttonBox">
                     <button type="button" class="button signUpForm_button" id="signUpForm_nextButton--1" onclick="next()">
                         Next

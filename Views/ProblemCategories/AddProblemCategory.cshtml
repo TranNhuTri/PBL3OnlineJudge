@@ -1,30 +1,30 @@
+@using PBL3.Models
+@model Category
 @{
     Layout = "_AdminLayout";
     var listProblems = (List<Problem>)ViewData["ListProblems"];
     var listChosenProblemIds = (List<int>)ViewData["ListChosenProblemIds"];
 }
-@model Category
 <div class = "addEditPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h1>Chỉnh sửa dạng bài</h1>
-                <a asp-action="History" asp-controller = "ProblemCategories" asp-route-id="@Model.ID" class="link">
-                    <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
-                </a>
+            <div class = "addEditPage_header">
+                <h1>
+                    Tạo dạng bài mới
+                </h1>
             </div>
             <div asp-validation-summary="ModelOnly" class="div-danger"></div>
-            <form asp-action = "EditProblemCategory">
+            <form asp-action = "AddProblemCategory">
                 <div class = "addEditPage_input">
                     <div class="formGroup">
-                        <label for="Name" style="width: 150px; display: inline-block;">Tên dạng bài:</label>
+                        <label for="name" style="width: 150px; display: inline-block;">Tên dạng bài:</label>
                         <input type="text" asp-for = "name" placeholder="Nhập tên dạng bài">
                         <span asp-validation-for="name" class="text-danger"></span>
                     </div>
                     <div class="formGroup">
-                        <label for="listProblems" style="width: 150px; display: inline-block;">Bao gồm các bài:</label>
+                        <label for="reqListProblemIds" style="width: 150px; display: inline-block;">Bao gồm các bài:</label>
                         <div style="min-width: 250px; display: inline-block">
-                            <select name="reqListProblemIds" id="listProblemIDs" multiple>
+                            <select name="reqListProblemIds" id = "reqListProblemIds" multiple>
                                 @if(listProblems != null)
                                 {
                                     @foreach (var problem in listProblems)
@@ -53,16 +53,8 @@
                         <div class="formSubmit">
                             <button type="submit" class="submitButton button">
                                 <i class="fas fa-save"></i>
-                                <p>Lưu thay đổi</p>
+                                <p>Lưu dạng bài</p>
                             </button>
-                        </div>
-                        <div class="formSubmit">
-                            <a style="text-decoration: none;" asp-action="DeleteProblemCategory" asp-controller="ProblemCategories" asp-route-id = "@Model.ID">
-                                <div class="submitButton button" style="background-color: #dc3545">
-                                    <i class="fas fa-trash-alt"></i>
-                                    <p>Xóa dạng bài</p>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -74,7 +66,7 @@
 {
     <script>
         new SlimSelect({
-            select: '#listProblemIDs',
+            select: '#reqListProblemIds',
             placeholder: 'Chọn đề bài',
             searchText: 'Không tìm thấy',
         })

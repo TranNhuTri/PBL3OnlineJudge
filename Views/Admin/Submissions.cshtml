@@ -1,6 +1,7 @@
 @using PBL3.Models
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Bài nộp";
 }
 @model List<Submission>
 <div class="listObjectsPage">
@@ -36,14 +37,16 @@
                     {
                         <tr>
                             <td>
-                                <a asp-action = "EditSubmission" asp-controller = "Admin" asp-route-id = "@Model[i].ID" style="color: #008eff; text-decoration: none">@Model[i].ID</a>
+                                <a asp-action = "EditSubmission" asp-controller = "Submissions" asp-route-id = "@Model[i].ID" style="color: #008eff; text-decoration: none">@Model[i].ID</a>
                             </td>
-                            <td>@Model[i].problem.code</td>
-                            <td style="text-align: left;">
-                                @Model[i].problem.title
+                            <td>
+                                <a asp-action="EditProblem" asp-controller="Problems" asp-route-id="@Model[i].problemID" class="link">@Model[i].problem.code</a>
                             </td>
                             <td style="text-align: left;">
-                                @Model[i].account.accountName
+                                <a asp-action="EditProblem" asp-controller="Problems" asp-route-id="@Model[i].problemID" class="link">@Model[i].problem.title</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <a asp-action="AccountProfile" asp-controller="Account" asp-route-accountName="@Model[i].account.accountName" class="link">@Model[i].account.accountName</a>
                             </td>
                             <td>@Model[i].language</td>
                             @{

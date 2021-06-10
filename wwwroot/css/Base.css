@@ -82,6 +82,8 @@ div.div-danger--2
     width: 100%;
     font-size: 14rem;
     background-color: #fff;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .table th
 {
