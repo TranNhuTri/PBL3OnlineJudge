@@ -29,7 +29,8 @@ namespace PBL3.Models
         public bool isActived{get; set;}
         public string token{get; set;}
         // 1: Admin 2: Author 3: User
-        public int typeAccount{get; set;}
+        public int roleID{get; set;}
+        public Role role{get; set;}
         public bool isDeleted{get; set;}
         public DateTime timeCreate{get; set;}
         public List<Submission> submissions{get; set;}

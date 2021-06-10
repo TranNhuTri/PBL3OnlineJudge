@@ -1,10 +1,6 @@
 .comments_header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   font-family: 'Arial', sans-serif;
   margin-bottom: 20px;
 }
@@ -111,12 +107,8 @@
   padding: 0 5px;
   border-radius: 15px;
   height: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   bottom: -6px;
   right: -14px;
 }
@@ -145,7 +137,6 @@
   text-align: center;
   z-index: 1;
   opacity: 0;
-  -webkit-transition: all 0.1s ease-in;
   transition: all 0.1s ease-in;
 }
 
@@ -166,10 +157,7 @@
   color: #444444;
   font-weight: bold;
   margin-right: 5px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   cursor: pointer;
 }
 
@@ -198,10 +186,7 @@
   line-height: 15rem;
   font-weight: bold;
   cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 
 .comment_tool .comment-load-child:hover {
@@ -210,14 +195,10 @@
 
 .comment_tool span {
   font-size: 14rem;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 
 .comment_box {
-  -webkit-transition: all 1s ease-in;
   transition: all 1s ease-in;
   display: none;
   position: relative;

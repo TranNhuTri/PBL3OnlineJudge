@@ -1,0 +1,54 @@
+<ul class="appHeader_list">
+    @if(Context.User.Identity.IsAuthenticated)
+    {
+        <li class="appHeader_item">
+            <div class="appHeader_bellIcon" onclick="showNotifications()">
+                <i class="fas fa-bell"></i>
+                <div class="appHeader_notifications_dropdown">
+                    <ul class="appHeader_dropdown_list" id = "notification-list">
+                    </ul>
+                </div>
+                <div class="number_notifi"></div>
+            </div>
+        </li>
+        <li class="appHeader_item">
+            <div class="appHeader_avarIcon" onclick="showUserTool()">
+                <i class="fas fa-user-circle"></i>
+                <div class="appHeader_dropdown">
+                    <ul class="appHeader_dropdown_list">
+                        <a asp-action = "EditAccountProfile" asp-controller = "Account" asp-route-name = "@Context.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value" class="appHeader_dropdown_link">
+                            <li class="appHeader_dropdown_item">
+                                <i class="appHeader_dropdown_icon fas fa-user"></i>
+                                @Context.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value
+                            </li>
+                        </a>
+                        @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" || Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Author")
+                        {
+                            <a class="appHeader_dropdown_link" href="/Admin">
+                                <li class="appHeader_dropdown_item">
+                                    <i class="appHeader_dropdown_icon fas fa-cogs"></i>
+                                    Quản lý
+                                </li>
+                            </a>
+                        }
+                        <a class="appHeader_dropdown_link" href="/Logout">
+                            <li class="appHeader_dropdown_item">
+                                <i class="appHeader_dropdown_icon fas fa-sign-out-alt"></i>
+                                Đăng xuất
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="appHeader_item">
+            <a href="/Login/UserLogin" class = "login_link">Đăng nhập</a>
+        </li>
+        <li class="appHeader_item">
+            <a href="/Account/SignUp" class = "register_link">Đăng ký</a>
+        </li>
+    }
+</ul>

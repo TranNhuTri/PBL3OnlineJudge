@@ -1,5 +1,8 @@
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin cá nhân";
+}
+@using PBL3.Models
 @model Account
-@* <h1>@Model.accountName</h1> *@
 
 <div class="grid">
     <div class="postPage-layout">
@@ -7,30 +10,30 @@
             <div class="grid_column-6 postPage">
                 <div class="infor">
                     <h3 class="infor__title">Thông tin người dùng</h3>
-                    <form class="infor__content">
+                    <form class="infor__content" asp-for="EditProfile" method="POST">
                         <div class="infor__content--avatar" style="background-image: url(https://codelearn.io/Themes/TheCodeCampPro/Resources/Images/code-learn/img-preview-bg.png);"></div>
                         <div class="infor__content--input">
                             <div class="input-row">
                                 <label for="" class="input__title" >Tên tài khoản</label>
-                                <input type="text" placeholder="" value="@Model.accountName">
+                                <input type="text" placeholder="" asp-for="accountName" readonly>
                             </div>
                             <div class="input-row">
                                 <label for="" class="input__title">Họ</label>
-                                <input type="text" placeholder="" value="@Model.lastName">
+                                <input type="text" placeholder="" asp-for="lastName">
                             </div>
                             <div class="input-row">
                                 <label for="" class="input__title">Tên</label>
-                                <input type="text" placeholder="" value="@Model.firstName">                                   
+                                <input type="text" placeholder="" asp-for="firstName">                                   
                             </div>
                             <div class="input-row">
                                 <label for="" class="input__title">Email</label>
-                                <input type="text" placeholder="" value="@Model.email">                                 
+                                <input type="text" placeholder="" asp-for="email">                                 
                             </div>
                             <div class="infor__function">
                                 <a href="" class="infor__function--link password">Đổi mật khẩu</a>
                             </div>
                             <div class="infor__save">
-                                <button class="infor__save--button">Lưu thay đổi</button>
+                                <button class="infor__save--button button">Lưu thay đổi</button>
                             </div>
                         </div>
                     </form>
@@ -39,24 +42,3 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    <script>
-        var inputElement = document.querySelectorAll('.input-row input');
-        var btnEdit = document.querySelector('.infor__save .infor-btn.edit');
-        @* console.log(inputElement);
-        console.log(btnEdit);
-        btnEdit.addEventListener('click',function(e){
-            for(var i = 0;i<inputElement.length;i++)
-            {
-                inputElement[i].removeAttribute('readonly');
-            }
-        });  *@
-        function enableReadOnly(){
-            Array.from(inputElement).forEach(element => {
-                element.removeAttribute('readonly');
-                element.style.border  = '1px solid #cdcdcd';
-            });
-            return false;
-        }
-    </script>
-}

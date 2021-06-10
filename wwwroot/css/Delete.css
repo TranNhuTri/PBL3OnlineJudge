@@ -1,6 +1,5 @@
 .deletePage {
-  -webkit-box-shadow: 0 0 3px #ccc;
-          box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
   background-color: #fff;
   border-radius: 4px;
   padding: 15px 20px;

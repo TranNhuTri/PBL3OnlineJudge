@@ -87,13 +87,13 @@
                             para["page"] = i.ToString();
 
                             <li class="pagination-item">
-                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@i</a>
                             </li>
                         }
                     }
                     <li class="pagination-item">
                         @{para["page"] = totalPage.ToString();}
-                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@totalPage" class="pagination-item_link">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">
                             <i class="pagination-item__icon fas fa-angle-double-right">
                             </i>
                         </a>

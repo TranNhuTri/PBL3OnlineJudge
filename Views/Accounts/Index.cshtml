@@ -1,13 +1,20 @@
 @using PBL3.Models
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Tài khoản";
 }
 @model List<Account>
 <div class="listObjectsPage">
     <div class="grid_row">
         <div class="grid_column">
-            <div class="listObjectsPage_header">
+            <div class="listObjectsPage_header" style="display: flex;">
                 <h1>Danh sách tất cả tài khoản</h1>
+                <a asp-action = "AddAccount" asp-controller = "Accounts" style="text-decoration: none;">
+                    <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Tạo bài khoản</div>
+                </a>
+                <a asp-action = "DeletedAccounts" asp-controller = "Accounts" style="text-decoration: none;">
+                    <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các tài khoản đã xóa</div>
+                </a>
             </div>
             @await Html.PartialAsync("_SearchAccountForm", ViewData[""])
             <table cellspacing="0" cellpadding="0" class="table">
@@ -39,12 +46,12 @@
                             </td>
                             <td style="text-align: left;">@Model[i].email</td>
                             <td style="text-align: left;">@(Model[i].lastName + " " + Model[i].firstName)</td>
-                            @if(@Model[i].typeAccount == 1)
+                            @if(@Model[i].roleID == 1)
                             {
                                 <td>Admin</td>
                             }
                             else{
-                                if(@Model[i].typeAccount == 2)
+                                if(@Model[i].roleID == 2)
                                 {
                                     <td>Tác giả</td>
                                 }
@@ -80,14 +87,14 @@
 {
     <script>
         new SlimSelect({
-            select: '#typeAccount',
+            select: '#roleID',
             showSearch: false,
         })
         new SlimSelect({
             select: '#isActived',
             showSearch: false,
         })
-        var typeAccountSelect = document.querySelector("#typeAccount");
+        var typeAccountSelect = document.querySelector("#roleID");
         var isActived = document.querySelector('#isActived');
         var submitButton = document.querySelector(".searchForm_submit");
 

@@ -1,22 +1,22 @@
-@using PBL3.Models
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Các tài khoản đã xóa";
 }
-@model List<Problem>
+@using PBL3.Models
+@model List<Account>
 <div class="listObjectsPage" style="padding: 0;">
     <div class="grid_row">
         <div class="grid_column">
             <div class="listObjectsPage_header">
                 <div style="display: flex">
-                    <h1>Danh sách bài tập đã xóa</h1>
+                    <h1>Danh sách tài khoản đã xóa</h1>
                 </div>
             </div>
             <table cellspacing="0" cellpadding="0" class="table">
                 <thead>
                     <tr>
-                        <th>Mã bài</th>
                         <th>
-                            Tên Bài
+                            Tên Dạng Bài
                         </th>
                         <th>
                             Ngày xóa
@@ -24,16 +24,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @for(int i = 0; i < Model.Count; i++)
                     {
                         <tr>
                             <td>
-                                <a asp-controller = "Admin" asp-action = "RestoreProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.code</a>
+                                <a asp-controller = "Accounts" asp-action = "RestoreAccount" asp-route-id = "@Model[i].ID" class="link">@Model[i].accountName</a>
                             </td>
-                            <td>
-                                <a asp-controller = "Admin" asp-action = "RestoreProblem" asp-route-id = "@item.ID" style="color: #008eff; text-decoration: none">@item.title</a>
-                            </td>
-                            <td>Ngày xóa</td>
+                            <td>@ViewBag.deleteDates[i].ToString("dd MMMM yyyy, HH:mm")</td>
                         </tr>
                     }
                 </tbody>

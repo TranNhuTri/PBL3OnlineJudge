@@ -196,21 +196,17 @@
             }
             .appHeader_item--active
             {
-                border-bottom: 2px solid $dark-color;
+                border-bottom: 2px solid #01aaff;
             }
             .appHeader_item--active .appHeader_text
             {
                 .appHeader_link
                 {
-                    color: $dark-color;
+                    color: $blue-color;
                 }
             }
         }
     }
-}
-.list_problem_table
-{
-    font-size: 20px;
 }
 .appBody
 {
@@ -257,7 +253,6 @@ code
 {
     display: block;
 }
-
 
 .main{
     font-size: 16rem;

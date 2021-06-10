@@ -1,3 +1,4 @@
+@using PBL3.Models
 @model Account;
 
 <div class="grid">
@@ -10,35 +11,74 @@
                     <div class="inforUser__name">
                         <h3 class="inforUser__name-title">Tên tài khoản</h3>
                         <span>-</span>
-                        <span>Tran Nhu Tri</span>
+                        <span>@Model.accountName</span>
                     </div>
                 </div>
             </div>
             <div class="grid_column-8">
                 <div class="listProblemOfUser">
                     <div class="listProblems_header">
-                        <h1>Danh sách bài tập</h1>
+                        <h1>Danh sách bài nộp</h1>
                     </div>
-                    <table cellspacing="0" cellpadding="0" class="table listProblems_table">
+                    <table cellspacing="0" cellpadding="0" class="table submissions_table">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th class = "number">#</th>
-                                <th class = "title">
-                                    Tên Bài
-                                </th>
-                                <th class = "points">
-                                    Độ Khó
-                                </th>
-                                <th class = "successRate">
-                                    Tỉ Lệ AC
-                                </th>
+                                <th class = "submissionID">ID</th>
+                                <th>Ngày nộp</th>
+                                <th style="width: 35%">Bài</th>
+                                <th>Trạng thái</th>
+                                <th>CPU</th>
+                                <th>Ngôn ngữ</th>
+                                @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.submissions.Count > 0)
+                                {
+                                    <th></th>
+                                }
                             </tr>
-                            <tbody></tbody>
                         </thead>
+                        <tbody>
+                            @{
+                                Model.submissions = Model.submissions.OrderByDescending(p => p.timeCreate).ToList();
+                            }
+                            @for(int i = 0; i < Model.submissions.Count; i++)
+                            {
+                                string color = "";
+                                <tr>
+                                    <td class = "link submissionID" style="text-decoration: underline;" data-id="@Model.submissions[i].ID">@(i + 1)</td>
+                                    <td>@Model.submissions[i].timeCreate</td>
+                                    <td><a asp-action = "Problem" asp-route-id = "@Model.submissions[i].problem.ID" asp-controller = "Problems" class = "link">@Model.submissions[i].problem.title</a></td>
+                                    @if(Model.submissions[i].status == "Accepted")
+                                    {
+                                        color = "#00bb00";
+                                    }
+                                    else
+                                        if(Model.submissions[i].status == "Wrong Answer")
+                                        {
+                                            color = "#ff0000ba";
+                                        }
+                                    <td class = "submissionStatus" style= "color: @color">@Model.submissions[i].status</td>
+                                    <td class = "submissionTime">@Model.submissions[i].time</td>
+                                    <td>@Model.submissions[i].language</td>
+                                    @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.submissions.Count > 0)
+                                    {
+                                        <td class = "submissionEdit"><a asp-action = "EditSubmission" asp-controller = "Submissions" asp-route-id = "@Model.submissions[i].ID" class = "submissionEdit_link"><i class="far fa-edit"></i></a></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="overlay">
+    <div class="detailSubmissionContainer">
+        <i class="fas fa-times detailSubmissionIcon"></i>
+        <div class="detailSubmissionContent">
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="/js/Submission.js"></script>
+}

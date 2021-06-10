@@ -1,0 +1,62 @@
+@{
+    Layout = "_AdminLayout";
+}
+@using PBL3.Models
+@model Account
+<div class = "addEditPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class = "addEditPage_header">
+                <h1>
+                    Tạo tài khoản mới
+                </h1>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="div-danger"></div>
+            <form asp-action = "AddAccount">
+                <div class = "addEditPage_input">
+                    <div class="formGroup">
+                        <label for="name" style="width: 150px; display: inline-block;">Tên tài khoản:</label>
+                        <input type="text" asp-for = "accountName" placeholder="User Name">
+                        <span asp-validation-for="accountName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="name" style="width: 150px; display: inline-block;">Mật khẩu:</label>
+                        <input type="password" asp-for = "passWord" placeholder="Password">
+                        <span asp-validation-for="passWord" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="confirmPassWord" style="width: 150px; display: inline-block;">Nhập lại mật khẩu:</label>
+                        <input type="password" name = "confirmPassWord" id = "confirmPassWord" placeholder="Confirm Password">
+                    </div>
+                    <div class="formGroup">
+                        <label for="lastName" style="width: 150px; display: inline-block;">Họ:</label>
+                        <input type="text" asp-for = "lastName"  placeholder="Last Name">
+                        <span asp-validation-for="lastName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="firstName" style="width: 150px; display: inline-block;">Tên:</label>
+                        <input type="text" asp-for = "firstName" placeholder="First Name">
+                        <span asp-validation-for="firstName" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="email" style="width: 150px; display: inline-block;">Email:</label>
+                        <input type="text" asp-for = "email" placeholder="Email">
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+                    <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                        <div class="formSubmit">
+                            <button type="submit" class="submitButton button">
+                                <i class="fas fa-save"></i>
+                                <p>Lưu tài khoản</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="/js/Validation.js"></script>
+}

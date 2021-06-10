@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PBL3.Models;
-using PBL3.DTO;
 using PBL3.Data;
 using PBL3.General;
-using System.Threading.Tasks;
+using PBL3.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace PBL3.Controllers
 {
@@ -46,7 +46,7 @@ namespace PBL3.Controllers
                     reqAccount.timeCreate = DateTime.Now;
                     reqAccount.token = Utility.CreateMD5(reqAccount.accountName);
                     reqAccount.passWord = Utility.CreateMD5(reqAccount.passWord);
-                    reqAccount.typeAccount = 3;
+                    reqAccount.roleID = 3;
 
                     var message = "Chào mừng bạn đến với CodeTop1. Nhấn vào đường link sau để xác thực email ! https://localhost:5001/Account/VerifyMail?token=" + reqAccount.token + "&&email=" + reqAccount.email;
                     
@@ -83,16 +83,43 @@ namespace PBL3.Controllers
         }
         public IActionResult AccountProfile(string accountName)
         {
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == accountName);
+            var account = _context.Accounts.Where(p => p.accountName == accountName).Include(p => p.submissions).ThenInclude(p => p.problem).FirstOrDefault();
             if(account == null)
                 return NotFound();
             return View(account);
         }
-        public IActionResult EditAccountProfile(string accountName)
+        [Authorize]
+        public IActionResult EditAccountProfile(string name)
         {
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == accountName);
+            if(name != HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value)
+            {
+                return NotFound();
+            }
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == name);
             if(account == null)
                 return NotFound();
+            return View(account);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditAccountProfile(string name, [Bind("accountName, firstName, lastName, email")]EditAccount editAccount)
+        {
+            if(name != HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value)
+            {
+                return NotFound();
+            }
+            var account = _context.Accounts.FirstOrDefault(p => p.accountName == name);
+
+            if(account == null)
+                return NotFound();
+        
+            account.firstName = editAccount.firstName;
+            account.lastName = editAccount.lastName;
+            account.email = editAccount.email;
+
+            _context.Update(account);
+            _context.SaveChanges();
+
             return View(account);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

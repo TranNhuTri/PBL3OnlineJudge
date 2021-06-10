@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = Model.title;
     var listAuthors = Model.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.author);
-    var listCategories = Model.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.category);
+    var listCategories = Model.problemClassifications.Where(p => p.isDeleted == false && p.category.isDeleted == false).Select(p => p.category);
     var listSubmissions = Model.submissions.ToList();
     var listComments = (List<Comment>)ViewData["ListComments"];
 }
@@ -54,16 +54,18 @@
                     </div>
                     <div class="problemPropertyContainer">
 
-                        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+                        @if(Context.User.Identity.IsAuthenticated)
                         {
                             var parms = new Dictionary<string, string>
                             {
                                 {"problemID", Convert.ToString(Model.ID)},
-                                {"accountName", Context.Session.GetString("AccountName")},
+                                {"accountName", Context.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value},
                             };
-                            if(listSubmissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName")).Select(s => s).ToList().Count > 0)
+                            var accountID = Convert.ToInt32(Context.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+
+                            if(listSubmissions.Where(s => s.accountID == accountID).Select(s => s).ToList().Count > 0)
                             {
-                                if(listSubmissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName") && s.status == "Accepted").Select(s => s).ToList().Count > 0)
+                                if(listSubmissions.Where(s => s.accountID == accountID && s.status == "Accepted").Select(s => s).ToList().Count > 0)
                                 {
                                     <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem mySubmissions" style = "background-color:  #1dbfaf29">Lời giải của tôi</a>
                                 }
@@ -75,7 +77,7 @@
 
                             <a asp-controller = "Problem" asp-action = "Submissions" asp-route-problemID = "@Model.ID" class = "CUDProblem">Tất cả bài nộp</a>
 
-                            if(Convert.ToInt32(Context.Session.GetString("TypeAccount")) == 1)
+                            if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" || Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Author")
                             {
                                 <a asp-controller = "Problems" asp-action = "EditProblem" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
                                 <a asp-controller = "Problems" asp-action = "DeleteProblem" asp-route-id = "@Model.ID" class = "CUDProblem">Xóa đề bài</a>

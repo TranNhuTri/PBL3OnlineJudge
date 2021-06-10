@@ -12,5 +12,6 @@ namespace PBL3.Models
         public int objectID{get; set;}
         public string action{get; set;}
         public DateTime dateTime{get; set;}
+        public int typeObject{get; set;}
     }
 }

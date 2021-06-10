@@ -38,7 +38,14 @@
     }
 </div>
 <div class="comment_tool" id = "comment_tool@(Model.ID)">
-    @if(Model.likes.FirstOrDefault(p => p.account.accountName == Context.Session.GetString("AccountName") && p.status == true) == null)
+    @{
+        var accountID = 0;
+        if(Context.User.Identity.IsAuthenticated)
+        {
+            accountID = Convert.ToInt32(Context.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+        }
+    }
+    @if(Model.likes.FirstOrDefault(p => p.accountID == accountID && p.status == true) == null)
     {
         <span class="comment_tool_like" id = "comment_tool_like@(Model.ID)" onclick="LikeComment('@Model.ID')">Thích</span>
     }
@@ -54,13 +61,38 @@
     {
         <span class="comment_tool_reply" onclick="LoadCommentBox('@Model.rootCommentID')">Trả lời</span>
     }
-    @if(DateTime.Now.Subtract(Model.timeCreate).Hours < 24){
-        <span>@DateTime.Now.Subtract(Model.timeCreate).Hours giờ</span>
-    } 
+    @{
+        var timeCreate = @DateTime.Now.Subtract(Model.timeCreate);
+    }
+    @if(timeCreate.Days/30 >= 9)
+    {
+        <span>@Model.timeCreate.ToString("dd MMMM yyyy")</span>
+    }
     else
     {
-        <span>@DateTime.Now.Subtract(Model.timeCreate).Days) ngày</span>
+        if(timeCreate.Days/30 > 0)
+        {
+            <span>@(timeCreate.Days/30) tháng trước</span>
+        }
+        else
+        {
+            @if(timeCreate.Days > 0)
+            {
+                <span>@timeCreate.Days ngày trước</span>
+            }
+            else
+            {
+                @if(timeCreate.Hours > 0){
+                    <span>@timeCreate.Hours giờ trước</span>
+                } 
+                else
+                {
+                    <span>@timeCreate.Minutes phút trước</span>
+                }
+            }
+        }
     }
+
     @if(Model.child.Count > 0)
     {
         <span class="comment-load-child" id = "comment-load-child@(Model.ID)" onclick="LoadCommentChild('@Model.ID')">Xem phản hồi</span>

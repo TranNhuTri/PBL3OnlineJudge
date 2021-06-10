@@ -8,28 +8,6 @@ namespace PBL3.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    accountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    passWord = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isActived = table.Column<bool>(type: "bit", nullable: false),
-                    token = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    typeAccount = table.Column<int>(type: "int", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
                 {
@@ -82,7 +60,7 @@ namespace PBL3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TypeNotifications",
+                name: "Roles",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -91,7 +69,133 @@ namespace PBL3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TypeNotifications", x => x.ID);
+                    table.PrimaryKey("PK_Roles", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProblemClassifications",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    problemID = table.Column<int>(type: "int", nullable: false),
+                    categoryID = table.Column<int>(type: "int", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProblemClassifications", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ProblemClassifications_Categories_categoryID",
+                        column: x => x.categoryID,
+                        principalTable: "Categories",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProblemClassifications_Problems_problemID",
+                        column: x => x.problemID,
+                        principalTable: "Problems",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestCases",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    input = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    output = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    problemID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestCases", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_TestCases_Problems_problemID",
+                        column: x => x.problemID,
+                        principalTable: "Problems",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    accountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    passWord = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isActived = table.Column<bool>(type: "bit", nullable: false),
+                    token = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    roleID = table.Column<int>(type: "int", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Accounts_Roles_roleID",
+                        column: x => x.roleID,
+                        principalTable: "Roles",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Actions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    accountID = table.Column<int>(type: "int", nullable: false),
+                    objectID = table.Column<int>(type: "int", nullable: false),
+                    action = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    dateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    typeObject = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actions", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Actions_Accounts_accountID",
+                        column: x => x.accountID,
+                        principalTable: "Accounts",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleAuthors",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    articleID = table.Column<int>(type: "int", nullable: false),
+                    authorID = table.Column<int>(type: "int", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleAuthors", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ArticleAuthors_Accounts_authorID",
+                        column: x => x.authorID,
+                        principalTable: "Accounts",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ArticleAuthors_Articles_articleID",
+                        column: x => x.articleID,
+                        principalTable: "Articles",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,28 +231,26 @@ namespace PBL3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleAuthors",
+                name: "Notifications",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    articleID = table.Column<int>(type: "int", nullable: false),
-                    authorID = table.Column<int>(type: "int", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    seen = table.Column<bool>(type: "bit", nullable: false),
+                    accountID = table.Column<int>(type: "int", nullable: false),
+                    objectID = table.Column<int>(type: "int", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    typeNotification = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArticleAuthors", x => x.ID);
+                    table.PrimaryKey("PK_Notifications", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ArticleAuthors_Accounts_authorID",
-                        column: x => x.authorID,
+                        name: "FK_Notifications_Accounts_accountID",
+                        column: x => x.accountID,
                         principalTable: "Accounts",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ArticleAuthors_Articles_articleID",
-                        column: x => x.articleID,
-                        principalTable: "Articles",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -174,33 +276,6 @@ namespace PBL3.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProblemAuthors_Problems_problemID",
-                        column: x => x.problemID,
-                        principalTable: "Problems",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProblemClassifications",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    problemID = table.Column<int>(type: "int", nullable: false),
-                    categoryID = table.Column<int>(type: "int", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProblemClassifications", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ProblemClassifications_Categories_categoryID",
-                        column: x => x.categoryID,
-                        principalTable: "Categories",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProblemClassifications_Problems_problemID",
                         column: x => x.problemID,
                         principalTable: "Problems",
                         principalColumn: "ID",
@@ -236,58 +311,6 @@ namespace PBL3.Migrations
                         name: "FK_Submissions_Problems_problemID",
                         column: x => x.problemID,
                         principalTable: "Problems",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TestCases",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    input = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    output = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    problemID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TestCases", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_TestCases_Problems_problemID",
-                        column: x => x.problemID,
-                        principalTable: "Problems",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    timeCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    seen = table.Column<bool>(type: "bit", nullable: false),
-                    accountID = table.Column<int>(type: "int", nullable: false),
-                    objectID = table.Column<int>(type: "int", nullable: false),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    typeNotificationID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Notifications_Accounts_accountID",
-                        column: x => x.accountID,
-                        principalTable: "Accounts",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Notifications_TypeNotifications_typeNotificationID",
-                        column: x => x.typeNotificationID,
-                        principalTable: "TypeNotifications",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -350,6 +373,36 @@ namespace PBL3.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "ID", "name" },
+                values: new object[] { 1, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "ID", "name" },
+                values: new object[] { 2, "Author" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "ID", "name" },
+                values: new object[] { 3, "User" });
+
+            migrationBuilder.InsertData(
+                table: "Accounts",
+                columns: new[] { "ID", "accountName", "email", "firstName", "isActived", "isDeleted", "lastName", "passWord", "roleID", "timeCreate", "token" },
+                values: new object[] { 1, "Admin", "trannhutri0703@gmail.com", "", true, false, "Admin", "E10ADC3949BA59ABBE56E057F20F883E", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_roleID",
+                table: "Accounts",
+                column: "roleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Actions_accountID",
+                table: "Actions",
+                column: "accountID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ArticleAuthors_articleID",
                 table: "ArticleAuthors",
@@ -384,11 +437,6 @@ namespace PBL3.Migrations
                 name: "IX_Notifications_accountID",
                 table: "Notifications",
                 column: "accountID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notifications_typeNotificationID",
-                table: "Notifications",
-                column: "typeNotificationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProblemAuthors_authorID",
@@ -439,6 +487,9 @@ namespace PBL3.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Actions");
+
+            migrationBuilder.DropTable(
                 name: "ArticleAuthors");
 
             migrationBuilder.DropTable(
@@ -463,9 +514,6 @@ namespace PBL3.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "TypeNotifications");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
@@ -479,6 +527,9 @@ namespace PBL3.Migrations
 
             migrationBuilder.DropTable(
                 name: "Problems");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

@@ -1,12 +1,9 @@
-using System;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 using PBL3.Models;
 using PBL3.Data;
-using PBL3.General;
-using PBL3.DTO;
 
 namespace PBL3.Controllers
 {
@@ -19,8 +16,7 @@ namespace PBL3.Controllers
         }
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("AccountName", string.Empty);
-            HttpContext.Session.SetString("TypeAccount", String.Empty);
+            HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

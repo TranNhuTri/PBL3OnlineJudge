@@ -7,7 +7,7 @@ namespace PBL3.General
 {
     public class Utility
     {
-        public static int limitData {get; set;} = 1;
+        public static int limitData {get; set;} = 20;
         public static string CreateMD5(string input)
         {
             // Use input string to calculate MD5 hash

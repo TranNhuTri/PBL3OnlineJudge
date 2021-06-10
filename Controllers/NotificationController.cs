@@ -32,7 +32,7 @@ namespace PBL3.Controllers
             var account = _context.Accounts.Include(p => p.notifications).FirstOrDefault(p => p.accountName == accountName);
             if(account == null)
                 return NotFound();
-            return View(account.notifications.OrderByDescending(p => p.timeCreate).Take(10).ToList());
+            return View(account.notifications.Where(p => p.seen == false).OrderByDescending(p => p.timeCreate).Take(10).ToList());
         }
         public IActionResult ViewNotification(int id)
         {

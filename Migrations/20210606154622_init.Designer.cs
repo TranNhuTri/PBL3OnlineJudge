@@ -10,7 +10,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    [Migration("20210601134638_init")]
+    [Migration("20210606154622_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,18 +55,64 @@ namespace PBL3.Migrations
                         .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("roleID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("timeCreate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("typeAccount")
+                    b.HasKey("ID");
+
+                    b.HasIndex("roleID");
+
+                    b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            accountName = "Admin",
+                            email = "trannhutri0703@gmail.com",
+                            firstName = "",
+                            isActived = true,
+                            isDeleted = false,
+                            lastName = "Admin",
+                            passWord = "E10ADC3949BA59ABBE56E057F20F883E",
+                            roleID = 1,
+                            timeCreate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("PBL3.Models.Action", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("accountID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("action")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("objectID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("typeObject")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Accounts");
+                    b.HasIndex("accountID");
+
+                    b.ToTable("Actions");
                 });
 
             modelBuilder.Entity("PBL3.Models.Article", b =>
@@ -230,14 +276,12 @@ namespace PBL3.Migrations
                     b.Property<DateTime>("timeCreate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("typeNotificationID")
+                    b.Property<int>("typeNotification")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("accountID");
-
-                    b.HasIndex("typeNotificationID");
 
                     b.ToTable("Notifications");
                 });
@@ -334,6 +378,38 @@ namespace PBL3.Migrations
                     b.HasIndex("problemID");
 
                     b.ToTable("ProblemClassifications");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Role", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            name = "Admin"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            name = "Author"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            name = "User"
+                        });
                 });
 
             modelBuilder.Entity("PBL3.Models.Submission", b =>
@@ -439,19 +515,26 @@ namespace PBL3.Migrations
                     b.ToTable("TestCases");
                 });
 
-            modelBuilder.Entity("PBL3.Models.TypeNotification", b =>
+            modelBuilder.Entity("PBL3.Models.Account", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasOne("PBL3.Models.Role", "role")
+                        .WithMany("accounts")
+                        .HasForeignKey("roleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Navigation("role");
+                });
 
-                    b.HasKey("ID");
+            modelBuilder.Entity("PBL3.Models.Action", b =>
+                {
+                    b.HasOne("PBL3.Models.Account", "account")
+                        .WithMany()
+                        .HasForeignKey("accountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.ToTable("TypeNotifications");
+                    b.Navigation("account");
                 });
 
             modelBuilder.Entity("PBL3.Models.ArticleAuthor", b =>
@@ -515,15 +598,7 @@ namespace PBL3.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PBL3.Models.TypeNotification", "typeNotification")
-                        .WithMany("notifications")
-                        .HasForeignKey("typeNotificationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("account");
-
-                    b.Navigation("typeNotification");
                 });
 
             modelBuilder.Entity("PBL3.Models.ProblemAuthor", b =>
@@ -654,6 +729,11 @@ namespace PBL3.Migrations
                     b.Navigation("testCases");
                 });
 
+            modelBuilder.Entity("PBL3.Models.Role", b =>
+                {
+                    b.Navigation("accounts");
+                });
+
             modelBuilder.Entity("PBL3.Models.Submission", b =>
                 {
                     b.Navigation("submissionResults");
@@ -662,11 +742,6 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
                 {
                     b.Navigation("submitResults");
-                });
-
-            modelBuilder.Entity("PBL3.Models.TypeNotification", b =>
-                {
-                    b.Navigation("notifications");
                 });
 #pragma warning restore 612, 618
         }
