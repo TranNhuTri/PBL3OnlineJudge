@@ -1,10 +1,16 @@
 @using PBL3.Models
-@using Microsoft.AspNetCore.Http
 @model Comment
 <div class="comment_item" id = "comment@(Model.ID)">
     <div style="display: flex;">
         <a href="">
-            <div class = "comment_avar"></div>
+            @if(!String.IsNullOrEmpty(Model.account.avar))
+            {
+                <div class = "comment_avar" style="background-image: url(@Model.account.avar);"></div>
+            }
+            else
+            {
+                <div class = "comment_avar"></div>
+            }
         </a>
         <div class="comment_container">
             <a href="" class="comment_author">
@@ -19,7 +25,6 @@
         <i class="fas fa-ellipsis-h"></i>
         <div id="comment_extern-tool@(Model.ID)" class="comment_extern-tool">
             <span class = "delete_comment" onclick="deleteComment('@Model.ID')">Xóa</span>
-            <span class = "hide_comment" onclick="hideComment('@Model.ID')">Ẩn</span>
         </div>
     </div>
     @if(Model.likes.Where(p => p.status == true).ToList().Count == 0)

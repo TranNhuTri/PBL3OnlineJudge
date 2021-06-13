@@ -9,15 +9,20 @@ using PBL3.General;
 using PBL3.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 
 namespace PBL3.Controllers
 {
     public class AccountController : Controller
     {
         private readonly PBL3Context _context;
-        public AccountController(PBL3Context context)
+        private IWebHostEnvironment _hostEnvironment;
+        public AccountController(PBL3Context context, IWebHostEnvironment env)
         {
             _context = context;
+            _hostEnvironment = env;
         }
         public IActionResult SignUp()
         {
@@ -98,11 +103,19 @@ namespace PBL3.Controllers
             var account = _context.Accounts.FirstOrDefault(p => p.accountName == name);
             if(account == null)
                 return NotFound();
-            return View(account);
+            return View(new EditAccount()
+            {
+                accountName = account.accountName,
+                firstName = account.firstName,
+                lastName = account.lastName,
+                email = account.email,
+                avar = account.avar
+            });
         }
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditAccountProfile(string name, [Bind("accountName, firstName, lastName, email")]EditAccount editAccount)
+        public async Task<IActionResult> EditAccountProfile(string name, [Bind("accountName, firstName, lastName, email")]EditAccount editAccount, IFormFile avarFile)
         {
             if(name != HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value)
             {
@@ -112,15 +125,42 @@ namespace PBL3.Controllers
 
             if(account == null)
                 return NotFound();
+
+            if(avarFile != null && avarFile.Length > 0)
+            {
+                var InputFileName = Utility.CreateMD5(account.accountName + account.ID + account.email);
+
+                var fileInfor = new FileInfo(avarFile.FileName);
+
+                if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png")
+                {
+                    ModelState.AddModelError("", "File ảnh không đúng định dạng");
+                    return View(editAccount);
+                }
+
+                InputFileName += fileInfor.Extension;
+
+                var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Avars/" + InputFileName);
+
+                var stream = new FileStream(ServerSavePath, FileMode.Create);
+
+                await avarFile.CopyToAsync(stream);
+
+                stream.Close();
+
+                account.avar = "/UploadedFiles/Avars/" + InputFileName;
+            }
         
             account.firstName = editAccount.firstName;
             account.lastName = editAccount.lastName;
             account.email = editAccount.email;
 
+            editAccount.avar = account.avar;
+
             _context.Update(account);
             _context.SaveChanges();
 
-            return View(account);
+            return View(editAccount);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

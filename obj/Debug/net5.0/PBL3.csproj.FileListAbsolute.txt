@@ -586,8 +586,6 @@ D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\ProblemCategories
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\Problems.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\Submissions.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Articles\Index.cshtml.g.cs
-D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comment\CommentChild.cshtml.g.cs
-D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comment\GetComment.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Notification\ListNotifications.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\ProblemCategories\DeletedProblemCategories.cshtml.g.cs
@@ -642,3 +640,6 @@ D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Accounts\DeleteAccount.
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Accounts\DeletedAccounts.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Accounts\RestoreAccount.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Problem\UploadTestcase.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\CommentChild.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\GetComment.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\Index.cshtml.g.cs

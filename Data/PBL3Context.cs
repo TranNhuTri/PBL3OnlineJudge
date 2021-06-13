@@ -62,7 +62,8 @@ namespace PBL3.Data
                     firstName = "",
                     lastName = "Admin",
                     roleID = 1,
-                    isActived = true
+                    isActived = true,
+                    timeCreate = System.DateTime.Now
                 }
             );
         }

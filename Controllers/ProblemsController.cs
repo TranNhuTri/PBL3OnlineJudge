@@ -287,7 +287,7 @@ namespace PBL3.Controllers
 
             ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
 
-            ViewBag.problemTestCases = _context.TestCases.Where(p => p.problemID == id).ToList();
+            ViewBag.problemTestCases = _context.TestCases.Where(p => p.problemID == id && p.isDeleted == false).ToList();
 
             return View(problem);
         }

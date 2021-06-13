@@ -2,6 +2,7 @@
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Thông tin bài nộp";
+    Model.submissionResults = Model.submissionResults.Where(p => p.isDeleted == false).ToList();
 }
 @model Submission
 <div class="addEditPage">
@@ -10,7 +11,7 @@
             <div class="addEditPage_header">
                 <h1>Thông tin bài nộp</h1>
             </div>
-            <form asp-action = "DeleteSubmission" asp-route-id = "@Model.ID">
+            <form asp-action = "Resubmit" asp-route-id = "@Model.ID">
                 <div class = "addEditPage_input">
                     <div class="formGroup">
                         <label for="problem.code" style="width: 150px; display: inline-block;">Mã bài:</label>
@@ -87,10 +88,10 @@
                     </div>
                     <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
                         <div class="formSubmit">
-                            <div type="submit" class="submitButton button">
+                            <button type="submit" class="submitButton button">
                                 <i class="fas fa-sync-alt"></i>
                                 <p>Chấm lại</p>
-                            </div>
+                            </button>
                         </div>
                         <div class="formSubmit">
                             <a style="text-decoration: none;">
