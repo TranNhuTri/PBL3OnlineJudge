@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Data;
 
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    partial class PBL3ContextModelSnapshot : ModelSnapshot
+    [Migration("20210610142536_update_table_test_case")]
+    partial class update_table_test_case
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +30,6 @@ namespace PBL3.Migrations
 
                     b.Property<string>("accountName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("avar")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("email")
@@ -83,7 +82,7 @@ namespace PBL3.Migrations
                             lastName = "Admin",
                             passWord = "E10ADC3949BA59ABBE56E057F20F883E",
                             roleID = 1,
-                            timeCreate = new DateTime(2021, 6, 13, 14, 53, 19, 359, DateTimeKind.Local).AddTicks(2247)
+                            timeCreate = new DateTime(2021, 6, 10, 21, 25, 36, 7, DateTimeKind.Local).AddTicks(7300)
                         });
                 });
 

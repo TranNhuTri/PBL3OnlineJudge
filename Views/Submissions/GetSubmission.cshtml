@@ -23,7 +23,7 @@
 @{
     var index = 0;
 }
-@foreach(var item in Model.submissionResults)
+@foreach(var item in Model.submissionResults.Where(p => p.isDeleted == false))
 {
     styleString = "font-weight: bold;";
     if(item.status == "Accepted")
@@ -36,8 +36,8 @@
             styleString += "color: #dc3545;";
         }
     <p style = "font-weight: bold; margin-bottom: 0">Test: #@(index + 1), trạng thái: <span style = "@styleString">@item.status</span></p>
-    <p style = "margin: 10px 0">Input</p><pre><code>@item.testCase.input</code></pre>
+    <p style = "margin: 10px 0">Input</p><pre><code>@(System.IO.File.ReadAllText(item.testCase.input))</code></pre>
     <p>Output</p><pre><code>@item.result</code></pre>
-    <p>Answer</p><pre><code>@item.testCase.output</code></pre>
+    <p>Answer</p><pre><code>@(System.IO.File.ReadAllText(item.testCase.output))</code></pre>
     index ++;
 }

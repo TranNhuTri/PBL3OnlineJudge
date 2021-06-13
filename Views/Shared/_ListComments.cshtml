@@ -12,7 +12,7 @@
     function LoadCommentChild(commentId)
     {
         
-        $.ajax({url: '@Url.Action("CommentChild", "Comment")' + "/" + commentId, success: function(result){
+        $.ajax({url: '@Url.Action("CommentChild", "Comments")' + "/" + commentId, success: function(result){
             $('#comment_child' + commentId).html(result);
         }});
         $("#comment-load-child" + commentId).css("display", "none");
@@ -50,7 +50,7 @@
 
         CKEDITOR.instances["editor" + commentId].setData('');
 
-        fetch("https://localhost:5001/Comment/PostComment", {
+        fetch('@Url.Action("PostComment", "Comments")', {
             method :'post',
             body : data
         })
@@ -79,7 +79,7 @@
     {
         let data = new URLSearchParams();
         data.append("id", commentId);
-        fetch("https://localhost:5001/Comment/DeleteComment", {
+        fetch('@Url.Action("DeleteComment", "Comments")', {
             method :'post',
             body : data
         })
@@ -99,12 +99,12 @@
         let data = new URLSearchParams();
         data.append("commentID", commentId);
 
-        fetch("https://localhost:5001/Comment/LikeComment", {
+        fetch('@Url.Action("LikeComment", "Comments")', {
             method :'post',
             body : data
         })
         .then(res => {
-            fetch("https://localhost:5001/Comment/GetNumberLikesOfComment/" + commentId)
+            fetch('@Url.Action("GetNumberLikesOfComment", "Comments")' + '/' + commentId)
             .then(res => res.text())
             .then(data => {
                 if(data > 0)

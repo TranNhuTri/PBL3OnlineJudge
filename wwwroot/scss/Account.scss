@@ -29,13 +29,16 @@
 
 .infor__content--avatar{
     border-radius: 50%;
-    background-color: #d8d8d8;
     width: 130px;
     height: 130px;
-    background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     border: 1px solid #4d96ff;
     margin-left: 35px;
+    cursor: pointer;
+    background-image: url(https://www.3ae.vn/site/img/no_image.png);
+    background-color: $light-gray-color;
 }
 
 .infor__content--input{
@@ -132,29 +135,33 @@
 .inforUser__avatar{
     width: 120px;
     height: 120px;
-    margin: 0px auto 15px auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #d3d3d3;
+    margin: 0px auto;
     border-radius: 50%;
-
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #4d96ff;
+    margin-left: 35px;
+    cursor: pointer;
+    background-image: url(https://www.3ae.vn/site/img/no_image.png);
+    background-color: $light-gray-color;
 }
 
 .inforUser__name{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    text-align: center;
 }
 
 .inforUser__name-title{
     display: inline-block;
     font-size: 14rem;
     color: #444444;
+    margin-bottom: 5px;
 }
 
-.inforUser__name span{
+.inforUser__name p{
     font-size: 14rem;
     color: #444444;
+    margin: 5px 0;
 }
 
 .listProblemOfUser{

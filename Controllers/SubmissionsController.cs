@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.General;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Collections.Generic;
 
 namespace PBL3.Controllers
 {
@@ -70,6 +74,113 @@ namespace PBL3.Controllers
             }
 
             return View(submission);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Resubmit(int id, string language)
+        {
+            var submission = _context.Submissions.FirstOrDefault(p => p.ID == id);
+
+            var problem = _context.Problems.Where(p => p.ID == submission.problemID).Include(p => p.testCases).FirstOrDefault();
+
+            var Code = new Code()
+            {
+                script = submission.code,
+                language = language,
+                versionIndex = 0,
+            };
+
+            HttpClient client = new HttpClient();   
+            client.BaseAddress = new Uri("https://api.jdoodle.com/");
+
+            bool ACCheck = true;
+            float excuteTime = 0;
+            float memoryUsed = 0;
+
+            int i = 1;
+
+            var submissionResults = _context.SubmissionResults.Where(p => p.submissionID == id).ToList();
+
+            foreach(TestCase tc in problem.testCases.Where(p => p.isDeleted == false))
+            {
+                Code.stdin = System.IO.File.ReadAllText(tc.input);
+
+                var response = client.PostAsJsonAsync("v1/execute", Code).Result;
+
+                var output = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {  
+                    var Response = JsonConvert.DeserializeObject<Response>(output);
+
+                    Console.WriteLine(Response.output);
+
+                    var sr = new SubmissionResult();
+                    
+                    if(i > submissionResults.Count)
+                    {
+                        sr =  new SubmissionResult()
+                        {
+                            submission = submission,
+                            testCase = tc,
+                            result = Response.output,
+                            excuteTime = Response.cpuTime,
+                            memory = Response.memory
+                        };
+                        if(Response.output != System.IO.File.ReadAllText(tc.output))
+                        {
+                            ACCheck = false;
+                            sr.status = "Wrong Answer";
+                        }
+                        else
+                        {
+                            sr.status = "Accepted";
+                        }
+                        _context.Add(sr);
+                    }
+                    else
+                    {
+                        sr = submissionResults[i - 1];
+                        sr.result = Response.output;
+                        sr.isDeleted = false;
+
+                        if(Response.output != System.IO.File.ReadAllText(tc.output))
+                        {
+                            ACCheck = false;
+                            sr.status = "Wrong Answer";
+                        }
+                        else
+                        {
+                            sr.status = "Accepted";
+                        }
+                        _context.SubmissionResults.Update(sr);
+                    }
+
+                    excuteTime += Response.cpuTime;
+                    memoryUsed += Response.memory;
+                }
+                i ++;
+            }
+            for(int j = i - 1; j < submissionResults.Count(); j++)
+            {
+                submissionResults[j].isDeleted = true;
+                _context.Update(submissionResults[j]);
+            }
+
+            if(ACCheck== true)
+                submission.status = "Accepted";
+            else
+                submission.status = "Wrong Answer";
+
+            submission.time = excuteTime;
+            submission.memory = memoryUsed;
+
+            _context.Update(submission);
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(EditSubmission), new {id = id});
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]

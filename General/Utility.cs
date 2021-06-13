@@ -2,12 +2,15 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace PBL3.General
 {
     public class Utility
     {
-        public static int limitData {get; set;} = 20;
+        public static int limitData {get; set;} = 5;
         public static string CreateMD5(string input)
         {
             // Use input string to calculate MD5 hash
@@ -56,6 +59,30 @@ namespace PBL3.General
                     return true;
             }
             return false;
+        }
+        public static bool CheckTestcase(List<IFormFile> files)
+        {
+            var extend = ".txt";
+            foreach(var file in files)
+            {
+                var InputFileName = Path.GetFileName(file.FileName);
+
+                var fileInfor = new FileInfo(InputFileName);
+
+                if(fileInfor.Extension != extend)
+                {
+                    return false;
+                }
+            }
+            int number = files.Count/2;
+            for(int i = 1; i <= number; i++)
+            {
+                if(!files.Any(p => p.FileName == "input" + i.ToString() + extend) || !files.Any(p => p.FileName == "output" + i.ToString() + extend))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
