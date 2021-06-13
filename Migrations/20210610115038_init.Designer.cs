@@ -10,7 +10,7 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    [Migration("20210606154622_init")]
+    [Migration("20210610115038_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
