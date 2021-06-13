@@ -19,7 +19,7 @@
     text-decoration: none;
     color:var(--heading-color);
     display: block;
-    background-color: #fff;
+    background-color: $white-color;
     border-radius: 5px;
     border: 1px solid $shadow-color;
 }
@@ -71,8 +71,94 @@
 
 .topic-item__dicription{
     padding:20px 15px 0 15px;
-    background-color: #fff;
+    background-color: $white-color;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
     text-align: center;
+}
+
+
+// listPost
+
+.listPost{
+    padding: 50px;
+}
+.listPost__wrapper{
+    margin: 0 auto;
+}
+
+.listPost__wrapper .listPost-item:first-child{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.listPost__wrapper .listPost-item:last-child{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.listPost-item{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 10px 20px;
+    align-items: center;
+    opacity: 0;
+    border-bottom:.5px solid #e0e0e0;
+    background-color: $white-color;
+}
+
+.listPost-item:hover{
+    background-color: $white-color;
+}
+
+.listPost-item__dicription a{
+    text-decoration: none;
+
+}
+.listPost-item__dicription-name{
+    display: block;
+    font-size: 18rem;
+    color: #393a4f;
+    margin-bottom: 3px;
+    font-weight: 600;
+}
+
+.listPost-item__dicription-name:hover{
+    color: $blue-color;
+}
+
+.listPost-item__dicription-name-author{
+    background-color: #eef3fc;
+    color: $blue-color;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 9rem;
+    display: inline-block;
+}
+
+.listPost-item__btn a{
+    display: block;
+    padding: 7px 21px;
+    font-size: 9rem;
+    font-weight: bold;
+    border-radius: 50px;
+    border: .5px solid #b5b5b5;
+    color: #363636;
+    text-decoration: none;
+}
+
+.effect{
+    animation: fadeInRightToLeft .5s ease 0s forwards; 
+}
+
+@keyframes fadeInRightToLeft {
+    0%{
+        opacity: 0;
+        transform: translateX(-150px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+
+    }
 }
