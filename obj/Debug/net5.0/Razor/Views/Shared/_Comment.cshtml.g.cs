@@ -54,7 +54,7 @@ using PBL3.Models;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"3a7b139fb0bf6e53697068d38ac1791640da6fea", @"/Views/Shared/_Comment.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"8f33869ee829845d5f268fe80b750ffa3addb3d9", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"f6c73b5a47a9f7d80dcfeec09fe1a2be92916370", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared__Comment : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Comment>
     {
         #line hidden
