@@ -26,6 +26,7 @@ namespace PBL3.Models
         public string lastName{get; set;}
         [Required(ErrorMessage = "Bạn cần điền tên")]
         public string firstName{get; set;}
+        public string avar{get; set;}
         public bool isActived{get; set;}
         public string token{get; set;}
         // 1: Admin 2: Author 3: User

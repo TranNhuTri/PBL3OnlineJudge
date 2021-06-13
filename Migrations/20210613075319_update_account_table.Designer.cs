@@ -10,8 +10,8 @@ using PBL3.Data;
 namespace PBL3.Migrations
 {
     [DbContext(typeof(PBL3Context))]
-    [Migration("20210610115038_init")]
-    partial class init
+    [Migration("20210613075319_update_account_table")]
+    partial class update_account_table
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace PBL3.Migrations
 
                     b.Property<string>("accountName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("avar")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("email")
@@ -82,7 +85,7 @@ namespace PBL3.Migrations
                             lastName = "Admin",
                             passWord = "E10ADC3949BA59ABBE56E057F20F883E",
                             roleID = 1,
-                            timeCreate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            timeCreate = new DateTime(2021, 6, 13, 14, 53, 19, 359, DateTimeKind.Local).AddTicks(2247)
                         });
                 });
 
@@ -501,6 +504,9 @@ namespace PBL3.Migrations
 
                     b.Property<string>("input")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("output")
                         .HasColumnType("nvarchar(max)");

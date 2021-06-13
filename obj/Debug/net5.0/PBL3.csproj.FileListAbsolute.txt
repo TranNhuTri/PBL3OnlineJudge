@@ -577,8 +577,6 @@ D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\ProblemCategories
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\Problems.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Admin\Submissions.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Articles\Index.cshtml.g.cs
-D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comment\CommentChild.cshtml.g.cs
-D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comment\GetComment.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Notification\ListNotifications.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\ProblemCategories\DeletedProblemCategories.cshtml.g.cs
@@ -657,3 +655,8 @@ C:\Users\Asus\Desktop\Htap\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Sub
 C:\Users\Asus\Desktop\Htap\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Submissions\GetSubmission.cshtml.g.cs
 C:\Users\Asus\Desktop\Htap\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Submissions\Index.cshtml.g.cs
 C:\Users\Asus\Desktop\Htap\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Articles\Articles.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\CommentChild.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\GetComment.cshtml.g.cs
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Comments\Index.cshtml.g.cs
+>>>>>>> 8ae6f1966cd11bc57ce8122119f4caa87d9428bc
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Articles\Articles.cshtml.g.cs

@@ -14,12 +14,16 @@ using PBL3.General;
 namespace PBL3.Controllers
 {
     [Authorize]
-    public class CommentController : Controller
+    public class CommentsController : Controller
     {
         private readonly PBL3Context _context;
-        public CommentController(PBL3Context context)
+        public CommentsController(PBL3Context context)
         {
             _context = context;
+        }
+        public IActionResult Index()
+        {
+            return View(_context.Comments.ToList());
         }
         public IActionResult GetComment(int id)
         {
@@ -154,6 +158,7 @@ namespace PBL3.Controllers
             }
             return;
         }
+        [Authorize]
         [HttpPost]
         public bool DeleteComment(int id)
         {
@@ -161,24 +166,27 @@ namespace PBL3.Controllers
                                             .FirstOrDefault(p => p.ID == id);
             if(comment != null)
             {
-                if(comment.child.Count > 0)
+                if(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" || Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value) == comment.accountID)
                 {
-                    DeleteListComments(comment.child.Select(p => p.ID).ToList());
+                    if(comment.child.Count > 0)
+                    {
+                        DeleteListComments(comment.child.Select(p => p.ID).ToList());
+                    }
+                    var notification = _context.Notifications.FirstOrDefault(p => p.objectID == comment.ID);
+
+                    if(notification != null)
+                    {
+                        notification.isDeleted = true;
+                        _context.Update(notification);
+                    }
+                    
+                    comment.isDeleted = true;
+                    _context.Update(comment);
+
+                    _context.SaveChanges();
+
+                    return true;
                 }
-                var notification = _context.Notifications.FirstOrDefault(p => p.objectID == comment.ID);
-
-                if(notification != null)
-                {
-                    notification.isDeleted = true;
-                    _context.Update(notification);
-                }
-                
-                comment.isDeleted = true;
-                _context.Update(comment);
-
-                _context.SaveChanges();
-
-                return true;
             }
             return false;
         }
@@ -190,7 +198,7 @@ namespace PBL3.Controllers
 
             var accountReceiveNotiID = _context.Comments.FirstOrDefault(p => p.ID == commentID).accountID;
 
-            var like = _context.Likes.FirstOrDefault(p => p.commentID == commentID && p.accountID == accountReceiveNotiID);
+            var like = _context.Likes.FirstOrDefault(p => p.commentID == commentID && p.accountID == accountID);
             if(like != null)
             {
                 if(like.status == true)

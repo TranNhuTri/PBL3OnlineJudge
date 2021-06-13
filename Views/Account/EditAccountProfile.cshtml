@@ -1,8 +1,8 @@
 @{
     ViewData["Title"] = "Chỉnh sửa thông tin cá nhân";
 }
-@using PBL3.Models
-@model Account
+@using PBL3.DTO
+@model EditAccount
 
 <div class="grid">
     <div class="postPage-layout">
@@ -10,8 +10,18 @@
             <div class="grid_column-6 postPage">
                 <div class="infor">
                     <h3 class="infor__title">Thông tin người dùng</h3>
-                    <form class="infor__content" asp-for="EditProfile" method="POST">
-                        <div class="infor__content--avatar" style="background-image: url(https://codelearn.io/Themes/TheCodeCampPro/Resources/Images/code-learn/img-preview-bg.png);"></div>
+                    <form class="infor__content" asp-for="EditProfile" method="POST" enctype="multipart/form-data">
+                        
+                        @if(!string.IsNullOrEmpty(Model.avar))
+                        {
+                            <div class="infor__content--avatar" style = "background-image: url(@Model.avar)" onclick="loadAvarFile()" title="Tải ảnh đại diện lên"></div>
+                        }
+                        else
+                        {
+                            <div class="infor__content--avatar" onclick="loadAvarFile()" title="Tải ảnh đại diện lên"></div>
+                        }
+                        
+                        <input type="file" id="file-input" name = "avarFile" hidden>
                         <div class="infor__content--input">
                             <div class="input-row">
                                 <label for="" class="input__title" >Tên tài khoản</label>
@@ -32,6 +42,7 @@
                             <div class="infor__function">
                                 <a href="" class="infor__function--link password">Đổi mật khẩu</a>
                             </div>
+                            <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
                             <div class="infor__save">
                                 <button class="infor__save--button button">Lưu thay đổi</button>
                             </div>
@@ -42,3 +53,18 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script>
+        function loadAvarFile()
+        {
+            document.querySelector("#file-input").click();
+        }
+        function loadFile(event) {
+            var output = document.querySelector(".infor__content--avatar");
+            output.style.backgroundImage = `url('${URL.createObjectURL(event.target.files[0])}')`;
+        };
+        var fileInput = document.getElementById("file-input");
+        fileInput.addEventListener('change', loadFile);
+    </script>
+}

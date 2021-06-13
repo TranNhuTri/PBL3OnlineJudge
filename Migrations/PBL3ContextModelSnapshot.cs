@@ -30,6 +30,9 @@ namespace PBL3.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("avar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -80,7 +83,7 @@ namespace PBL3.Migrations
                             lastName = "Admin",
                             passWord = "E10ADC3949BA59ABBE56E057F20F883E",
                             roleID = 1,
-                            timeCreate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            timeCreate = new DateTime(2021, 6, 13, 14, 53, 19, 359, DateTimeKind.Local).AddTicks(2247)
                         });
                 });
 
@@ -499,6 +502,9 @@ namespace PBL3.Migrations
 
                     b.Property<string>("input")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("output")
                         .HasColumnType("nvarchar(max)");

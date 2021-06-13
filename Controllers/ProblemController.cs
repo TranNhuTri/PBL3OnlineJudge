@@ -37,23 +37,67 @@ namespace PBL3.Controllers
         { 
             if (ModelState.IsValid)
             {
+                if(files.Count % 2 != 0 || Utility.CheckTestcase(files) == false)
+                {
+                    return NotFound();
+                }
+
+                var problem = _context.Problems.Where(p => p.ID == id).Include(p => p.testCases).FirstOrDefault();
+
+                var testCases = problem.testCases;
+
+                List<string> inputFiles = new List<string>(), outputFiles = new List<string>();
+
                 foreach (var file in files)
-                {   
-                    if (file.Length > 0)
+                {
+                    var InputFileName = Utility.CreateMD5(problem.code + problem.ID.ToString() + Path.GetFileName(file.FileName));
+
+                    var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/TestCases/" + InputFileName);
+
+                    var stream = new FileStream(ServerSavePath, FileMode.Create);
+
+                    await file.CopyToAsync(stream);
+
+                    stream.Close();
+
+                    if(Path.GetFileName(file.FileName).Contains("input"))
                     {
-                        var InputFileName = Path.GetFileName(file.FileName);
-
-                        var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/" + InputFileName);
-
-                        using(var stream = new FileStream(ServerSavePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                            stream.Close();
-                        }
+                        inputFiles.Add(ServerSavePath);
                     }
-                }  
+                    else
+                    {
+                        outputFiles.Add(ServerSavePath);
+                    }
+                }
+                for(int i = 1; i <= files.Count/2; i++)
+                {
+
+                    if(i > testCases.Count)
+                    {
+                        _context.Add(new TestCase()
+                        {
+                            input = inputFiles[i - 1],
+                            output = outputFiles[i - 1],
+                            problemID = problem.ID,
+                        });
+                    }
+                    else
+                    {
+                        problem.testCases[i - 1].input = inputFiles[i - 1];
+                        problem.testCases[i - 1].output = outputFiles[i - 1];
+                        problem.testCases[i - 1].isDeleted = false;
+                        _context.Update(problem.testCases[i - 1]);
+                    }
+                }
+                for(int i = files.Count/2; i < problem.testCases.Count; i++)
+                {
+                    problem.testCases[i].isDeleted = true;
+                    _context.Update(problem.testCases[i]);
+                }
+                _context.SaveChanges();
+                return RedirectToAction("EditProblem", "Problems", new {id = id});
             }
-            return RedirectToAction("EditProblem", "Problems", new {id = id});
+            return NotFound();
         }  
         [Authorize]
         public IActionResult Submit(int id)
@@ -100,10 +144,12 @@ namespace PBL3.Controllers
             float excuteTime = 0;
             float memoryUsed = 0;
 
-            foreach(TestCase tc in problem.testCases)
+            foreach(TestCase tc in problem.testCases.Where(p => p.isDeleted == false))
             {
-                code.stdin = tc.input;
+                code.stdin = System.IO.File.ReadAllText(tc.input);
+
                 var response = client.PostAsJsonAsync("v1/execute", code).Result;
+
                 var output = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
@@ -120,7 +166,7 @@ namespace PBL3.Controllers
                     };
                     excuteTime += Response.cpuTime;
                     memoryUsed += Response.memory;
-                    if(Response.output != tc.output)
+                    if(Response.output != System.IO.File.ReadAllText(tc.output))
                     {
                         ACCheck = false;
                         sr.status = "Wrong Answer";
@@ -150,7 +196,7 @@ namespace PBL3.Controllers
                 {"problemID", Convert.ToString(id)},
                 {"accountName", HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value},
             });
-        } 
+        }
         public IActionResult Submissions(int? page, int problemID, string accountName)
         {
             List<Submission> listSubmissions = new List<Submission>();
