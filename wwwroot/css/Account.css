@@ -10,7 +10,8 @@
   background-color: #fff;
   padding-top: 25px;
   border-radius: 5px;
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
 }
 
 .infor__title {
@@ -20,6 +21,8 @@
 }
 
 .infor__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   padding-right: 35px;
   padding-top: 15px;
@@ -38,21 +41,30 @@
 
 .infor__content--input {
   margin-left: 35px;
-  flex: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 .input-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   margin-bottom: 30px;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .input__title {
   font-size: 14rem;
   color: #828282;
   font-weight: 100;
-  flex-basis: 25%;
+  -ms-flex-preferred-size: 25%;
+      flex-basis: 25%;
   margin-top: 1px;
   margin-right: 10px;
 }
@@ -62,7 +74,9 @@
   border-radius: 3px;
   outline: none;
   border: 1px solid #c1c1c1;
-  flex: 75%;
+  -webkit-box-flex: 75%;
+      -ms-flex: 75%;
+          flex: 75%;
   padding-left: 10px;
 }
 
@@ -80,6 +94,7 @@
   padding: 8px 6px;
   color: #fff;
   background-color: #1dbfaf;
+  -webkit-transition: all linear 0.3s;
   transition: all linear 0.3s;
   border: 2px solid transparent;
   outline: none;
@@ -111,6 +126,7 @@
   color: #444444;
   font-size: 14rem;
   text-decoration: none;
+  -webkit-transition: all linear 0.2s;
   transition: all linear 0.2s;
   display: block;
   color: #008eff;
@@ -120,7 +136,8 @@
   background-color: #fff;
   border-radius: 5px;
   padding: 10px 10px;
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
 }
 
 .inforUser__avatar {
@@ -134,9 +151,14 @@
 }
 
 .inforUser__name {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
 
 .inforUser__name-title {
@@ -154,7 +176,8 @@
   background-color: #ffF;
   padding-top: 1px;
   border-radius: 3px;
-  box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+          box-shadow: 0 0 3px #ccc;
 }
 
 .listProblems_header h1 {
