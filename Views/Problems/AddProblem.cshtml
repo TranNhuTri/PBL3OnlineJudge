@@ -1,11 +1,7 @@
 @using PBL3.Models
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Tạo bài mới";
-    var listAuthors = (List<Account>)ViewData["ListAuthors"];
-    var listCategories = (List<Category>)ViewData["ListCategories"];
-    var listChosenAuthors = (List<int>)ViewData["ListChosenAuthorIds"];
-    var listChosenCategories = (List<int>)ViewData["ListChosenCategoryIds"];
+    ViewData["Title"] = "Tạo bài tập mới";
 }
 @model Problem
 <div class="addEditPage">
@@ -13,7 +9,7 @@
         <div class="grid_row">
             <div class="grid_column">
                 <div class="addEditPage_header">
-                    <h1>Tạo bài mới</h1>
+                    <h1>Tạo bài tập mới</h1>
                 </div>
                 <div class="addEditPage_input">
                     <div asp-validation-summary="ModelOnly" class="div-danger"></div>

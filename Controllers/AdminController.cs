@@ -36,7 +36,7 @@ namespace PBL3.Controllers
             var paramater = new Dictionary<string, string>();
             if(authorId != 0)
             {
-                listProblems =  listProblems.Where(p => p.problemAuthors.Select(p => p.authorID).ToList().Contains(authorId))
+                listProblems =  listProblems.Where(p => p.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList().Contains(authorId))
                                             .ToList();
                 paramater.Add("authorId", authorId.ToString());
             }
@@ -108,6 +108,88 @@ namespace PBL3.Controllers
             listProblemCategories = listProblemCategories.Skip(start).Take(limit).ToList();
 
             return View(listProblemCategories);
+        }
+        public IActionResult Articles(int? page, int authorId, int? isPublic, string searchText)
+        {
+            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
+
+            var listArticles= _context.Articles.Where(p => p.isDeleted == false).Include(p => p.articleAuthors).ThenInclude(p => p.author).OrderByDescending(p => p.timeCreate).ToList();
+
+            var paramater = new Dictionary<string, string>();
+            if(authorId != 0)
+            {
+                listArticles =  listArticles.Where(p => p.articleAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList().Contains(authorId))
+                                            .ToList();
+                paramater.Add("authorId", authorId.ToString());
+            }
+
+            if(isPublic != null)
+            {
+                if(isPublic == 1)
+                {
+                    listArticles =  listArticles.Where(p => p.IsPublic == true)
+                                                .ToList();
+                }
+                else
+                    if(isPublic == 0)
+                    {
+                        listArticles =  listArticles.Where(problem => problem.IsPublic == false)
+                                                    .ToList();
+                    }
+                paramater.Add("isPublic", isPublic.ToString());
+            }
+
+            ViewBag.paginationParams = paramater;
+
+            if(!String.IsNullOrEmpty(searchText))
+            {
+                listArticles =  listArticles.Where(problem => problem.title.ToLower().Contains(searchText.ToLower()))
+                                            .ToList();
+                paramater.Add("searchText", searchText);
+            }
+
+            if(page == null)
+            {
+                page = 1;
+            }
+            
+            int limit = Utility.limitData;
+
+            int start = (int)(page - 1)*limit;
+
+            ViewBag.currentPage = page;
+
+            ViewBag.totalPage = (int)Math.Ceiling((float)listArticles.Count/limit);
+
+            listArticles = listArticles.Skip(start).Take(limit).ToList();
+
+            return View(listArticles);
+        }
+        public IActionResult Topics(int? page, string topicName)
+        {
+            var topics = _context.Topics.Where(p => p.isDeleted == false).ToList();
+
+            if(!string.IsNullOrEmpty(topicName))
+            {
+                topics = topics.Where(p => p.name.ToLower().Contains(topicName.ToLower())).ToList();
+            }
+
+            if(page == null)
+            {
+                page = 1;
+            }
+            
+            int limit = Utility.limitData;
+
+            int start = (int)(page - 1)*limit;
+
+            ViewBag.currentPage = page;
+
+            ViewBag.totalPage = (int)Math.Ceiling((float)topics.Count/limit);
+
+            topics = topics.Skip(start).Take(limit).ToList();
+
+            return View(topics);
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Submissions(int? page, string language, string status, string searchText)

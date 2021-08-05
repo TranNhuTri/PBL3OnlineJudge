@@ -46,8 +46,10 @@ namespace PBL3
             });
 
             services.AddControllersWithViews();
+            
             services.AddDbContext<PBL3Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PBL3Context")));
+
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 

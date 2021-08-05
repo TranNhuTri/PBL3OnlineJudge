@@ -1,4 +1,5 @@
 @using PBL3.Models
+@using PBL3.General
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Dạng bài tập";
@@ -32,7 +33,7 @@
                     @for(int i = 0; i < Model.Count; i++)
                     {
                         <tr>
-                            <td>@(i + 1)</td>
+                            <td>@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
                             <td>
                                 <a asp-action = "EditProblemCategory" asp-controller = "ProblemCategories" asp-route-id = "@Model[i].ID" style="text-decoration: none; color: #008eff">
                                     @Model[i].name

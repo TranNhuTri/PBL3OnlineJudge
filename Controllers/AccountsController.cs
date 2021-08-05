@@ -148,6 +148,54 @@ namespace PBL3.Controllers
             }
             return View();
         }
+        public IActionResult ChangePassword(int id)
+        {
+            var account = _context.Accounts.FirstOrDefault(p => p.ID == id);
+            if(account == null)
+            {
+                return NotFound();
+            }
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(int? id, string newPassword, string confirmPassWord)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            if(string.IsNullOrEmpty(newPassword))
+            {
+                ModelState.AddModelError("", "Bạn cần nhập mật khẩu mới");
+                return View();
+            }
+            if(string.IsNullOrEmpty(confirmPassWord))
+            {
+                ModelState.AddModelError("", "Bạn cần xác nhận lại mật khẩu");
+                return View();
+            }
+            if(newPassword != confirmPassWord)
+            {
+                ModelState.AddModelError("", "Mật khẩu không khớp");
+                return View();
+            }
+            var account = _context.Accounts.FirstOrDefault(p => p.ID == id);
+
+            account.passWord = Utility.CreateMD5(newPassword);
+
+            _context.Update(account);
+
+            _context.SaveChanges();
+
+            if(account == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(EditAccount), new{id = account.ID});
+        }
         public IActionResult DeleteAccount(int id)
         {
             var account = _context.Accounts.Where(p => p.ID == id).Include(p => p.submissions).ThenInclude(p => p.problem).Include(p => p.comments).FirstOrDefault();

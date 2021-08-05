@@ -8,28 +8,34 @@
         <form asp-action="SignUp">
             <div class="signUpForm signUpForm--1">
                 <h2 class="signUpForm_title">
-                    ĐĂNG KÍ TÀI KHOẢN
+                    Đăng kí tài khoản
                 </h2>
 
                 <p class="signUpForm_label">Họ</p>
-                <input type="text" name="gmail" placeholder="Họ" class="signUpForm_textBox">
+                <input type="text" asp-for="lastName" placeholder="Họ" class="signUpForm_textBox">
+                <span asp-validation-for="lastName" class="text-danger"></span>
                 
                 <p class="signUpForm_label">Tên</p>
-                <input type="text" name="name" placeholder="Tên" class="signUpForm_textBox">
+                <input type="text" asp-for="firstName" placeholder="Tên" class="signUpForm_textBox">
+                <span asp-validation-for="firstName" class="text-danger"></span>
 
                 <p class="signUpForm_label">Email</p>
-			    <input type="text" name="email" placeholder="trannhutri@codetop1.net" class="signUpForm_textBox">
+			    <input type="text" asp-for="email" placeholder="trannhutri@codetop1.net" class="signUpForm_textBox">
+                <span asp-validation-for="email" class="text-danger"></span>
 
                 <p class="signUpForm_label">Tên tài khoản</p>
                 <input type="text" asp-for="accountName" placeholder="trannhutri" class="signUpForm_textBox">
+                <span asp-validation-for="accountName" class="text-danger"></span>
 
                 <p class="signUpForm_label">Mật khẩu</p>
                 <input type="password" asp-for="passWord" placeholder="Password" class="signUpForm_textBox">
+                <span asp-validation-for="passWord" class="text-danger"></span>
 
                 <p class="signUpForm_label">Nhập lại mật khẩu</p>
                 <input type="password" name="ConfirmPassword" placeholder="Confirm Password" class="signUpForm_textBox">
+                <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
                 <div class="signUpForm_buttonBox">
-                    <button type="button" class="button signUpForm_button" id="signUpForm_nextButton--1" onclick="next()">
+                    <button type="submit" class="button signUpForm_button" id="signUpForm_nextButton--1">
                         Đăng Kí
                     </button>
                 </div>
@@ -37,3 +43,7 @@
         </form>
     </div>
 </div>
+@section Scripts
+{
+    <script src="/js/Validation.js"></script>
+}

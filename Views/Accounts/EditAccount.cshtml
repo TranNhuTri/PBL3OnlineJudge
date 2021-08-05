@@ -50,6 +50,9 @@
                         <label for="timeCreate" style="width: 180px; display: inline-block;">Ngày tạo:</label>
                         <input type="date" asp-for="timeCreate" style="cursor: pointer;" readonly>
                     </div>
+                    <div class="formGroup">
+                        <a asp-action="ChangePassword" asp-route-id="@Model.ID" class="link">Đổi mật khẩu</a>
+                    </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
                         <div class="formSubmit">

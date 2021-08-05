@@ -10,9 +10,14 @@
             <div class="grid_column">
                 <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h1>Chỉnh sửa đề bài</h1>
-                    <a asp-action="ProblemHistory" asp-route-id="@Model.ID" class="link">
-                        <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
-                    </a>
+                    <div style="display: flex;">
+                        <a asp-action="ProblemHistory" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
+                        </a>
+                        <a asp-action="Problem" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px; margin-left: 10px;">Xem trên web</div>
+                        </a>
+                    </div>
                 </div>
                 <div class="addEditPage_input">
                     <div asp-validation-summary="ModelOnly" class="div-danger"></div>

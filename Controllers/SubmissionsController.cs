@@ -183,9 +183,23 @@ namespace PBL3.Controllers
             return RedirectToAction(nameof(EditSubmission), new {id = id});
         }
         [Authorize(Roles = "Admin")]
+        public IActionResult DeleteSubmission(int id)
+        {
+            var submission = _context.Submissions.Where(p => p.ID == id)
+                                                .Include(p => p.problem)
+                                                .Include(p => p.submissionResults)
+                                                .Include(p => p.account)
+                                                .FirstOrDefault();
+            if(submission == null)
+            {
+                return NotFound();
+            }
+            return View(submission);
+        }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteSubmission(int id)
+        public IActionResult DeleteSubmission(int? id)
         {
             var submission = _context.Submissions.Include(p => p.problem).Include(p => p.account).FirstOrDefault(p => p.ID == id);
 
@@ -194,11 +208,13 @@ namespace PBL3.Controllers
                 return NotFound();
             }
 
-            _context.Remove(submission);
+            submission.isDeleted = true;
+
+            _context.Update(submission);
 
             _context.SaveChanges();
 
-            return RedirectToAction("ListSubmissions");
+            return RedirectToAction("Submissions", "Admin");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -28,7 +28,8 @@ namespace PBL3.Migrations
 
                     b.Property<string>("accountName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("avar")
                         .HasColumnType("nvarchar(max)");
@@ -39,7 +40,8 @@ namespace PBL3.Migrations
 
                     b.Property<string>("firstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("isActived")
                         .HasColumnType("bit");
@@ -49,12 +51,13 @@ namespace PBL3.Migrations
 
                     b.Property<string>("lastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("passWord")
                         .IsRequired()
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("roleID")
                         .HasColumnType("int");
@@ -83,7 +86,7 @@ namespace PBL3.Migrations
                             lastName = "Admin",
                             passWord = "E10ADC3949BA59ABBE56E057F20F883E",
                             roleID = 1,
-                            timeCreate = new DateTime(2021, 6, 13, 14, 53, 19, 359, DateTimeKind.Local).AddTicks(2247)
+                            timeCreate = new DateTime(2021, 7, 26, 16, 3, 57, 240, DateTimeKind.Local).AddTicks(1588)
                         });
                 });
 
@@ -136,9 +139,16 @@ namespace PBL3.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("topicID")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("topicID");
 
                     b.ToTable("Articles");
                 });
@@ -180,7 +190,8 @@ namespace PBL3.Migrations
 
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("ID");
 
@@ -217,6 +228,9 @@ namespace PBL3.Migrations
 
                     b.Property<DateTime>("timeCreate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("typePost")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -324,7 +338,8 @@ namespace PBL3.Migrations
 
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("ID");
 
@@ -363,6 +378,9 @@ namespace PBL3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("TopicID")
+                        .HasColumnType("int");
+
                     b.Property<int>("categoryID")
                         .HasColumnType("int");
 
@@ -373,6 +391,8 @@ namespace PBL3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("TopicID");
 
                     b.HasIndex("categoryID");
 
@@ -389,7 +409,8 @@ namespace PBL3.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ID");
 
@@ -430,7 +451,8 @@ namespace PBL3.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("language")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<float>("memory")
                         .HasColumnType("real");
@@ -439,7 +461,8 @@ namespace PBL3.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("status")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<float>("time")
                         .HasColumnType("real");
@@ -476,7 +499,8 @@ namespace PBL3.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("status")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("submissionID")
                         .HasColumnType("int");
@@ -519,6 +543,29 @@ namespace PBL3.Migrations
                     b.ToTable("TestCases");
                 });
 
+            modelBuilder.Entity("PBL3.Models.Topic", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("describeImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Topics");
+                });
+
             modelBuilder.Entity("PBL3.Models.Account", b =>
                 {
                     b.HasOne("PBL3.Models.Role", "role")
@@ -539,6 +586,15 @@ namespace PBL3.Migrations
                         .IsRequired();
 
                     b.Navigation("account");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Article", b =>
+                {
+                    b.HasOne("PBL3.Models.Topic", "topic")
+                        .WithMany()
+                        .HasForeignKey("topicID");
+
+                    b.Navigation("topic");
                 });
 
             modelBuilder.Entity("PBL3.Models.ArticleAuthor", b =>
@@ -626,6 +682,10 @@ namespace PBL3.Migrations
 
             modelBuilder.Entity("PBL3.Models.ProblemClassification", b =>
                 {
+                    b.HasOne("PBL3.Models.Topic", null)
+                        .WithMany("articles")
+                        .HasForeignKey("TopicID");
+
                     b.HasOne("PBL3.Models.Category", "category")
                         .WithMany("problemClassifications")
                         .HasForeignKey("categoryID")
@@ -746,6 +806,11 @@ namespace PBL3.Migrations
             modelBuilder.Entity("PBL3.Models.TestCase", b =>
                 {
                     b.Navigation("submitResults");
+                });
+
+            modelBuilder.Entity("PBL3.Models.Topic", b =>
+                {
+                    b.Navigation("articles");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,9 +6,12 @@
     <div class="grid_row" style="display: flex; justify-content: center;">
         <div class="grid_column-6">
             <form asp-action="UploadTestcase" enctype="multipart/form-data">
-                <div class="addEditPage upTestcase">
-                    <input type="file" name="files" multiple>
-                    <button class="button" style="border: none; padding: 0 40px; margin-left: 30px">Tải lên</button>
+                <div class="addEditPage">
+                    <div class="upTestcase">
+                        <input type="file" name="files" multiple>
+                        <button class="button" style="border: none; padding: 0 40px; margin-left: 30px">Tải lên</button>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
                 </div>
             </form>
         </div>

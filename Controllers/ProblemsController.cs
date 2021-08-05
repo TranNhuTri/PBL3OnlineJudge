@@ -79,9 +79,15 @@ namespace PBL3.Controllers
                     paramater.Add("maxDifficult", maxDifficult.ToString());
                 }
             }
+            var accountID = 0;
+            if(HttpContext.User.Identity.IsAuthenticated)
+            {
+                accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+            }
+
             if(hideSolvedProblem)
             {
-                listProblems = listProblems.Where(p => p.submissions.Where(s => s.status == "Accepted").ToList().Count() == 0).ToList();
+                listProblems = listProblems.Where(p => p.submissions.Where(s => s.status == "Accepted" && (s.accountID == accountID || accountID == 0)).ToList().Count() == 0).ToList();
                 paramater.Add("hideSolvedProblem", hideSolvedProblem.ToString());
             }
 
@@ -142,11 +148,11 @@ namespace PBL3.Controllers
 
             if (ModelState.IsValid)
             {
-                if(reqListAuthorIds.Count == 0)
-                {
-                    ModelState.AddModelError("", "Bạn cần chọn tác giả");
-                    return View();
-                }
+                // if(reqListAuthorIds.Count == 0)
+                // {
+                //     ModelState.AddModelError("", "Bạn cần chọn tác giả");
+                //     return View();
+                // }
                 if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.code == reqProblem.code) != null)
                 {
                     ModelState.AddModelError("", "Mã bài đã tồn tại");
@@ -178,6 +184,8 @@ namespace PBL3.Controllers
 
                 _context.Add(reqProblem);
 
+                _context.SaveChanges();
+
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
                 var action = new PBL3.Models.Action()
@@ -188,6 +196,8 @@ namespace PBL3.Controllers
                     action = "Tạo mới",
                     typeObject = Convert.ToInt32(TypeObject.Problem)
                 };
+
+                _context.Add(action);
 
                 await _context.SaveChangesAsync();
 
@@ -210,17 +220,18 @@ namespace PBL3.Controllers
                                             .Include(p => p.submissions)
                                             .ThenInclude(s => s.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
                                             .FirstOrDefault();
+            if(problem == null || problem.isDeleted == true)
+            {
+                return NotFound();
+            }
 
-            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1)
+            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false)
                                                         .Include(p => p.account)
                                                         .Include(p => p.child)
                                                         .Include(p => p.likes)
                                                         .ThenInclude(p => p.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
                                                         .ToList();
-            if(problem == null)
-            {
-                return NotFound();
-            }
+
             return View(problem);
         }
         [Authorize(Roles ="Admin, Author")]
@@ -232,6 +243,9 @@ namespace PBL3.Controllers
                                             .Include(p => p.testCases)
                                             .AsSplitQuery().OrderByDescending(p => p.timeCreate)
                                             .FirstOrDefault();
+            
+            ViewBag.listComments = _context.Comments.Where(p => p.postID == id).Include(p => p.account).ToList();
+
             return View(problem);
         }
         [Authorize(Roles ="Admin, Author")]
@@ -307,6 +321,8 @@ namespace PBL3.Controllers
             ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
             ViewData["ListChosenCategoryIds"] = reqListCategoryIds;
+
+            ViewBag.problemTestCases = _context.TestCases.Where(p => p.problemID == id && p.isDeleted == false).ToList();
 
             if(ModelState.IsValid)
             {
@@ -444,7 +460,7 @@ namespace PBL3.Controllers
                 foreach(var item in reqListAuthorIds)
                 {
                     //add
-                    if(listProblemAuthors.Any(p => p.authorID == item) == false)
+                    if(problem.problemAuthors.Any(p => p.authorID == item) == false)
                     {
                         _context.Add(new ProblemAuthor()
                         {
@@ -487,7 +503,7 @@ namespace PBL3.Controllers
                 foreach(var item in reqListCategoryIds)
                 {
                     //add
-                    if(listProblemClassifications.Any(p => p.categoryID == item) == false)
+                    if(problem.problemClassifications.Any(p => p.categoryID == item) == false)
                     {
                         _context.Add(new ProblemClassification()
                         {
@@ -610,12 +626,6 @@ namespace PBL3.Controllers
 
             problem.isDeleted = false;
             _context.Update(problem);
-
-            foreach(var item in problem.submissions)
-            {
-                item.isDeleted = false;
-                _context.Update(item);
-            }
 
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 

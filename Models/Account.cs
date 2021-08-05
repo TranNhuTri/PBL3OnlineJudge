@@ -15,16 +15,19 @@ namespace PBL3.Models
         }
         public int ID{get; set;}
         [Required(ErrorMessage = "Bạn cần điền tên đăng nhập")]
+        [StringLength(50)]
         public string accountName{get; set;}
         [Required(ErrorMessage = "Bạn cần điền mật khẩu")]
-        [StringLength(int.MaxValue, MinimumLength = 6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
+        [StringLength(50, MinimumLength = 6, ErrorMessage = "Mật khẩu ít nhất 6 kí tự")]
         public string passWord{get; set;}
         [Required(ErrorMessage = "Bạn cần điền Email")]
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string email{get; set;}
         [Required(ErrorMessage = "Bạn cần điền họ")]
+        [StringLength(200)]
         public string lastName{get; set;}
         [Required(ErrorMessage = "Bạn cần điền tên")]
+        [StringLength(200)]
         public string firstName{get; set;}
         public string avar{get; set;}
         public bool isActived{get; set;}

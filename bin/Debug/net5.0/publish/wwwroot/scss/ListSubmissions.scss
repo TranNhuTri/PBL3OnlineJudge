@@ -1,0 +1,64 @@
+@import 'var.scss';
+
+.submissions_table
+{
+    .submissionID
+    {
+        text-align: center;
+    }
+    .submissionStatus
+    {
+        font-weight: 600;
+        color: $blue-color;
+    }
+    .submissionStatus--AC
+    {
+        color: $primary-color;
+    }
+    .submissionStatus--WA
+    {
+        color: #f20707;
+    }
+    .submissionID
+    {
+        cursor: pointer;
+    }
+    .submissionEdit
+    {
+        padding: 0 10px;
+        text-align: center;
+        .submissionEdit_link
+        {
+            color: #00bb00;
+        }
+    }
+}
+.detailSubmissionContainer
+{
+    font-size: 14rem;
+    position: absolute;
+    top: 100px;
+    width: 55vw;
+    background-color: $white-color;
+    padding: 20px;
+    padding-top: 25px;
+    border-radius: 4px;
+    z-index: 1;
+    .detailSubmissionIcon
+    {
+        font-size: 18rem;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+        color: $shadow-color;
+    }
+    .detailSubmissionContent
+    {
+        font-size: 14rem;
+        overflow-y: auto;
+        max-height: 700px;
+        padding: 0 10px;
+        color: $text-color;
+    }
+}

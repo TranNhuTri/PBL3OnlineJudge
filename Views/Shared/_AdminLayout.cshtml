@@ -64,7 +64,7 @@
                                 <ul class="adminCategory_list">
                                     <li class="adminCategory_item">
                                         @{
-                                            var actions = "Problems,ProblemCategories,AddProblemCategory,DeletedProblemCategories,AddProblem,DeletedProblems,EditProblem,DeleteProblem";
+                                            var actions = "Problems,ProblemCategories,AddProblemCategory,EditProblemCategory,DeleteProblemCategory,DeletedProblemCategories,AddProblem,DeletedProblems,EditProblem,DeleteProblem,ProblemHistory";
                                             var controllers = "Admin,ProblemCategories,Problems";
                                         }
                                         <a  asp-action = "Problems" asp-controller = "Admin"  class="adminCategory_link"> 
@@ -77,31 +77,40 @@
                                         <div class="adminCategory_submenu @Html.IsSelected(actions: actions, controllers: controllers, cssClass: "adminCategory_submenu--active")">
                                             <ul class="adminCategory_submenu_list">
                                                 <a asp-action = "ProblemCategories" asp-controller = "Admin" style="text-decoration: none;">
-                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "ProblemCategories,AddProblemCategory,DeletedProblemCategories", controllers: controllers, cssClass: "adminCategory_submenu_item--active")">Dạng bài tập</li>
+                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "ProblemCategories,AddProblemCategory,EditProblemCategory,DeleteProblemCategory,DeletedProblemCategories", controllers: controllers, cssClass: "adminCategory_submenu_item--active")">Dạng bài tập</li>
                                                 </a>
                                             </ul>
                                         </div>
                                     </li>
                                     <li class="adminCategory_item">
-                                        <a href="" class="adminCategory_link"> 
-                                            <div class="adminCategory_mainmenu">
+                                        <a asp-action="Articles" asp-controller="Admin" class="adminCategory_link">
+                                            @{
+                                                actions = "Articles,AddArticle,EditArticle,DeleteArticle,DeletedArticles,ArticleHistory,Topics,AddTopic,EditTopic,DeleteTopic";
+                                                controllers = "Admin,Articles,Topics";
+                                            }
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: actions, controllers: controllers, cssClass: "adminCategory_mainmenu--active")">
                                                 <p class="adminCategory_mainmenu_text">Bài viết</p>
-                                                <i class="fas fa-plus adminCategory_mainmenu_icon"></i>
-                                                <p class="adminCategory_mainmenu_subicon">-</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: actions, controllers: controllers, cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: actions, controllers: controllers, cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
                                             </div>
                                         </a>
-                                        <div class="adminCategory_submenu">
+                                        <div class="adminCategory_submenu @Html.IsSelected(actions: actions, controllers: controllers, cssClass: "adminCategory_submenu--active")">
                                             <ul class="adminCategory_submenu_list">
-                                                <li class="adminCategory_submenu_item">Chủ đề</li>
+                                                <a asp-action="Topics" asp-controller="Admin" style="text-decoration: none;">
+                                                    <li class="adminCategory_submenu_item @Html.IsSelected(actions: "Topics,AddTopic,EditTopic,DeleteTopic,", controllers: controllers, cssClass: "adminCategory_submenu_item--active")">Chủ đề</li>
+                                                </a>
                                             </ul>
                                         </div>
                                     </li>
                                     <li class="adminCategory_item">
-                                        <a href="" class="adminCategory_link"> 
-                                            <div class="adminCategory_mainmenu">
+                                        @{
+                                            actions = "Index,EditComment,RestoreComment,DeletedComments";
+                                        }
+                                        <a asp-action="Index" asp-controller = "Comments" class="adminCategory_link"> 
+                                            <div class="adminCategory_mainmenu @Html.IsSelected(actions: actions, controllers: "Comments", cssClass: "adminCategory_mainmenu--active")">
                                                 <p class="adminCategory_mainmenu_text">Bình luận</p>
-                                                <i class="fas fa-plus adminCategory_mainmenu_icon"></i>
-                                                <p class="adminCategory_mainmenu_subicon">-</p>
+                                                <i class="fas fa-plus adminCategory_mainmenu_icon @Html.IsSelected(actions: actions, controllers: "Comments", cssClass: "adminCategory_mainmenu_icon--active")"></i>
+                                                <p class="adminCategory_mainmenu_subicon @Html.IsSelected(actions: actions, controllers: "Comments", cssClass: "adminCategory_mainmenu_subicon--active")">-</p>
                                             </div>
                                         </a>
                                     </li>
@@ -178,7 +187,7 @@
 
         if('@accountName' != "")
         {
-            fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + '@accountName')
+            fetch('@Url.Action("ListNotifications", "Notification")' + "?accountName=" + '@accountName')
             .then(res => res.text())
             .then(data => {
                 if(data == "")
@@ -195,12 +204,12 @@
 
         function getNotificationData(accountName)
         {   
-            fetch("https://localhost:5001/Notification/GetNumberUnSeenNotification?accountName=" + accountName)
+            fetch('@Url.Action("GetNumberUnSeenNotification", "Notification")' + "?accountName=" + accountName)
             .then(res => res.text())
             .then(numberOfNotifications => {
                 if(numberOfNotifications >= 0)
                 {
-                    fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                    fetch('@Url.Action("ListNotifications", "Notification")' + "?accountName=" + accountName)
                     .then(res => res.text())
                     .then(data => {
                         if(data == "")

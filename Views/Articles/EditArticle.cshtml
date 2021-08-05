@@ -1,0 +1,55 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Chỉnh sửa bài viết";
+}
+@using PBL3.Models
+@model Article
+<div class="addEditPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1>Chỉnh sửa bài viết</h1>
+                    <div style="display: flex;">
+                        <a asp-action="ArticleHistory" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
+                        </a>
+                        <a asp-action="Article" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px; margin-left: 10px;">Xem trên web</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="addEditPage_input">
+                    <div asp-validation-summary="ModelOnly" class="div-danger"></div>
+                    <form asp-action = "EditArticle">
+                        @await Html.PartialAsync("_Article", Model)
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" name = "next" value = "save">
+                                    <i class="fas fa-save"></i>
+                                    <p>Lưu thay đổi</p>
+                                </button>
+                            </div>
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" name = "next" value = "edit">
+                                    <i class="fas fa-save"></i>
+                                    <i class="fas fa-caret-right"></i>
+                                    <i class="far fa-edit"></i>
+                                    <p>Lưu và tiếp tục chỉnh sửa</p>
+                                </button>
+                            </div>
+                            <div class="formSubmit">
+                                <a asp-action = "DeleteArticle" asp-controller = "Articles" asp-route-id = "@Model.ID" style="text-decoration: none;">
+                                    <div class="submitButton button" style="background-color: #dc3545">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <p>Xóa bài viết</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

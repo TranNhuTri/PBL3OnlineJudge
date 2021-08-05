@@ -21,7 +21,9 @@ overlay.addEventListener('click', function(e)
 for(let i = 0; i < submissionID.length; i++)
 {
     submissionID[i].addEventListener('click', function(){
-        fetch("https://localhost:5001/Submissions/GetSubmission/" + submissionID[i].getAttribute("data-id"))
+        let url = '/Submissions/GetSubmission/' + submissionID[i].getAttribute("data-id");
+        console.log(url);
+        fetch(url)
         .then(res => res.text())
         .then(function(data)
         {

@@ -1,5 +1,77 @@
 @{
     Layout = "_AdminLayout";
+    ViewData["title"] = "Bình luận";
 }
 @using PBL3.Models
 @model List<Comment>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách bình luận</h1>
+                    <a asp-action = "DeletedComments" asp-controller = "Comments" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các bình luận đã xóa</div>
+                    </a>
+                </div>
+            </div>
+            @await Html.PartialAsync("_SearchCommentForm", ViewData[""])
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Bài đăng</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="EditComment" asp-controller="Comments" asp-route-id="@item.ID" class="link">@item.account.accountName</a>
+                            </td>
+                            <td>
+                                @if(item.typePost == 1)
+                                {
+                                    <a asp-action="Problem" asp-controller="Problems" asp-route-id="@item.postID" class="link">@ViewBag.postName[i]</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Article" asp-controller="Articles" asp-route-id="@item.postID" class="link">@ViewBag.postName[i]</a>
+                                }
+                            </td>
+                            <td>@item.timeCreate.ToString("dd MMMM yyyy, HH:mm")</td>
+                        </tr>
+                        i ++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@{
+    string[] param = {"Index", "Comments"};
+}
+<div>
+    @await Html.PartialAsync("_Pagination", param)
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#isHidden',
+            showSearch: false,
+        })
+        var statusSelect = document.querySelector("#isHidden");
+        var submitButton = document.querySelector(".searchForm_submit");
+
+        statusSelect.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+    </script>
+}

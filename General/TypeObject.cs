@@ -11,7 +11,8 @@ namespace PBL3.General
         ProblemCategory,
         Article,
         Topic,
-        Account
+        Account,
+        Comment
     }
 }
 

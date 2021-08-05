@@ -11,6 +11,7 @@ namespace PBL3.DTO
         public string accountName{get; set;}
         [Required(ErrorMessage = "Bạn cần điền họ")]
         public string lastName{get; set;}
+        [Required(ErrorMessage = "Bạn cần điền tên")]
         public string firstName{get; set;}
         
         [Required(ErrorMessage = "Bạn cần điền Email")]

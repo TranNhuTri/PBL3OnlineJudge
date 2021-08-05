@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PBL3.Models;
 using PBL3.Data;
-using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,9 +20,75 @@ namespace PBL3.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index(int? page, int? isHidden, string searchText)
         {
-            return View(_context.Comments.ToList());
+            var listComments = _context.Comments.Where(p => p.isDeleted == false).Include(p => p.account).ToList();
+
+            var paramater = new Dictionary<string, string>();
+
+            if(isHidden != null)
+            {
+                if(isHidden == 1)
+                {
+                    listComments =  listComments.Where(p => p.isHidden == true)
+                                                .ToList();
+                }
+                else
+                    if(isHidden == 0)
+                    {
+                        listComments =  listComments.Where(problem => problem.isHidden == false)
+                                                    .ToList();
+                    }
+                paramater.Add("isHidden", isHidden.ToString());
+            }
+
+            if(!string.IsNullOrEmpty(searchText))
+            {
+                paramater.Add("searchText", searchText);
+                searchText = searchText.ToLower();
+                var tmpt = new List<Comment>();
+                foreach(var item in listComments)
+                {
+                    var postName = item.typePost == 1 ? _context.Problems.FirstOrDefault(p => p.ID == item.postID).title : _context.Articles.FirstOrDefault(p => p.ID == item.postID).title;
+                    if(item.account.accountName.ToLower().Contains(searchText) || item.content.ToLower().Contains(searchText) || postName.ToLower().Contains(searchText))
+                    {
+                        tmpt.Add(item);
+                    }
+                }
+                listComments = tmpt;
+            }
+
+
+            if(page == null)
+            {
+                page = 1;
+            }
+
+            int limit = Utility.limitData;
+            int start = (int)(page - 1)*limit;
+
+            ViewBag.currentPage = page;
+
+            ViewBag.totalPage = (int)Math.Ceiling((float)listComments.Count/limit);
+
+            listComments = listComments.Skip(start).Take(limit).ToList();
+
+            ViewBag.postName = new List<string>();
+
+            foreach(var item in listComments)
+            {
+                if(item.typePost == 1)
+                {
+                    ViewBag.postName.Add(_context.Problems.FirstOrDefault(p => p.ID == item.postID).title);
+                }
+                else
+                {
+                    ViewBag.postName.Add(_context.Articles.FirstOrDefault(p => p.ID == item.postID).title);
+                }
+            }
+
+            return View(listComments);
         }
         public IActionResult GetComment(int id)
         {
@@ -42,12 +107,22 @@ namespace PBL3.Controllers
         {
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
+            int typePost = 0;
+            if(_context.Problems.FirstOrDefault(p => p.ID == postID) != null)
+            {
+                typePost = 1;
+            }
+            else
+            {
+                typePost = 2;
+            }
             var comment = new Comment()
             {
                 content = content,
                 timeCreate = DateTime.Now,
                 postID = postID,
                 accountID = accountID,
+                typePost = typePost
             };
 
             _context.Add(comment);
@@ -128,12 +203,81 @@ namespace PBL3.Controllers
         }
         public IActionResult CommentChild(int id)
         {
-            var listComment = _context.Comments.Where(p => p.rootCommentID == id)
+            var listComment = _context.Comments.Where(p => p.rootCommentID == id && p.isDeleted == false && p.isHidden == false)
                                                 .Include(p => p.account)
                                                 .Include(p => p.child)
                                                 .Include(p => p.likes)
                                                 .ToList();
             return View(listComment);
+        }
+        [Authorize(Roles ="Admin")]
+        public IActionResult EditComment(int id)
+        {
+            var comment = _context.Comments.Where(p => p.ID == id).Include(p => p.account).FirstOrDefault();
+
+            if(comment == null)
+            {
+                return NotFound();
+            }
+
+            if(comment.typePost == 1)
+            {
+                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+            else
+            {
+                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+
+            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
+
+            return View(comment);
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditComment(int? id, [Bind("content", "isHidden")]Comment reqComment, string next)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = _context.Comments.Where(p => p.ID == id).FirstOrDefault();
+            if(comment == null)
+            {
+                return NotFound();
+            }
+
+            comment.account = _context.Accounts.FirstOrDefault(p => p.ID == comment.accountID);
+
+            if(string.IsNullOrEmpty(reqComment.content))
+            {
+                return View(comment);
+            }
+
+            comment.isHidden = reqComment.isHidden;
+
+            comment.content = reqComment.content;
+
+            _context.Update(comment);
+
+            _context.SaveChanges();
+
+            if(comment.typePost == 1)
+            {
+                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+            else
+            {
+                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+
+            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
+            
+            if(next == "edit")
+                return View(comment);
+            return RedirectToAction("Index");
         }
         public void DeleteListComments(List<int> listCommentIds)
         {
@@ -160,7 +304,7 @@ namespace PBL3.Controllers
         }
         [Authorize]
         [HttpPost]
-        public bool DeleteComment(int id)
+        public bool DeleteCommentAPI(int id)
         {
             var comment = _context.Comments.Include(p => p.child)
                                             .FirstOrDefault(p => p.ID == id);
@@ -190,6 +334,14 @@ namespace PBL3.Controllers
             }
             return false;
         }
+        [Authorize]
+        public IActionResult DeleteComment(int id)
+        {
+            if(DeleteCommentAPI(id))
+                return RedirectToAction(nameof(Index));
+            return RedirectToAction("EditComment", new {id = id});
+        }
+        [Authorize]
         public void LikeComment(int commentID)
         {
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
@@ -259,6 +411,62 @@ namespace PBL3.Controllers
             if(comment == null || comment.likes.Where(p => p.status == true) == null)
                 return 0;
             return comment.likes.Where(p => p.status == true).ToList().Count;
+        }
+        [Authorize(Roles ="Admin")]
+        public IActionResult DeletedComments()
+        {
+            var listComments = _context.Comments.Where(p => p.isDeleted == true).Include(p => p.account).ToList();
+
+            ViewBag.postName = new List<string>();
+
+            foreach(var item in listComments)
+            {
+                if(item.typePost == 1)
+                {
+                    ViewBag.postName.Add(_context.Problems.FirstOrDefault(p => p.ID == item.postID).title);
+                }
+                else
+                {
+                    ViewBag.postName.Add(_context.Articles.FirstOrDefault(p => p.ID == item.postID).title);
+                }
+            }
+
+            return View(listComments);
+        }
+        [Authorize(Roles ="Admin")]
+        public IActionResult RestoreComment(int id)
+        {
+            var comment = _context.Comments.Where(p => p.ID == id).Include(p => p.account).FirstOrDefault();
+            if(comment == null)
+                return NotFound();
+                
+            if(comment.typePost == 1)
+            {
+                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+            else
+            {
+                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
+            }
+
+            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
+
+            return View(comment);
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RestoreComment(int? id)
+        {
+            var comment = _context.Comments.FirstOrDefault(p => p.ID == id);
+            if(comment == null)
+            {
+                return NotFound();
+            }
+            comment.isDeleted = false;
+            _context.Update(comment);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

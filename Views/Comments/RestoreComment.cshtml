@@ -1,0 +1,102 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Chỉnh sửa bình luận";
+}
+@using PBL3.Models
+@model Comment
+<div class="addEditPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1>Khôi phục bình luận</h1>
+                </div>
+                <div class="addEditPage_input">
+                    <div asp-validation-summary="ModelOnly" class="div-danger"></div>
+                    <form asp-action = "RestoreComment">
+                        <div class="formGroup">
+                            <label for="account.accountName">Tài khoản :</label>
+                            <input type="text" asp-for = "account.accountName" readonly>
+                        </div>
+                        <div class="formGroup">
+                            <label>Bài đăng :</label>
+                            <input type="text" value="@ViewBag.postName" readonly>
+                        </div>
+                        <div class="formGroup">
+                            <label>Lượt thích :</label>
+                            <input type="text" value="@ViewBag.commentLikes" readonly>
+                        </div>
+                        <div class = "formGroup">
+                            <input type="checkbox" asp-for = "isHidden" style="width: 15px;" value = "True">
+                            <label for="isHidden">Ẩn bình luận</label>
+                        </div>
+                        <div class="formGroup">
+                            <label>Nội dung :</label>
+                            <div class="editor">
+                                <textarea id="editor" rows="10" cols="80" asp-for = "@Model.content">
+                                </textarea>
+                            </div>
+                            <div class="preview">
+                                <div class="previewButton" id = "previewButton">
+                                    Update Preview
+                                </div>
+                                <div class="previewContent">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" name = "next" value = "save">
+                                    <i class="fas fa-window-restore"></i>
+                                    Khôi phục
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        CKEDITOR.replace('editor', {
+            height: '250px',
+        });
+        var previewBtn = document.getElementById("previewButton");
+        previewBtn.addEventListener('click', function(e)
+        {
+            var html = CKEDITOR.instances.editor.getData();
+
+            html = html.replaceAll("~", "$");
+
+            var previewContent = document.getElementsByClassName("previewContent")[0];
+            
+            previewContent.innerHTML = html;
+            
+            CKEDITOR.instances.editor.setData("", function()
+            {
+                CKEDITOR.instances.editor.insertHtml(html);
+                var frame = document.querySelector(".cke_wysiwyg_frame");
+                var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+                frame.contentWindow.document.querySelector("head").innerHTML += css;
+            });
+
+            document.querySelectorAll('pre code').forEach((block) => {
+                if(block.classList == "")
+                    block.classList.add("plaintext");
+                hljs.highlightBlock(block);
+            });
+                
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        });
+        CKEDITOR.on("instanceReady", function(event)
+        {
+            previewBtn.click();
+            var frame = document.querySelector(".cke_wysiwyg_frame");
+            var css = '<style>code {padding: 20px !important;border: 1px solid #ccc;border-radius: 4px;background-color: #f0f0f029 !important;}</style>'
+            frame.contentWindow.document.querySelector("head").innerHTML += css;
+        });
+    </script>
+}

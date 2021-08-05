@@ -39,7 +39,8 @@ namespace PBL3.Controllers
             {
                 if(files.Count % 2 != 0 || Utility.CheckTestcase(files) == false)
                 {
-                    return NotFound();
+                    ModelState.AddModelError("", "Testcases không đúng định dạng");
+                    return View();
                 }
 
                 var problem = _context.Problems.Where(p => p.ID == id).Include(p => p.testCases).FirstOrDefault();

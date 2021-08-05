@@ -1,5 +1,5 @@
 @using PBL3.Models
-@using Microsoft.AspNetCore.Http
+@using PBL3.General
 @{
     ViewData["Title"] = "Bài nộp của tôi";
 }
@@ -31,7 +31,7 @@
                         {
                             string color = "";
                             <tr>
-                                <td class = "link submissionID" style="text-decoration: underline;" data-id="@Model[i].ID">@(ViewBag.currentPage + i)</td>
+                                <td class = "link submissionID" style="text-decoration: underline;" data-id="@Model[i].ID">@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
                                 <td>@Model[i].timeCreate</td>
                                 <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>
                                 @if(Model[i].status == "Accepted")

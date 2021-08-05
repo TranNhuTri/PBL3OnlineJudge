@@ -1,0 +1,61 @@
+@using PBL3.Models
+@using PBL3.General
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Chủ đề bài viết";
+}
+@model List<Topic>
+<div class="listObjectsPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách chủ đề</h1>
+                    <a asp-action = "AddTopic" asp-controller = "Topics" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm chủ đề mới</div>
+                    </a>
+                    <a asp-action = "DeletedTopics" asp-controller = "Topics" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các chủ đề đã xóa</div>
+                    </a>
+                </div>
+            </div>
+            <div class="searchForm">
+                <form action="" style="display: flex;">
+                    <input type="text" placeholder="Nhập tên dạng bài" class="searchForm_searchInput"  name = "topicName">
+                    <input type="submit" value="Tìm" class="button searchForm_submit" style="border: none !important; width: 80px; margin-left: 10px;">
+                </form>
+            </div>
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            Tên chủ đề
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
+                            <td>
+                                <a asp-action = "EditTopic" asp-controller = "Topics" asp-route-id = "@Model[i].ID" style="text-decoration: none; color: #008eff">
+                                    @Model[i].name
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"Topics", "Admin"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>

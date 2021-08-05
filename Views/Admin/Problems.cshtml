@@ -47,11 +47,12 @@
                             </td>
                             @{
                                 var author = "";
-                                foreach(var problAuthor in item.problemAuthors)
+                                foreach(var problAuthor in item.problemAuthors.Where(p => p.isDeleted == false))
                                 {
                                     author = author + problAuthor.author.accountName + ", ";
                                 }
-                                author = author.Substring(0, author.Length - 2);
+                                if(author != "")
+                                    author = author.Substring(0, author.Length - 2);
                             }
                             <td>@author</td>
                             @if(item.isPublic)

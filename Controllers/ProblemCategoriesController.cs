@@ -23,15 +23,15 @@ namespace PBL3.Controllers
         }
         public IActionResult AddProblemCategory()
         {
-            ViewData["listProblems"] = _context.Problems.ToList();
+            ViewData["ListProblems"] = _context.Problems.ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProblemCategory([Bind("name")] Category reqCategory, List<int> reqListProblemIds)
         {
-            ViewData["listProblems"] = _context.Problems.ToList();
-            ViewData["listChosenProblemIDs"] = reqListProblemIds;
+            ViewData["ListProblems"] = _context.Problems.ToList();
+            ViewData["ListChosenProblemIDs"] = reqListProblemIds;
 
             if(ModelState.IsValid)
             {
@@ -244,7 +244,7 @@ namespace PBL3.Controllers
             
             ViewBag.deleteDates = listDates;
 
-            return View(_context.Categories.Where(p => p.isDeleted == true).ToList());
+            return View(deletedCategories);
         }
         public IActionResult RestoreProblemCategory(int id)
         {

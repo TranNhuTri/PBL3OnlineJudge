@@ -53,6 +53,7 @@ namespace PBL3.Controllers
                     var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
 
                     var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
+                    
                     HttpContext.SignInAsync(userPrincipal);
 
                     if(!string.IsNullOrEmpty(returnUrl))

@@ -22,25 +22,37 @@
                         }
                         
                         <input type="file" id="file-input" name = "avarFile" hidden>
+                        <input type="text" asp-for="avar" hidden>
                         <div class="infor__content--input">
-                            <div class="input-row">
-                                <label for="" class="input__title" >Tên tài khoản</label>
-                                <input type="text" placeholder="" asp-for="accountName" readonly>
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title" >Tên tài khoản</label>
+                                    <input type="text" placeholder="Account Name" asp-for="accountName">
+                                </div>
                             </div>
-                            <div class="input-row">
-                                <label for="" class="input__title">Họ</label>
-                                <input type="text" placeholder="" asp-for="lastName">
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Họ</label>
+                                    <input type="text" placeholder="Last Name" asp-for="lastName">
+                                </div>
                             </div>
-                            <div class="input-row">
-                                <label for="" class="input__title">Tên</label>
-                                <input type="text" placeholder="" asp-for="firstName">                                   
+                            <span asp-validation-for="lastName" class="text-danger"></span>
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Tên</label>
+                                    <input type="text" placeholder="First Name" asp-for="firstName">                               
+                                </div>
+                                <span asp-validation-for="firstName" class="text-danger"></span>
                             </div>
-                            <div class="input-row">
-                                <label for="" class="input__title">Email</label>
-                                <input type="text" placeholder="" asp-for="email">                                 
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Email</label>
+                                    <input type="text" placeholder="Email" asp-for="email">
+                                </div>
+                                <span asp-validation-for="email" class="text-danger"></span>  
                             </div>
                             <div class="infor__function">
-                                <a href="" class="infor__function--link password">Đổi mật khẩu</a>
+                                <a asp-action="ChangePassword" class="infor__function--link password">Đổi mật khẩu</a>
                             </div>
                             <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
                             <div class="infor__save">
@@ -67,4 +79,5 @@
         var fileInput = document.getElementById("file-input");
         fileInput.addEventListener('change', loadFile);
     </script>
+    <script src="/js/Validation.js"></script>
 }

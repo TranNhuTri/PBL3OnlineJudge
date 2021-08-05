@@ -35,6 +35,11 @@ namespace PBL3.Controllers
         {
             if(ModelState.IsValid)
             {
+                if(_context.Accounts.FirstOrDefault(p => p.email == reqAccount.email) != null)
+                {
+                    ModelState.AddModelError("", "Email đã được sử dụng");
+                    return View(reqAccount);
+                }
                 var account = _context.Accounts.FirstOrDefault(p => p.accountName == reqAccount.accountName);
                 if(account != null)
                 {
@@ -115,52 +120,91 @@ namespace PBL3.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAccountProfile(string name, [Bind("accountName, firstName, lastName, email")]EditAccount editAccount, IFormFile avarFile)
+        public async Task<IActionResult> EditAccountProfile(string name, [Bind("accountName, firstName, lastName, email, avar")]EditAccount editAccount, IFormFile avarFile)
         {
-            if(name != HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value)
+            if(ModelState.IsValid)
             {
-                return NotFound();
-            }
-            var account = _context.Accounts.FirstOrDefault(p => p.accountName == name);
-
-            if(account == null)
-                return NotFound();
-
-            if(avarFile != null && avarFile.Length > 0)
-            {
-                var InputFileName = Utility.CreateMD5(account.accountName + account.ID + account.email);
-
-                var fileInfor = new FileInfo(avarFile.FileName);
-
-                if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png")
+                if(name != HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value)
                 {
-                    ModelState.AddModelError("", "File ảnh không đúng định dạng");
-                    return View(editAccount);
+                    return NotFound();
                 }
+                var account = _context.Accounts.FirstOrDefault(p => p.accountName == name);
 
-                InputFileName += fileInfor.Extension;
+                if(account == null)
+                    return NotFound();
 
-                var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Avars/" + InputFileName);
+                if(avarFile != null && avarFile.Length > 0)
+                {
+                    var InputFileName = Utility.CreateMD5(account.accountName + account.ID + account.email);
 
-                var stream = new FileStream(ServerSavePath, FileMode.Create);
+                    var fileInfor = new FileInfo(avarFile.FileName);
 
-                await avarFile.CopyToAsync(stream);
+                    if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png")
+                    {
+                        ModelState.AddModelError("", "File ảnh không đúng định dạng");
+                        return View(editAccount);
+                    }
 
-                stream.Close();
+                    InputFileName += fileInfor.Extension;
 
-                account.avar = "/UploadedFiles/Avars/" + InputFileName;
+                    var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Avars/" + InputFileName);
+
+                    var stream = new FileStream(ServerSavePath, FileMode.Create);
+
+                    await avarFile.CopyToAsync(stream);
+
+                    stream.Close();
+
+                    account.avar = "/UploadedFiles/Avars/" + InputFileName;
+                }
+            
+                account.firstName = editAccount.firstName;
+                account.lastName = editAccount.lastName;
+                account.email = editAccount.email;
+
+                editAccount.avar = account.avar;
+
+                _context.Update(account);
+                _context.SaveChanges();
             }
-        
-            account.firstName = editAccount.firstName;
-            account.lastName = editAccount.lastName;
-            account.email = editAccount.email;
-
-            editAccount.avar = account.avar;
-
-            _context.Update(account);
-            _context.SaveChanges();
 
             return View(editAccount);
+        }
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword([Bind("oldPassword", "newPassword", "confirmPassword")]ChangePassword item)
+        {
+            if(ModelState.IsValid)
+            {
+                var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+                var account = _context.Accounts.FirstOrDefault(p => p.ID == accountID);
+
+                if(account.passWord != Utility.CreateMD5(item.oldPassword))
+                {
+                    ModelState.AddModelError("", "Mật khẩu cũ không đúng");
+                    return View(item);
+                }
+
+                if(item.confirmPassword != item.newPassword)
+                {
+                    ModelState.AddModelError("", "Mật khẩu không khớp");
+                    return View(item);
+                }
+
+                account.passWord = Utility.CreateMD5(item.newPassword);
+                _context.Update(account);
+
+                _context.SaveChanges();
+
+                return RedirectToAction("EditAccountProfile", new{name=account.accountName});
+            }
+            return View(item);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

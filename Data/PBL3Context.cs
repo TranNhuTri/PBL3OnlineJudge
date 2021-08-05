@@ -21,6 +21,7 @@ namespace PBL3.Data
         public DbSet<SubmissionResult> SubmissionResults {get; set;}
         public DbSet<Category> Categories{get; set;}
         public DbSet<Article> Articles{get; set;}
+        public DbSet<Topic> Topics{get; set;}
         public DbSet<ProblemAuthor> ProblemAuthors{get; set;}
         public DbSet<ProblemClassification> ProblemClassifications{get; set;}
         public DbSet<ArticleAuthor> ArticleAuthors{get; set;}

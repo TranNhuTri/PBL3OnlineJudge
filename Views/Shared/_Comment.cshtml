@@ -13,7 +13,7 @@
             }
         </a>
         <div class="comment_container">
-            <a href="" class="comment_author">
+            <a asp-action="AccountProfile" asp-controller="Account" asp-route-accountName="@Model.account.accountName" class="comment_author">
                 @Model.account.accountName
             </a>
             <div class="comment_content">
@@ -25,6 +25,12 @@
         <i class="fas fa-ellipsis-h"></i>
         <div id="comment_extern-tool@(Model.ID)" class="comment_extern-tool">
             <span class = "delete_comment" onclick="deleteComment('@Model.ID')">Xóa</span>
+            @if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin")
+            {
+                <a asp-action="EditComment" asp-controller="Comments" asp-route-id="@Model.ID" style="color: #fff; text-decoration: none;">
+                    <span class = "edit_comment">Sửa</span>
+                </a>
+            }
         </div>
     </div>
     @if(Model.likes.Where(p => p.status == true).ToList().Count == 0)
@@ -98,7 +104,7 @@
         }
     }
 
-    @if(Model.child.Count > 0)
+    @if(Model.child.Where(p => p.isDeleted == false).ToList().Count > 0)
     {
         <span class="comment-load-child" id = "comment-load-child@(Model.ID)" onclick="LoadCommentChild('@Model.ID')">Xem phản hồi</span>
     }

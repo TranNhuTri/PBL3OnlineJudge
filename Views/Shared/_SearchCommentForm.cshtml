@@ -1,0 +1,26 @@
+@using PBL3.DTO
+@using PBL3.Models
+@model SearchCommentInfor
+@{
+    var listAuthors = (List<Account>)ViewData["ListAuthors"];
+}
+<form action="">
+    <div class="searchForm">
+        <div class="searchForm_select">
+            <div class="searchForm_select_item">
+                <label for="isHidden">Bị ẩn : </label>
+                <div style="width: 80px; margin-left: 5px;">
+                    <select asp-for = "@Model.isHidden" id="isHidden">
+                        <option value = "null">All</option>
+                        <option value = "1">True</option>
+                        <option value = "0">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="searchForm_search">
+            <input type="text" placeholder="Nhập để tìm kiếm" class="searchForm_searchInput" asp-for = "@Model.searchText" style="width: 250px;">
+            <input type="submit" value="Tìm" class="button searchForm_submit">
+        </div>
+    </div>
+</form>

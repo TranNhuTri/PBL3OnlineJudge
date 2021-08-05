@@ -1,5 +1,4 @@
 @using PBL3.Models
-@using Microsoft.AspNetCore.Http
 @model Problem
 @{
     ViewData["Title"] = Model.title;
@@ -16,24 +15,27 @@
                 <div class="problemContent">
                     <h1 class="problemPageHeader">@Model.title</h1>
                     @Html.Raw(@Model.content)
-                    <div class="comments">
-                        <div class="comments_header">
-                            <i class="far fa-comments"></i>
-                            <h1>Bình luận</h1>
+                    @if(Context.User.Identity.IsAuthenticated)
+                    {
+                        <div class="comments">
+                            <div class="comments_header">
+                                <i class="far fa-comments"></i>
+                                <h1>Bình luận</h1>
+                            </div>
+                            <div class="listComments">
+                                @if(listComments != null)
+                                {
+                                    @await Html.PartialAsync("_ListComments", listComments)
+                                }
+                            </div>
+                            <div class="comment_box" style="display: block;">
+                                <form onsubmit="return PostRootComment('@Model.ID')">
+                                    <textarea name="content" id="editor" data-first = "1" cols="30" rows="10"></textarea>
+                                    <button class="button comment_button">Gửi</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="listComments">
-                            @if(listComments != null)
-                            {
-                                @await Html.PartialAsync("_ListComments", listComments)
-                            }
-                        </div>
-                        <div class="comment_box" style="display: block;">
-                            <form onsubmit="return PostRootComment('@Model.ID')">
-                                <textarea name="content" id="editor" data-first = "1" cols="30" rows="10"></textarea>
-                                <button class="button comment_button">Gửi</button>
-                            </form>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
             <div class="grid_column-3">
@@ -132,7 +134,7 @@
 
             CKEDITOR.instances["editor"].setData('');
 
-            fetch("https://localhost:5001/Comment/PostComment", {
+            fetch('@Url.Action("PostComment", "Comments")', {
                 method :'post',
                 body : data
             })

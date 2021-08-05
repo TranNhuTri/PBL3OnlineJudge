@@ -1,5 +1,5 @@
 @using PBL3.Models
-@using Microsoft.AspNetCore.Http
+@using PBL3.General
 @{
     ViewData["Title"] = "Danh sách bài tập";
     var listCategories = (List<Category>)ViewData["ListCategories"];
@@ -77,7 +77,7 @@
                                         {
                                             <td></td>
                                         }
-                                        <td class = "problemNumber">@(ViewBag.currentPage + i)</td>
+                                        <td class = "problemNumber">@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
                                         <td class = "problemTitle">
                                             <a asp-controller = "Problems" asp-action = "Problem" asp-route-id = "@Model[i].ID" class = "problemTitle_link">@Model[i].title</a>
                                         </td>

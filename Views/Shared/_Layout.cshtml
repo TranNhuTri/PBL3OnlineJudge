@@ -80,9 +80,9 @@
                                     <a href="/Submissions" class ="appHeader_link" >Bài nộp</a>
                                 </div>
                             </li>
-                            <li class="appHeader_item @Html.IsSelected(actions: "Index", controllers: "Articles", cssClass: "appHeader_item--active")">
+                            <li class="appHeader_item @Html.IsSelected(actions: "Topics,Index", controllers: "Articles", cssClass: "appHeader_item--active")">
                                 <div class="appHeader_text">
-                                    <a href="/Articles" class ="appHeader_link" >Bài viết</a>
+                                    <a href="/Articles/Topics" class ="appHeader_link" >Bài viết</a>
                                 </div>
                             </li>
                         </ul>
@@ -136,7 +136,7 @@
 
         if('@accountName' != "")
         {
-            fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + '@accountName')
+            fetch('@Url.Action("ListNotifications", "Notification")' + "?accountName=" + '@accountName')
             .then(res => res.text())
             .then(data => {
                 if(data == "")
@@ -153,12 +153,12 @@
 
         function getNotificationData(accountName)
         {   
-            fetch("https://localhost:5001/Notification/GetNumberUnSeenNotification?accountName=" + accountName)
+            fetch('@Url.Action("GetNumberUnSeenNotification", "Notification")' + "?accountName=" + accountName)
             .then(res => res.text())
             .then(numberOfNotifications => {
                 if(numberOfNotifications >= 0)
                 {
-                    fetch("https://localhost:5001/Notification/ListNotifications?accountName=" + accountName)
+                    fetch('@Url.Action("ListNotifications", "Notification")' + "?accountName=" + accountName)
                     .then(res => res.text())
                     .then(data => {
                         if(data == "")

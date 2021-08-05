@@ -2,7 +2,8 @@
 @model Category
 @{
     Layout = "_AdminLayout";
-    var listProblems = (List<Problem>)ViewData["ListProblems"];
+    ViewData["Title"] = "Thêm dạng bài tập";
+    var listProblems = (List<Problem>)ViewData["ListArticles"];
     var listChosenProblemIds = (List<int>)ViewData["ListChosenProblemIds"];
 }
 <div class = "addEditPage">
@@ -13,7 +14,6 @@
                     Tạo dạng bài mới
                 </h1>
             </div>
-            <div asp-validation-summary="ModelOnly" class="div-danger"></div>
             <form asp-action = "AddProblemCategory">
                 <div class = "addEditPage_input">
                     <div class="formGroup">

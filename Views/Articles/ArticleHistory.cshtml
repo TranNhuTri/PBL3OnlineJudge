@@ -1,0 +1,15 @@
+@{
+    Layout = "_Adminlayout";
+    ViewData["Title"] = "Lịch sử chỉnh sửa bài tập";
+}
+@model List<PBL3.Models.Action>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                    <h1>Lịch sử chỉnh sửa bài viết</h1>
+            </div>
+            @await Html.PartialAsync("_Actions", Model)
+        </div>
+    </div>
+</div>
