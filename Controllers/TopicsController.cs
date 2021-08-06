@@ -27,14 +27,14 @@ namespace PBL3.Controllers
         }
         public IActionResult AddTopic()
         {
-            ViewData["ListArticles"] = _context.Articles.ToList();
+            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTopic([Bind("name")]Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
         {
-            ViewData["ListArticles"] = _context.Articles.ToList();
+            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
             ViewData["ListChosenArticleIDs"] = reqListArticleIds;
 
             if(ModelState.IsValid)
