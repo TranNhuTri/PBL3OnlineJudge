@@ -128,7 +128,15 @@ namespace PBL3.Controllers
                             excuteTime = Response.cpuTime,
                             memory = Response.memory
                         };
-                        if(Response.output != System.IO.File.ReadAllText(tc.output))
+                        var txt = System.IO.File.ReadAllText(tc.output);
+                        var res = Response.output;
+                        txt = txt.Replace("\r", string.Empty);
+                        /*Console.WriteLine("(");
+                        Console.WriteLine(Response.output);
+                        Console.WriteLine("------");
+                        Console.WriteLine(System.IO.File.ReadAllText(tc.output));
+                        Console.WriteLine(")");*/
+                        if(res != txt)
                         {
                             ACCheck = false;
                             sr.status = "Wrong Answer";
@@ -144,8 +152,13 @@ namespace PBL3.Controllers
                         sr = submissionResults[i - 1];
                         sr.result = Response.output;
                         sr.isDeleted = false;
-
-                        if(Response.output != System.IO.File.ReadAllText(tc.output))
+                        var txt = System.IO.File.ReadAllText(tc.output);
+                        txt = txt.Replace("\r", string.Empty);
+                        var res = Response.output;
+                        /*Console.WriteLine(Response.output);
+                        Console.WriteLine("------");
+                        Console.WriteLine(System.IO.File.ReadAllText(tc.output));*/
+                        if(res != txt)
                         {
                             ACCheck = false;
                             sr.status = "Wrong Answer";

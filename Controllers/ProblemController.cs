@@ -167,7 +167,9 @@ namespace PBL3.Controllers
                     };
                     excuteTime += Response.cpuTime;
                     memoryUsed += Response.memory;
-                    if(Response.output != System.IO.File.ReadAllText(tc.output))
+                    var txt = System.IO.File.ReadAllText(tc.output);
+                    txt = txt.Replace("\r", "");
+                    if(Response.output != txt)
                     {
                         ACCheck = false;
                         sr.status = "Wrong Answer";
