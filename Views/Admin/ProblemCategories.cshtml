@@ -1,5 +1,8 @@
+@using PBL3.Models
+@using PBL3.General
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Dạng bài tập";
 }
 @model List<Category>
 <div class="listObjectsPage">
@@ -8,8 +11,11 @@
             <div class="listObjectsPage_header">
                 <div style="display: flex">
                     <h1>Danh sách dạng bài tập</h1>
-                    <a asp-action = "AddProblemCategory" asp-controller = "Admin" style="text-decoration: none;">
+                    <a asp-action = "AddProblemCategory" asp-controller = "ProblemCategories" style="text-decoration: none;">
                         <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm dạng bài mới</div>
+                    </a>
+                    <a asp-action = "DeletedProblemCategories" asp-controller = "ProblemCategories" style="text-decoration: none;">
+                        <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các dạng bài đã xóa</div>
                     </a>
                 </div>
             </div>
@@ -27,9 +33,9 @@
                     @for(int i = 0; i < Model.Count; i++)
                     {
                         <tr>
-                            <td>@(i + 1)</td>
+                            <td>@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
                             <td>
-                                <a asp-action = "EditProblemCategory" asp-controller = "Admin" asp-route-id = "@Model[i].ID" style="text-decoration: none; color: #008eff">
+                                <a asp-action = "EditProblemCategory" asp-controller = "ProblemCategories" asp-route-id = "@Model[i].ID" style="text-decoration: none; color: #008eff">
                                     @Model[i].name
                                 </a>
                             </td>
@@ -43,7 +49,7 @@
 <div class="grid_row">
     <div class="grid_column">
         @{
-            string[] param = {"ListProblemCategories", "Admin"};
+            string[] param = {"ProblemCategories", "Admin"};
         }
         @await Html.PartialAsync("_Pagination", param)
     </div>

@@ -4,6 +4,10 @@
     {
         <ul class="pagination-list">
             @{
+                var para = new Dictionary<string, string>();
+                if(ViewBag.paginationParams != null)
+                    para = ViewBag.paginationParams;
+                para.Add("page", "1");
                 int totalPage = ViewBag.totalPage;
                 int currentPage = ViewBag.currentPage;
                 int denta = 2;
@@ -12,19 +16,22 @@
                 if(from > 1)
                 {
                     <li class="pagination-item">
-                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "1" class="pagination-item_link">
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">
                             <i class="pagination-item__icon fas fa-angle-double-left">
                             </i>
                         </a>
                     </li>
                     if(from > denta)
                     {
+                        para["page"] = Convert.ToString(1);
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "1" class="pagination-item_link">1</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">1</a>
                         </li>
+                        
+                        para["page"] = Convert.ToString(2);
 
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "2" class="pagination-item_link">2</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">2</a>
                         </li>
                         <li class="pagination-item pagination-item_icon">...</li>
                     }
@@ -32,24 +39,26 @@
                     {
                         for(int i = 1; i < from; i++)
                         {
+                            para["page"] = i.ToString();
                             <li class="pagination-item">
-                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@i</a>
                             </li>
                         }
                     }
                 }
                 for(int i = from; i <= end; i++)
                 {
+                   para["page"] = i.ToString();
                     if(i == currentPage)
                     {
                         <li class="pagination-item pagination-item--active">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@i</a>
                         </li>
                     }
                     else
                     {
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@i</a>
                         </li>
                     }
                 }
@@ -58,25 +67,33 @@
                     if(end < totalPage - denta + 1)
                     {
                         <li class="pagination-item pagination-item_icon">...</li>
-                        <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@(totalPage - 1)" class="pagination-item_link">@(totalPage - 1)</a>
-                        </li>
+
+                        para["page"] = (totalPage - 1).ToString();
 
                         <li class="pagination-item">
-                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@(totalPage)" class="pagination-item_link">@(totalPage)</a>
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@(totalPage - 1)</a>
+                        </li>
+
+                        para["page"] = totalPage.ToString();
+
+                        <li class="pagination-item">
+                            <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@(totalPage)</a>
                         </li>
                     }
                     else
                     {
                         for(int i = end + 1; i <= totalPage; i++)
                         {
+                            para["page"] = i.ToString();
+
                             <li class="pagination-item">
-                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@i" class="pagination-item_link">@i</a>
+                                <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">@i</a>
                             </li>
                         }
                     }
                     <li class="pagination-item">
-                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-route-id = "@totalPage" class="pagination-item_link">
+                        @{para["page"] = totalPage.ToString();}
+                        <a asp-action = "@Model[0]" asp-controller = "@Model[1]" asp-all-route-data = "@para" class="pagination-item_link">
                             <i class="pagination-item__icon fas fa-angle-double-right">
                             </i>
                         </a>

@@ -18,6 +18,8 @@ namespace PBL3.DTO
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string email{get; set;}
         public bool isActived{get; set;}
-        public int typeAccount{get; set;}
+        public int roleID{get; set;}
+        public string avar{get; set;}
+        public DateTime timeCreate{get; set;}
     }
 }

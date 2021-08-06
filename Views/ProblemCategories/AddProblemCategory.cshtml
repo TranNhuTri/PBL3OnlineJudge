@@ -1,0 +1,75 @@
+@using PBL3.Models
+@model Category
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Thêm dạng bài tập";
+    var listProblems = (List<Problem>)ViewData["ListArticles"];
+    var listChosenProblemIds = (List<int>)ViewData["ListChosenProblemIds"];
+}
+<div class = "addEditPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class = "addEditPage_header">
+                <h1>
+                    Tạo dạng bài mới
+                </h1>
+            </div>
+            <form asp-action = "AddProblemCategory">
+                <div class = "addEditPage_input">
+                    <div class="formGroup">
+                        <label for="name" style="width: 150px; display: inline-block;">Tên dạng bài:</label>
+                        <input type="text" asp-for = "name" placeholder="Nhập tên dạng bài">
+                        <span asp-validation-for="name" class="text-danger"></span>
+                    </div>
+                    <div class="formGroup">
+                        <label for="reqListProblemIds" style="width: 150px; display: inline-block;">Bao gồm các bài:</label>
+                        <div style="min-width: 250px; display: inline-block">
+                            <select name="reqListProblemIds" id = "reqListProblemIds" multiple>
+                                @if(listProblems != null)
+                                {
+                                    @foreach (var problem in listProblems)
+                                    {
+                                        if(listChosenProblemIds != null)
+                                        {
+                                            if(listChosenProblemIds.IndexOf(problem.ID) != -1)
+                                            {
+                                                <option value="@problem.ID" selected>@problem.title</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@problem.ID">@problem.title</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="@problem.ID">@problem.title</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                        <div class="formSubmit">
+                            <button type="submit" class="submitButton button">
+                                <i class="fas fa-save"></i>
+                                <p>Lưu dạng bài</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#reqListProblemIds',
+            placeholder: 'Chọn đề bài',
+            searchText: 'Không tìm thấy',
+        })
+    </script>
+    <script src="/js/Validation.js"></script>
+}

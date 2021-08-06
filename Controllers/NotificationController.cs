@@ -32,7 +32,7 @@ namespace PBL3.Controllers
             var account = _context.Accounts.Include(p => p.notifications).FirstOrDefault(p => p.accountName == accountName);
             if(account == null)
                 return NotFound();
-            return View(account.notifications.OrderByDescending(p => p.timeCreate).Take(10).ToList());
+            return View(account.notifications.Where(p => p.seen == false).OrderByDescending(p => p.timeCreate).Take(10).ToList());
         }
         public IActionResult ViewNotification(int id)
         {
@@ -44,27 +44,16 @@ namespace PBL3.Controllers
             var tmpt = _context.Comments.FirstOrDefault(p => p.ID == notication.objectID);
             if(tmpt != null)
             {
-                if(_context.Problems.FirstOrDefault(p => p.ID == tmpt.postID) != null)
+                if(tmpt.typePost == 1)
                 {
-                    return RedirectToAction("Problem", "ListProblems", new{id = tmpt.postID});
+                    return RedirectToAction("Problem", "Problems", new{id = tmpt.postID});
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Problem", "Problems", new{id = notication.objectID});
                 }
             }
-            else
-            {
-                if(_context.Problems.FirstOrDefault(p => p.ID == notication.objectID) != null)
-                {
-                    return RedirectToAction("Problem", "ListProblems", new{id = notication.objectID});
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-
+            return NotFound();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

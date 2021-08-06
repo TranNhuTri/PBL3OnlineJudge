@@ -13,7 +13,6 @@ namespace PBL3.Models
         public Account account{get; set;}
         public int objectID{get; set;}
         public bool isDeleted{get; set;}
-        public int typeNotificationID{get; set;}
-        public TypeNotification typeNotification{get; set;}
+        public int typeNotification{get; set;}
     } 
 }

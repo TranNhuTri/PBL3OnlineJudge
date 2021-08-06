@@ -1,0 +1,77 @@
+@using  PBL3.Models
+@using  PBL3.General
+@{
+    ViewData["Title"] = "Danh sách tất cả bài nộp";
+}
+@model List<Submission>
+<div class="grid">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage" style="margin-top: 30px;">
+                <div class="listObjectsPage_header">
+                    <h1>Tất cả bài nộp</h1>
+                </div>
+                <table cellspacing="0" cellpadding="0" class="table submissions_table">
+                    <thead>
+                        <tr>
+                            <th class="submissionID">#</th>
+                            <th>Ngày nộp</th>
+                            <th>Người nộp</th>
+                            <th style="width: 35%">Bài</th>
+                            <th>Trạng thái</th>
+                            <th>CPU</th>
+                            <th>Ngôn ngữ</th>
+                            @if(Context.User.Identity.IsAuthenticated && Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.Count > 0)
+                            {
+                                <th></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(int i = 0; i < Model.Count; i++)
+                        {
+                            string color = "";
+                            <tr>
+                                <td class = "link submissionID" style="text-decoration: underline;" data-id="@Model[i].ID">@((ViewBag.currentPage - 1)*Utility.limitData + i + 1)</td>
+                                <td>@Model[i].timeCreate</td>
+                                <td><a asp-action = "AccountProfile" asp-controller = "Account" asp-route-accountName = "@Model[i].account.accountName" class = "link">@Model[i].account.accountName</a></td>
+                                <td><a asp-action = "Problem" asp-route-id = "@Model[i].problem.ID" asp-controller = "Problems" class = "link">@Model[i].problem.title</a></td>
+                                @if(Model[i].status == "Accepted")
+                                {
+                                    color = "#00bb00";
+                                }
+                                else
+                                    if(@Model[i].status == "Wrong Answer")
+                                    {
+                                        color = "#ff0000ba";
+                                    }
+                                <td class = "submissionStatus" style= "color: @color">@Model[i].status</td>
+                                <td class = "submissionTime">@Model[i].time</td>
+                                <td>@Model[i].language</td>
+                                @if(Context.User.Identity.IsAuthenticated && Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" && Model.Count > 0)
+                                {
+                                    <td class = "submissionEdit"><a asp-action = "EditSubmission" asp-controller = "Submissions" asp-route-id = "@Model[i].ID" class = "submissionEdit_link"><i class="far fa-edit"></i></a></td>
+                                } 
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @{
+                string[] param = {"Index", "Submissions"};
+            }
+            @await Html.PartialAsync("_Pagination", param)
+        </div>
+    </div>
+</div>
+<div class="overlay">
+    <div class="detailSubmissionContainer">
+        <i class="fas fa-times detailSubmissionIcon"></i>
+        <div class="detailSubmissionContent">
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src = "/js/Submission.js"></script>
+}

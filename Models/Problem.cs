@@ -17,6 +17,7 @@ namespace PBL3.Models
         [Required(ErrorMessage = "Bạn cần điền mã bài")]
         public string code{get; set;}
         [Required(ErrorMessage = "Bạn cần điền tên bài")]
+        [StringLength(300)]
         public string title{get; set;}
         public string content{get; set;}
         [Required(ErrorMessage = "Bạn cần điền độ khó")]

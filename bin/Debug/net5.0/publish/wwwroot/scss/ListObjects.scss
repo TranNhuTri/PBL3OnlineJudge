@@ -1,0 +1,18 @@
+@import 'var.scss';
+.listObjectsPage
+{
+    box-shadow: 0 0 3px $shadow-color;
+    background-color: $white-color;
+    border-radius: 4px;
+    .listObjectsPage_header
+    {
+        padding: 20px;
+        h1 
+        {
+            font-size: 20rem;
+            line-height: 25rem;
+            margin: 0;
+            color: $text-color;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+@using PBL3.DTO
+@using PBL3.Models
+@model SearchArticleInfor
+@{
+    var listAuthors = (List<Account>)ViewData["ListAuthors"];
+}
+<form action="">
+    <div class="problemFilter">
+        <h1 class="problemFillter_header">Tìm Kiếm Bài Viết</h1>
+        <input type="text" name="topic" value="@ViewBag.topic" hidden>
+        <div class="problemNameFillter">
+            <input type="text" asp-for ="articleName" placeholder="Nhập tên bài" style="width: 100%;">
+        </div>
+        <div class="problemCategoryFillter">
+            <label for="authorSelect">Tác giả</label><br>
+            <select asp-for="authorID" id="authorSelect">
+                <option value="null">All</option>
+                @foreach (var item in listAuthors)
+                {
+                    <option value="@item.ID">@item.accountName</option>
+                }
+            </select>
+        </div>
+        <div class = "problemFillterSubmit">
+            <input type="submit" value="Tìm" class = "button problemFillterSubmit_button">
+        </div>
+    </div>
+</form>

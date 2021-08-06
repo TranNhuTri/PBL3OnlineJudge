@@ -14,6 +14,7 @@ namespace PBL3.Models
         public string output{get; set;}
         public int problemID{get; set;}
         public Problem problem{get; set;}
+        public bool isDeleted{get; set;}
         public List<SubmissionResult> submitResults {get; set;}
     } 
 }

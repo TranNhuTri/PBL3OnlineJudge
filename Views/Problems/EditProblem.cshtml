@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Sửa đề bài";
@@ -7,13 +8,30 @@
     <div class="grid">
         <div class="grid_row">
             <div class="grid_column">
-                <div class="addEditPage_header">
+                <div class="addEditPage_header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h1>Chỉnh sửa đề bài</h1>
+                    <div style="display: flex;">
+                        <a asp-action="ProblemHistory" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px">Lịch sử</div>
+                        </a>
+                        <a asp-action="Problem" asp-route-id="@Model.ID" class="link">
+                            <div class="button" style="padding: 5px; width: 150px; margin-left: 10px;">Xem trên web</div>
+                        </a>
+                    </div>
                 </div>
                 <div class="addEditPage_input">
                     <div asp-validation-summary="ModelOnly" class="div-danger"></div>
                     <form asp-action = "EditProblem">
                         @await Html.PartialAsync("_Problem", Model)
+                        <div class="formGroup">
+                            <label for="timeCreate">Ngày tạo:</label>
+                            <input type="date" asp-for="timeCreate" style="cursor: pointer; width: 200px;" readonly>
+                        </div>
+                        <div class="formGroup">
+                            <label>Số lượng test case: </label>
+                            <span>@ViewBag.problemTestCases.Count</span>
+                        </div>
+                        <a asp-controller = "Problem" asp-action = "UploadTestcase" asp-route-id = "@Model.ID" class = "link">Tải test case lên</a>
                         <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
                             <div class="formSubmit">
                                 <button type="submit" class="submitButton button" name = "next" value = "save">

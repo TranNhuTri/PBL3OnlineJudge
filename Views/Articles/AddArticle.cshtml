@@ -1,0 +1,39 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Tạo bài viết mới";
+}
+@model Article
+<div class="addEditPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column">
+                <div class="addEditPage_header">
+                    <h1>Tạo bài viết mới</h1>
+                </div>
+                <div class="addEditPage_input">
+                    <div asp-validation-summary="ModelOnly" class="div-danger"></div>
+                    <form asp-action = "AddArticle">
+                        @await Html.PartialAsync("_Article", Model)
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" name = "next" value = "save">
+                                    <i class="fas fa-save"></i>
+                                    <p>Lưu bài viết</p>
+                                </button>
+                            </div>
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" name = "next" value = "edit">
+                                    <i class="fas fa-save"></i>
+                                    <i class="fas fa-caret-right"></i>
+                                    <i class="far fa-edit"></i>
+                                    <p>Lưu và tiếp tục chỉnh sửa</p>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

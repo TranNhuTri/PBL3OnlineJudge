@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Web\\PBL3\\PBL3.csproj": {}
+    "D:\\Web\\PBL3\\PBL3OnlineJudge\\PBL3.csproj": {}
   },
   "projects": {
-    "D:\\Web\\PBL3\\PBL3.csproj": {
+    "D:\\Web\\PBL3\\PBL3OnlineJudge\\PBL3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Web\\PBL3\\PBL3.csproj",
+        "projectUniqueName": "D:\\Web\\PBL3\\PBL3OnlineJudge\\PBL3.csproj",
         "projectName": "PBL3",
-        "projectPath": "D:\\Web\\PBL3\\PBL3.csproj",
+        "projectPath": "D:\\Web\\PBL3\\PBL3OnlineJudge\\PBL3.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\Web\\PBL3\\obj\\",
+        "outputPath": "D:\\Web\\PBL3\\PBL3OnlineJudge\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",

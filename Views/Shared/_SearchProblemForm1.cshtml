@@ -1,14 +1,21 @@
+@using PBL3.DTO
+@using PBL3.Models
 @{
     var listCategories = (List<Category>)ViewData["ListCategories"];
+    var listChosenCategoryIds = new List<int>();
+    if(ViewData["ListChosenCategoryIds"] != null)
+    {
+        listChosenCategoryIds = (List<int>)ViewData["ListChosenCategoryIds"];
+    }
 }
 @model SearchProblemInfor
-<form asp-controller = "ListProblems" asp-action = "Index" method="GET">
+<form asp-controller = "Problems" asp-action = "Index" method="GET">
     <div class="problemFilter">
         <h1 class="problemFillter_header">Tìm Kiếm Bài Tập</h1>
         <div class="problemNameFillter">
             <input type="text" asp-for ="problemName" placeholder="Nhập tên bài">
         </div>
-        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+        @if(Context.User.Identity.IsAuthenticated)
         {
             <div class = "problemUnsolvedFillter">
                 <input type="checkbox" asp-for = "hideSolvedProblem" value = "true">
@@ -16,11 +23,18 @@
             </div>
         }
         <div class="problemCategoryFillter">
-            <label for="categoryIds">Dạng bài</label><br>
-            <select name="CategoryIds" id="CategoryIds" multiple>
+            <label for="CategoryIds">Dạng bài</label><br>
+            <select name="categoryIds" id="CategoryIds" multiple>
                 @foreach (var cate in listCategories)
                 {
-                    <option value="@cate.ID">@cate.name</option>
+                    if(listChosenCategoryIds.Contains(cate.ID))
+                    {
+                        <option value="@cate.ID" selected>@cate.name</option>
+                    }
+                    else
+                    {
+                        <option value="@cate.ID">@cate.name</option>
+                    }
                 }
             </select>
         </div>

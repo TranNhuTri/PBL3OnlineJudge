@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin cá nhân";
+}
+@using PBL3.DTO
+@model EditAccount
+
+<div class="grid">
+    <div class="postPage-layout">
+        <div class="grid_row">
+            <div class="grid_column-6 postPage">
+                <div class="infor">
+                    <h3 class="infor__title">Thông tin người dùng</h3>
+                    <form class="infor__content" asp-for="EditProfile" method="POST" enctype="multipart/form-data">
+                        
+                        @if(!string.IsNullOrEmpty(Model.avar))
+                        {
+                            <div class="infor__content--avatar" style = "background-image: url(@Model.avar)" onclick="loadAvarFile()" title="Tải ảnh đại diện lên"></div>
+                        }
+                        else
+                        {
+                            <div class="infor__content--avatar" onclick="loadAvarFile()" title="Tải ảnh đại diện lên"></div>
+                        }
+                        
+                        <input type="file" id="file-input" name = "avarFile" hidden>
+                        <input type="text" asp-for="avar" hidden>
+                        <div class="infor__content--input">
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title" >Tên tài khoản</label>
+                                    <input type="text" placeholder="Account Name" asp-for="accountName">
+                                </div>
+                            </div>
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Họ</label>
+                                    <input type="text" placeholder="Last Name" asp-for="lastName">
+                                </div>
+                            </div>
+                            <span asp-validation-for="lastName" class="text-danger"></span>
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Tên</label>
+                                    <input type="text" placeholder="First Name" asp-for="firstName">                               
+                                </div>
+                                <span asp-validation-for="firstName" class="text-danger"></span>
+                            </div>
+                            <div class="formGroup">
+                                <div class="input-row">
+                                    <label for="" class="input__title">Email</label>
+                                    <input type="text" placeholder="Email" asp-for="email">
+                                </div>
+                                <span asp-validation-for="email" class="text-danger"></span>  
+                            </div>
+                            <div class="infor__function">
+                                <a asp-action="ChangePassword" class="infor__function--link password">Đổi mật khẩu</a>
+                            </div>
+                            <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
+                            <div class="infor__save">
+                                <button class="infor__save--button button">Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        function loadAvarFile()
+        {
+            document.querySelector("#file-input").click();
+        }
+        function loadFile(event) {
+            var output = document.querySelector(".infor__content--avatar");
+            output.style.backgroundImage = `url('${URL.createObjectURL(event.target.files[0])}')`;
+        };
+        var fileInput = document.getElementById("file-input");
+        fileInput.addEventListener('change', loadFile);
+    </script>
+    <script src="/js/Validation.js"></script>
+}

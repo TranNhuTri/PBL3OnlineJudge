@@ -7,6 +7,6 @@ namespace PBL3.DTO
     {
         public int? isActived {get; set;}
         public string searchText{get; set;}
-        public int typeAccount{get; set;}
+        public int roleID{get; set;}
     }
 }

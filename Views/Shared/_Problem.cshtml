@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     var listAuthors = (List<Account>)ViewData["ListAuthors"];
 
@@ -10,12 +11,12 @@
 @model Problem
 <div class="formGroup">
     <label for="code">Mã bài :</label>
-    <input type="text" asp-for = "code">
+    <input type="text" asp-for = "code" placeholder="Nhập mã bài">
     <span asp-validation-for="code" class="text-danger"></span>
 </div>
 <div class="formGroup">
     <label for="tilte">Tên bài :</label>
-    <input type="text" asp-for = "title">
+    <input type="text" asp-for = "title" placeholder="Nhập tên bài">
     <span asp-validation-for="title" class="text-danger"></span>
 </div>
 <div class = "formGroup">
@@ -93,7 +94,7 @@
             }
         </select>
     </div>
-    <a asp-action = "AddProblemCategory" asp-controller = "Admin"><i class="far fa-edit" style="margin-left: 15px; color: #1dbfaf;"></i></a>
+    <a asp-action = "AddProblemCategory" asp-controller = "ProblemCategories" target="_blank"><i class="far fa-edit" style="margin-left: 15px; color: #1dbfaf;"></i></a>
 </div>
 <div class = "formGroup">
     <input type="checkbox" asp-for = "isPublic" style="width: 15px;" value = "True">
@@ -101,20 +102,20 @@
 </div>
 <div class="formGroup">
     <label for="timeLimit">Giới hạn thời gian :</label>
-    <input type="text" asp-for = "timeLimit" style="width: 200px;"><span style="margin-left: 10px; color: #7b7b7b;">s</span>
+    <input type="text" asp-for = "timeLimit" style="width: 200px;" placeholder="Nhập giới hạn thời gian"><span style="margin-left: 10px; color: #7b7b7b;">s</span>
     <span asp-validation-for="timeLimit" class="text-danger"></span>
 </div>
 <div class="formGroup">
     <label for="memoryLimit">Giới hạn bộ nhớ :</label>
-    <input type="text" asp-for = "memoryLimit" style="width: 200px;"><span style="margin-left: 10px; color: #7b7b7b;">KB</span>
+    <input type="text" asp-for = "memoryLimit" style="width: 200px;" placeholder="Nhập giới hạn bộ nhớ"><span style="margin-left: 10px; color: #7b7b7b;">KB</span>
     <span asp-validation-for="memoryLimit" class="text-danger"></span>
 </div>
 <div class="formGroup">
     <label for="difficulity">Độ khó :</label>
-    <input type="text" asp-for = "difficulty" style="width: 200px;">
+    <input type="text" asp-for = "difficulty" style="width: 200px;" placeholder="Nhập độ khó">
     <span asp-validation-for="difficulty" class="text-danger"></span>
 </div>
- <script>
+<script>
     CKEDITOR.replace('editor');
     var previewBtn = document.getElementById("previewButton");
     previewBtn.addEventListener('click', function(e)
@@ -126,10 +127,6 @@
         var previewContent = document.getElementsByClassName("previewContent")[0];
         
         previewContent.innerHTML = html;
-
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightBlock(block);
-        });
         
         CKEDITOR.instances.editor.setData("", function()
         {

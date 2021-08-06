@@ -1,0 +1,89 @@
+@using PBL3.Models
+@model Article
+@{
+    ViewData["Title"] = Model.title;
+    var listAuthors = Model.articleAuthors.Where(p => p.isDeleted == false).Select(p => p.author);
+    var listComments = (List<Comment>)ViewData["ListComments"];
+}
+<div class="problemPage">
+    <div class="grid">
+        <div class="grid_row">
+            <div class="grid_column-9">
+                <div class="problemContent">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h1 class="problemPageHeader">@Model.title</h1>
+                        <a asp-action="EditArticle" asp-controller="Articles" asp-route-id="@Model.ID" class="link">[Chỉnh sửa]</a>
+                    </div>
+                    @Html.Raw(@Model.content)
+                    @if(Context.User.Identity.IsAuthenticated)
+                    {
+                        <div class="comments">
+                            <div class="comments_header">
+                                <i class="far fa-comments"></i>
+                                <h1>Bình luận</h1>
+                            </div>
+                            <div class="listComments">
+                                @if(listComments != null)
+                                {
+                                    @await Html.PartialAsync("_ListComments", listComments)
+                                }
+                            </div>
+                            <div class="comment_box" style="display: block;">
+                                <form onsubmit="return PostRootComment('@Model.ID')">
+                                    <textarea name="content" id="editor" data-first = "1" cols="30" rows="10"></textarea>
+                                    <button class="button comment_button">Gửi</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="grid_column-3">
+                <div class="advertisement" style="margin: 0;">
+                    Liên hệ để đặt quảng cáo<br>0587850252
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        CKEDITOR.replace('editor', {
+            height: '200px',
+        });
+    </script>
+    <script>
+        function PostRootComment(postId)
+        {
+            console.log("Submit");
+            for ( instance in CKEDITOR.instances)
+                CKEDITOR.instances[instance].updateElement();
+
+            var content = document.getElementById("editor").value;
+
+            let data = new URLSearchParams();
+            data.append("postID", postId);
+            data.append("content", content);
+
+            CKEDITOR.instances["editor"].setData('');
+
+            fetch('@Url.Action("PostComment", "Comments")', {
+                method :'post',
+                body : data
+            })
+            .then(res => {
+                if(res.ok)
+                {
+                    return res.text();
+                }
+            })
+            .then(data => {
+                $(".listComments").append(data);
+            })
+            .catch(err => console.log(err));
+
+            return false;
+        }
+    </script>
+}

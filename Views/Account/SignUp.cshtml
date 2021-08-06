@@ -1,3 +1,4 @@
+@using PBL3.Models
 @{
     ViewData["Title"] = "Đăng ký tài khoản";
 }
@@ -7,8 +8,21 @@
         <form asp-action="SignUp">
             <div class="signUpForm signUpForm--1">
                 <h2 class="signUpForm_title">
-                    ĐĂNG KÍ TÀI KHOẢN
+                    Đăng kí tài khoản
                 </h2>
+
+                <p class="signUpForm_label">Họ</p>
+                <input type="text" asp-for="lastName" placeholder="Họ" class="signUpForm_textBox">
+                <span asp-validation-for="lastName" class="text-danger"></span>
+                
+                <p class="signUpForm_label">Tên</p>
+                <input type="text" asp-for="firstName" placeholder="Tên" class="signUpForm_textBox">
+                <span asp-validation-for="firstName" class="text-danger"></span>
+
+                <p class="signUpForm_label">Email</p>
+			    <input type="text" asp-for="email" placeholder="trannhutri@codetop1.net" class="signUpForm_textBox">
+                <span asp-validation-for="email" class="text-danger"></span>
+
                 <p class="signUpForm_label">Tên tài khoản</p>
                 <input type="text" asp-for="accountName" placeholder="trannhutri" class="signUpForm_textBox">
                 <span asp-validation-for="accountName" class="text-danger"></span>
@@ -18,72 +32,18 @@
                 <span asp-validation-for="passWord" class="text-danger"></span>
 
                 <p class="signUpForm_label">Nhập lại mật khẩu</p>
-                <input type="password" name="ComfirmPassword" placeholder="Confirm Password" class="signUpForm_textBox">
-                <div class="signUpForm_buttonBox">
-                    <button type="button" class="button signUpForm_button" id="signUpForm_nextButton--1" onclick="next()">
-                        Next
-                    </button>
-                </div>
-            </div>
-            <div class="signUpForm signUpForm--2">
-                <h2 class="signUpForm_title">
-                    THÔNG TIN CÁ NHÂN
-                </h2>
-
-                <p class="signUpForm_label">Họ</p>
-                <input type="text" placeholder="Last Name" class="signUpForm_textBox" asp-for = "lastName">
-                <span asp-validation-for="lastName" class="text-danger"></span>
-
-                <p class="signUpForm_label">Tên</p>
-                <input type="text" placeholder="First Name" class="signUpForm_textBox" asp-for = "firstName">
-                <span asp-validation-for="firstName" class="text-danger"></span>
-
-                <p class="signUpForm_label">Email</p>
-                <input type="text" asp-for="email" placeholder="Email" class="signUpForm_textBox">
-                <span asp-validation-for="email" class="text-danger"></span>
-
+                <input type="password" name="ConfirmPassword" placeholder="Confirm Password" class="signUpForm_textBox">
                 <div asp-validation-summary="ModelOnly" class="div-danger--2"></div>
-
                 <div class="signUpForm_buttonBox">
-                    <button type="button" class="button signUpForm_button" id="signUpForm_BackButton--1"  onclick="back()">
-                        Back
+                    <button type="submit" class="button signUpForm_button" id="signUpForm_nextButton--1">
+                        Đăng Kí
                     </button>
-                    <input type="submit" class="button signUpForm_button" value="OK">
                 </div>
             </div>
         </form>
-        <div class="signUpPage_step--row">
-            <div class="signUpPage_progress"></div>
-            <div class="signUpPage_step--colFirst">Step 1</div>
-            <div class="signUpPage_step--colSecond">Step 2</div>
-        </div>
     </div>
 </div>
-@section Scripts{
-    <script>
-        function next()
-        {
-            document.querySelector(".signUpForm--1").style.left="-400px";
-            document.querySelector(".signUpForm--2").style.left="40px";
-            document.querySelector(".signUpPage_progress").style.width="360px";
-        }
-
-        function back()
-        {
-            document.querySelector(".signUpForm--2").style.left="400px";
-            document.querySelector(".signUpForm--1").style.left="40px";
-            document.querySelector(".signUpPage_progress").style.width="180px";
-        }
-    </script>
+@section Scripts
+{
     <script src="/js/Validation.js"></script>
-    <script>
-        var textDanger = document.getElementsByClassName('text-danger');
-        for(let i = 0; i < textDanger.length; i++)
-        {
-            if(textDanger[i].innerText != "" && textDanger[i] != null)
-            {
-                console.log(textDanger[i].parentElement.nodeName);
-            }
-        }
-    </script>
 }

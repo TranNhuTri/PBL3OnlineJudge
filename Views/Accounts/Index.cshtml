@@ -1,0 +1,110 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Tài khoản";
+}
+@model List<Account>
+<div class="listObjectsPage">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header" style="display: flex;">
+                <h1>Danh sách tất cả tài khoản</h1>
+                <a asp-action = "AddAccount" asp-controller = "Accounts" style="text-decoration: none;">
+                    <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Tạo bài khoản</div>
+                </a>
+                <a asp-action = "DeletedAccounts" asp-controller = "Accounts" style="text-decoration: none;">
+                    <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các tài khoản đã xóa</div>
+                </a>
+            </div>
+            @await Html.PartialAsync("_SearchAccountForm", ViewData[""])
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th style="text-align: left;">
+                            Tên tài khoản
+                        </th>
+                        <th style="text-align: left;">
+                            Email
+                        </th>
+                        <th style="text-align: left;">
+                            Họ và tên
+                        </th>
+                        <th>
+                            Loại tài khoản
+                        </th>
+                        <th>Kích hoạt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td style="text-align: left;">
+                                <a asp-action = "EditAccount" asp-controller = "Accounts" asp-route-id = "@Model[i].ID" class="link">@Model[i].accountName</a>
+                            </td>
+                            <td style="text-align: left;">@Model[i].email</td>
+                            <td style="text-align: left;">@(Model[i].lastName + " " + Model[i].firstName)</td>
+                            @if(@Model[i].roleID == 1)
+                            {
+                                <td>Admin</td>
+                            }
+                            else{
+                                if(@Model[i].roleID == 2)
+                                {
+                                    <td>Tác giả</td>
+                                }
+                                else
+                                {
+                                    <td>Người dùng</td>
+                                }
+                            }
+                            @if(@Model[i].isActived)
+                            {
+                                <td style="color: #00bb00;"><i class="fas fa-check-circle"></i></td>
+                            }
+                            else
+                            {
+                                <td style="color: #ff0000ba;"><i class="fas fa-times-circle"></i></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"Index", "Accounts"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        new SlimSelect({
+            select: '#roleID',
+            showSearch: false,
+        })
+        new SlimSelect({
+            select: '#isActived',
+            showSearch: false,
+        })
+        var typeAccountSelect = document.querySelector("#roleID");
+        var isActived = document.querySelector('#isActived');
+        var submitButton = document.querySelector(".searchForm_submit");
+
+        typeAccountSelect.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+        isActived.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+    </script>
+}

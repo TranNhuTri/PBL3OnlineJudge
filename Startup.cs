@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
+using PBL3.CustomHandler;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PBL3
 {
@@ -25,6 +24,18 @@ namespace PBL3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication("CookieAuthentication")
+                 .AddCookie("CookieAuthentication", config =>
+                 {
+                     config.Cookie.Name = "UserLoginCookie"; // Name of cookie   
+                     config.LoginPath = "/Login/UserLogin"; // Path for the redirect to user login page  
+                     config.AccessDeniedPath = "/Login/AccessDenied";
+                 });
+
+            services.AddAuthorization();
+
+            services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
@@ -35,8 +46,10 @@ namespace PBL3
             });
 
             services.AddControllersWithViews();
+            
             services.AddDbContext<PBL3Context>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PBL3Context")));
+
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
@@ -60,6 +73,8 @@ namespace PBL3
             app.UseStaticFiles(); 
             
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,0 +1,51 @@
+@{
+    Layout = "_Adminlayout";
+    ViewData["Title"] = "các bình luận đã xóa";
+}
+@using PBL3.Models
+@model List<Comment>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách bình luận đã xóa</h1>
+                </div>
+            </div>
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Bài đăng</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="RestoreComment" asp-controller="Comments" asp-route-id="@item.ID" class="link">@item.account.accountName</a>
+                            </td>
+                            <td>
+                                @if(item.typePost == 1)
+                                {
+                                    <a asp-action="Problem" asp-controller="Problems" asp-route-id="@item.postID" class="link">@ViewBag.postName[i]</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="" asp-controller="" asp-route-id="@item.postID" class="link">@ViewBag.postName[i]</a>
+                                }
+                            </td>
+                            <td>@item.timeCreate.ToString("dd MMMM yyyy, HH:mm")</td>
+                        </tr>
+                        i ++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

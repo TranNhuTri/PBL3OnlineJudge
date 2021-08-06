@@ -1,0 +1,44 @@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Xóa bài viết";
+}
+@using PBL3.Models
+@model Article
+<div class="grow">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="deletePage">
+                <div class="deletePage_header">
+                    <h1>Xác nhận xóa bài @Model.title</h1>
+                </div>
+                <div class="deletePage_input">
+                    <div class="formGroup">
+                        <label for="tilte" style="width: 100px;">Tên bài :</label>
+                        <input type="text" asp-for = "title">
+                    </div>
+                    <form asp-action = "DeleteArticle">
+                        <div class="formSubmitGroup" style="position: sticky; bottom: 0; background-color: #fff">
+                            <div class="formSubmit">
+                                <button type="submit" class="submitButton button" style="background-color: #dc3545">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <p>Xóa bài viết</p>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay">
+    <div class="detailSubmissionContainer">
+        <i class="fas fa-times detailSubmissionIcon"></i>
+        <div class="detailSubmissionContent">
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src = "/js/Submission.js"></script>
+}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Models
@@ -17,7 +18,9 @@ namespace PBL3.Models
         public Problem problem{get; set;}
         public DateTime timeCreate{get; set;}
         public string code{get; set;}
+        [StringLength(100)]
         public string language{get; set;}
+        [StringLength(100)]
         public string status {get; set;}
         public float time{get; set;}
         public float memory{get; set;}

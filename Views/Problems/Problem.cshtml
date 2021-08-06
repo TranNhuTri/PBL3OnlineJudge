@@ -1,8 +1,9 @@
+@using PBL3.Models
 @model Problem
 @{
     ViewData["Title"] = Model.title;
     var listAuthors = Model.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.author);
-    var listCategories = Model.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.category);
+    var listCategories = Model.problemClassifications.Where(p => p.isDeleted == false && p.category.isDeleted == false).Select(p => p.category);
     var listSubmissions = Model.submissions.ToList();
     var listComments = (List<Comment>)ViewData["ListComments"];
 }
@@ -14,24 +15,27 @@
                 <div class="problemContent">
                     <h1 class="problemPageHeader">@Model.title</h1>
                     @Html.Raw(@Model.content)
-                    <div class="comments">
-                        <div class="comments_header">
-                            <i class="far fa-comments"></i>
-                            <h1>Bình luận</h1>
+                    @if(Context.User.Identity.IsAuthenticated)
+                    {
+                        <div class="comments">
+                            <div class="comments_header">
+                                <i class="far fa-comments"></i>
+                                <h1>Bình luận</h1>
+                            </div>
+                            <div class="listComments">
+                                @if(listComments != null)
+                                {
+                                    @await Html.PartialAsync("_ListComments", listComments)
+                                }
+                            </div>
+                            <div class="comment_box" style="display: block;">
+                                <form onsubmit="return PostRootComment('@Model.ID')">
+                                    <textarea name="content" id="editor" data-first = "1" cols="30" rows="10"></textarea>
+                                    <button class="button comment_button">Gửi</button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="listComments">
-                            @if(listComments != null)
-                            {
-                                @await Html.PartialAsync("_ListComments", listComments)
-                            }
-                        </div>
-                        <div class="comment_box" style="display: block;">
-                            <form onsubmit="return PostRootComment('@Model.ID')">
-                                <textarea name="content" id="editor" data-first = "1" cols="30" rows="10"></textarea>
-                                <button class="button comment_button">Gửi</button>
-                            </form>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
             <div class="grid_column-3">
@@ -51,16 +55,19 @@
                         </a>
                     </div>
                     <div class="problemPropertyContainer">
-                        @if(!String.IsNullOrEmpty(Context.Session.GetString("AccountName")))
+
+                        @if(Context.User.Identity.IsAuthenticated)
                         {
                             var parms = new Dictionary<string, string>
                             {
                                 {"problemID", Convert.ToString(Model.ID)},
-                                {"accountName", Context.Session.GetString("AccountName")},
+                                {"accountName", Context.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value},
                             };
-                            if(listSubmissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName")).Select(s => s).ToList().Count > 0)
+                            var accountID = Convert.ToInt32(Context.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+
+                            if(listSubmissions.Where(s => s.accountID == accountID).Select(s => s).ToList().Count > 0)
                             {
-                                if(listSubmissions.Where(s => s.account.accountName == Context.Session.GetString("AccountName") && s.status == "Accepted").Select(s => s).ToList().Count > 0)
+                                if(listSubmissions.Where(s => s.accountID == accountID && s.status == "Accepted").Select(s => s).ToList().Count > 0)
                                 {
                                     <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem mySubmissions" style = "background-color:  #1dbfaf29">Lời giải của tôi</a>
                                 }
@@ -69,14 +76,17 @@
                                     <a asp-controller = "Problem" asp-action = "Submissions" asp-all-route-data = '@parms' class = "CUDProblem mySubmissions" style = "background-color: #ff000021">Lời giải của tôi</a>
                                 }
                             }
-                            if(Convert.ToInt32(Context.Session.GetString("TypeAccount")) == 1)
+
+                            <a asp-controller = "Problem" asp-action = "Submissions" asp-route-problemID = "@Model.ID" class = "CUDProblem">Tất cả bài nộp</a>
+
+                            if(Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Admin" || Context.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "Author")
                             {
                                 <a asp-controller = "Problems" asp-action = "EditProblem" asp-route-id = "@Model.ID" class = "CUDProblem">Sửa đề bài</a>
                                 <a asp-controller = "Problems" asp-action = "DeleteProblem" asp-route-id = "@Model.ID" class = "CUDProblem">Xóa đề bài</a>
                             }
                         }
                         
-                        <p class = "problemProperty"><b>Mã bài: </b>@Model.ID</p>
+                        <p class = "problemProperty"><b>Mã bài: </b>@Model.code</p>
                         <p class = "problemProperty"><b>Thời gian giới hạn: </b>@Model.timeLimit s</p>
                         <p class = "problemProperty"><b>Bộ nhớ giới hạn: </b>@Model.memoryLimit M</p>
                         <p class = "problemProperty"><b>Độ khó: </b>@Model.difficulty</p>
@@ -124,7 +134,7 @@
 
             CKEDITOR.instances["editor"].setData('');
 
-            fetch("https://localhost:5001/Comment/PostComment", {
+            fetch('@Url.Action("PostComment", "Comments")', {
                 method :'post',
                 body : data
             })

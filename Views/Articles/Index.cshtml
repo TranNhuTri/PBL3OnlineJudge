@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Danh sách bài viết";
+}
+@using PBL3.Models
+@model List<Article>
+<div class="grid">
+    <div class="grid_row">
+        <div class="grid_column-9">
+            <div class="listPost__wrapper">
+                @foreach(var item in Model)
+                {
+                    <div class="listPost-item">
+                        <div class="listPost-item__dicription">
+                            <a asp-action="Article" asp-route-id="@item.ID" class="listPost-item__dicription-name">@item.title</a>
+                            @foreach (var tmpt in item.articleAuthors.Where(p => p.isDeleted == false))
+                            {
+                                <a asp-action = "AccountProfile" asp-controller = "Account" asp-route-accountName = "@tmpt.author.accountName" class="listPost-item__dicription-name-author">@tmpt.author.accountName</a>
+                            }
+                        </div>
+                        <div class="listPost-item__btn">
+                            <a asp-action="Article" asp-route-id="@item.ID">
+                                Đọc Ngay
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            @{
+                string[] param = {"Index", "Articles"};
+            }
+            @await Html.PartialAsync("_Pagination", param)
+        </div>
+        <div class="grid_column-3">
+            <div style="margin-top: 30px;">
+                @await Html.PartialAsync("_SearchArticleForm2", ViewData[""])
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window.onload = function() {
+        var itemElement = document.querySelectorAll('.listPost-item');
+        var delay = 0;
+        console.log(itemElement[0].style.animationDelay);
+        for(var i = 0;i<itemElement.length;i++)
+        {
+            itemElement[i].style.animationDelay = `${delay}s`;
+            itemElement[i].classList.add('effect');
+            delay += .15;
+            if( i === itemElement.length-1){
+                itemElement[i].style.border="none"
+            }
+        }
+        };
+    </script>
+    <script>
+        new SlimSelect({
+            select: '#authorSelect',
+            placeholder: 'Chọn tác giả',
+            searchText: 'Không tìm thấy',
+        })
+        var authorSelect = document.querySelector('#authorSelect');
+        var submitButton = document.querySelector(".problemFillterSubmit_button");
+
+        authorSelect.addEventListener('change', function()
+        {
+            submitButton.click();
+        });
+    </script>
+}

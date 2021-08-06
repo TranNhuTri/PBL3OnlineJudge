@@ -19,6 +19,7 @@ namespace PBL3.Models
         public int? rootCommentID{get; set;}
         public Comment rootComment{get; set;}
         public int postID{get; set;}
+        public int typePost{get; set;}//1 Problem 2 Article
         public bool isDeleted{get; set;}
         public List<Comment> child{get; set;}
         public List<Like> likes{get; set;}

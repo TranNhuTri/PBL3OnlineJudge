@@ -1,0 +1,48 @@
+@using PBL3.Models
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Các bài viết đã xóa";
+}
+@model List<Article>
+<div class="listObjectsPage" style="padding: 0;">
+    <div class="grid_row">
+        <div class="grid_column">
+            <div class="listObjectsPage_header">
+                <div style="display: flex">
+                    <h1>Danh sách bài viết đã xóa</h1>
+                </div>
+            </div>
+            <table cellspacing="0" cellpadding="0" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Tên Bài
+                        </th>
+                        <th>
+                            Ngày xóa
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller = "Articles" asp-action = "RestoreArticle" asp-route-id = "@Model[i].ID" style="color: #008eff; text-decoration: none">@Model[i].title</a>
+                            </td>
+                            <td>@ViewBag.deleteDates[i].ToString("dd MMMM yyyy, HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="grid_row">
+    <div class="grid_column">
+        @{
+            string[] param = {"DeletedArticles", "Articles"};
+        }
+        @await Html.PartialAsync("_Pagination", param)
+    </div>
+</div>

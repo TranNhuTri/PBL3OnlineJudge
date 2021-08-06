@@ -1,5 +1,7 @@
+@using PBL3.Models
 @{
     Layout = "_AdminLayout";
+    ViewData["Title"] = "Bài tập";
 }
 @model List<Problem>
 <div class="listObjectsPage" style="padding: 0;">
@@ -11,7 +13,7 @@
                     <a asp-action = "AddProblem" asp-controller = "Problems" style="text-decoration: none;">
                         <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Thêm bài mới</div>
                     </a>
-                    <a asp-action = "DeletedProblems" asp-controller = "Admin" style="text-decoration: none;">
+                    <a asp-action = "DeletedProblems" asp-controller = "Problems" style="text-decoration: none;">
                         <div class="button" style="width: 150px; padding: 5px; margin-left: 20px;">Các bài đã xóa</div>
                     </a>
                 </div>
@@ -45,11 +47,12 @@
                             </td>
                             @{
                                 var author = "";
-                                foreach(var problAuthor in item.problemAuthors)
+                                foreach(var problAuthor in item.problemAuthors.Where(p => p.isDeleted == false))
                                 {
                                     author = author + problAuthor.author.accountName + ", ";
                                 }
-                                author = author.Substring(0, author.Length - 2);
+                                if(author != "")
+                                    author = author.Substring(0, author.Length - 2);
                             }
                             <td>@author</td>
                             @if(item.isPublic)

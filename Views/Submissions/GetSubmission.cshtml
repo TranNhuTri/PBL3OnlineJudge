@@ -1,0 +1,43 @@
+@{
+    Layout = null;
+}
+@using PBL3.Models
+@model Submission
+@{
+    var styleString = "font-weight: bold;";
+    if(Model.status == "Accepted")
+    {
+        styleString += "color: #0a0;";
+    }
+    else
+        if(Model.status == "Wrong Answer")
+        {
+            styleString += "color: #dc3545;";
+        }
+}
+
+<p>Nộp bởi <b>@Model.account.accountName</b>, bài: <b>@Model.problem.title</b>, <span style = "@styleString">@Model.status</span></p>
+
+<pre><code class="code">@Model.code</code></pre>
+
+@{
+    var index = 0;
+}
+@foreach(var item in Model.submissionResults.Where(p => p.isDeleted == false))
+{
+    styleString = "font-weight: bold;";
+    if(item.status == "Accepted")
+    {
+        styleString += "color: #0a0;";
+    }
+    else
+        if(item.status == "Wrong Answer")
+        {
+            styleString += "color: #dc3545;";
+        }
+    <p style = "font-weight: bold; margin-bottom: 0">Test: #@(index + 1), trạng thái: <span style = "@styleString">@item.status</span></p>
+    <p style = "margin: 10px 0">Input</p><pre><code>@(System.IO.File.ReadAllText(item.testCase.input))</code></pre>
+    <p>Output</p><pre><code>@item.result</code></pre>
+    <p>Answer</p><pre><code>@(System.IO.File.ReadAllText(item.testCase.output))</code></pre>
+    index ++;
+}

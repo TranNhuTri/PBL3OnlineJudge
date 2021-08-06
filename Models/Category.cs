@@ -12,6 +12,7 @@ namespace PBL3.Models
         }
         public int ID{get; set;}
         [Required(ErrorMessage = "Bạn cần nhập tên dạng bài")]
+        [StringLength(300)]
         public string name{get; set;}
         public bool isDeleted{get; set;}
         public List<ProblemClassification> problemClassifications{get; set;}
