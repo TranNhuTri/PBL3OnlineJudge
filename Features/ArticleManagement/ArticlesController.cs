@@ -9,40 +9,51 @@ using PBL3.Data;
 using PBL3.General;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using PBL3.Features.TopicManagement;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.ArticleManagement
 {
     public class ArticlesController : Controller
     {
         private readonly PBL3Context _context;
-        public ArticlesController(PBL3Context context)
+        private readonly ITopicService _topicService;
+        private readonly IArticleService _articleService;
+        public ArticlesController(PBL3Context context, ITopicService topicService, IArticleService articleService)
         {
             _context = context;
+            _topicService = topicService;
+            _articleService = articleService;
         }
-        public IActionResult Index(string topic, int? page, string articleName, int? authorID)
+        public IActionResult Topics()
         {
-            var Topic = _context.Topics.FirstOrDefault(p => p.name == topic);
-            if(Topic == null)
-            {
+            var listTopics = _topicService.GetAllTopics();
+            return View(listTopics);
+        }
+        public IActionResult Index(string topicName, int? page, string articleName, int? authorID)
+        {
+            var topic = _topicService.GetAllTopics().FirstOrDefault(p => p.name == topicName);
+            if (topic == null)
                 return NotFound();
-            }
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
-
+            
+            ViewData["ListAuthors"] = 
+            _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
             ViewBag.topic = topic;
 
-            var listArticles = _context.Articles.Where(p => p.topicID == Topic.ID && p.isDeleted == false && p.IsPublic == true).Include(p => p.articleAuthors).ThenInclude(p => p.author).OrderByDescending(p => p.timeCreate).ToList();
-            
+            var listArticles = _articleService.GetArticlesByTopicID(topic.ID, true)
+            .Where(p => p.title.ToLower().Contains(articleName.ToLower()))
+            .OrderByDescending(p => p.timeCreate).ToList();
+            // them danh sach tac gia
+
             var paramater = new Dictionary<string, string>();
 
-            paramater.Add("topic", topic);
-
-            if(!string.IsNullOrEmpty(articleName))
+            paramater.Add("topic", topicName);
+            if (!string.IsNullOrEmpty(articleName))
             {
                 listArticles = listArticles.Where(p => p.title.ToLower().Contains(articleName.ToLower())).ToList();
                 paramater.Add("articleName", articleName);
             }
 
-            if(authorID != null)
+            if (authorID != null)
             {
                 listArticles = listArticles.Where(p => p.articleAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList().Contains((int)authorID)).ToList();
                 paramater.Add("authorID", authorID.ToString());
@@ -51,30 +62,18 @@ namespace PBL3.Controllers
             ViewBag.paginationParams = paramater;
 
             if(page == null)
-            {
                 page = 1;
-            }
-            
             int limit = Utility.limitData;
-
             int start = (int)(page - 1)*limit;
-
             ViewBag.currentPage = page;
-
             ViewBag.totalPage = (int)Math.Ceiling((float)listArticles.Count/limit);
-
-            listArticles = listArticles.Skip(start).Take(limit).ToList();
-            
+            listArticles = listArticles.Skip(start).Take(limit).ToList();    
             return View(listArticles);
         }
-        public IActionResult Topics()
-        {
-            var listTopics = _context.Topics.Where(p => p.isDeleted == false).ToList();
-            return View(listTopics);
-        }
+        
         public IActionResult Article(int id)
         {
-            var article = _context.Articles.FirstOrDefault(p => p.ID == id);
+            var article = _articleService.GetArticleByID(id);
 
             ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false && p.typePost == 2)
                                                         .Include(p => p.account)
@@ -84,17 +83,13 @@ namespace PBL3.Controllers
                                                         .ToList();
 
             if(article == null || article.isDeleted == true)
-            {
                 return NotFound();
-            }
-
             return View(article);
         }
         [Authorize(Roles ="Admin, Author")]
         public IActionResult AddArticle()
         {
-            ViewData["ListTopics"] = _context.Topics.OrderBy(p => p.name).ToList();
-
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
             ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 1 || p.roleID == 2) && p.isActived == true && p.isDeleted == false).ToList();
 
             return View();
@@ -104,20 +99,16 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddArticle([Bind("title, content", "IsPublic")]Article article, int? topicID, List<int> reqListAuthorIds, string next)
         {
-            ViewData["ListTopics"] = _context.Topics.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
 
             ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 1 || p.roleID == 2) && p.isActived == true && p.isDeleted == false).ToList();
 
             if(ModelState.IsValid)
             {
                 if(topicID != 0)
-                {
                     article.topicID = topicID;
-                }
-
                 article.timeCreate = DateTime.Now;
-                
-                _context.Add(article);
+               _articleService.AddArticle(article);
 
                 foreach(int id in reqListAuthorIds)
                 { 
@@ -157,18 +148,13 @@ namespace PBL3.Controllers
         [Authorize(Roles ="Admin, Author")]
         public IActionResult EditArticle(int id)
         {
-            ViewData["ListTopics"] = _context.Topics.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
-
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
             ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 1 || p.roleID == 2) && p.isActived == true && p.isDeleted == false).ToList();
-
             ViewData["ListChosenAuthorIds"] = _context.ArticleAuthors.Where(p => p.articleID == id && p.isDeleted == false).Select(p => p.authorID).ToList();
             
-            var article = _context.Articles.FirstOrDefault(p => p.ID == id);
-
+            var article = _articleService.GetArticleByID(id);
             if(article == null)
-            {
                 return NotFound();
-            }
 
             return View(article);
         }
@@ -177,25 +163,18 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditArticle(int? id, [Bind("title, content", "IsPublic")]Article reqArticle, int? topicID, List<int> reqListAuthorIds, string next)
         {
-            ViewData["ListTopics"] = _context.Topics.OrderBy(p => p.name).ToList();
-
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
             ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 1 || p.roleID == 2) && p.isActived == true && p.isDeleted == false).ToList();
-
             ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
             var article = _context.Articles.Where(p => p.ID == id).Include(p => p.articleAuthors).FirstOrDefault();
-
             if(article == null)
-            {
                 return NotFound();
-            }
 
             if(ModelState.IsValid)
             {
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
                 var account = _context.Accounts.FirstOrDefault(p => p.ID == accountID);
-
                 if(article.content != reqArticle.content)
                 {
                     article.content = reqArticle.content;
@@ -301,16 +280,14 @@ namespace PBL3.Controllers
         [Authorize(Roles ="Admin, Author")]
         public IActionResult DeletedArticles()
         {
-            var articles = _context.Articles.Where(p => p.isDeleted == true).ToList();
+            var articles = _articleService.GetAllDeletedArticles();
 
             var listDates = new List<DateTime>();
-
             foreach(var item in articles)
             {
                 var action = _context.Actions.Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Article).OrderByDescending(p => p.dateTime).First();
                 listDates.Add(action.dateTime);
             }
-            
             ViewBag.deleteDates = listDates;
 
             return View(articles);
@@ -318,12 +295,10 @@ namespace PBL3.Controllers
         [Authorize(Roles ="Admin, Author")]
         public IActionResult DeleteArticle(int id)
         {
-            var article = _context.Articles.FirstOrDefault(p => p.ID == id);
+            var article = _articleService.GetArticleByID(id);
 
             if(article == null)
-            {
                 return NotFound();
-            }
 
             ViewBag.listComments = _context.Comments.Where(p => p.postID == id).Include(p => p.account).ToList();
 
@@ -334,23 +309,16 @@ namespace PBL3.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteArticle(int? id)
         {
-            var article = _context.Articles.FirstOrDefault(p => p.ID == id);
+            var article = _articleService.GetArticleByID((int)id);
 
             if(article == null)
-            {
                 return NotFound();
-            }
 
-            article.isDeleted = true;
-
-            _context.Update(article);
+            _articleService.ChangeIsDeletedArticle((int)id);
 
             var listComments = _context.Comments.Where(p => p.postID == id).Include(p => p.account).ToList();
-
             ViewBag.listComments = listComments;
-
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
             _context.Add(new PBL3.Models.Action()
             {
                 account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
@@ -367,14 +335,12 @@ namespace PBL3.Controllers
         [Authorize(Roles ="Admin, Author")]
         public IActionResult RestoreArticle(int id)
         {
-            var article = _context.Articles.FirstOrDefault(p => p.ID == id);
+            var article = _articleService.GetArticleByID((int)id);
 
             if(article == null)
-            {
                 return NotFound();
-            }
 
-            ViewData["ListTopics"] = _context.Topics.Where(p => p.isDeleted == false).OrderBy(p => p.name).ToList();
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
 
             ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 1 || p.roleID == 2) && p.isActived == true && p.isDeleted == false).ToList();
 

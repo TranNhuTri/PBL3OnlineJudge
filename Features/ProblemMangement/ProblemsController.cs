@@ -11,11 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using PBL3.General;
 using Microsoft.AspNetCore.Authorization;
-using PBL3.Features.ProblemManagement;
 using PBL3.Features.CategoryManagement;
 using PBL3.Features.SubmissionManagement;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.ProblemManagement
 {
     public class ProblemsController : Controller
     {
@@ -53,7 +52,7 @@ namespace PBL3.Controllers
                 listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
             if (hideSolvedProblem) {
                 listProblems = listProblems
-                .Where(p => _submissionService.GetSubmissionsByAccountProblemID(p.ID, accountID, true).Count == 0).ToList();
+                .Where(p => _submissionService.GetSubmissionsByAccountProblemID(accountID, p.ID, true).Count == 0).ToList();
             }
 
             

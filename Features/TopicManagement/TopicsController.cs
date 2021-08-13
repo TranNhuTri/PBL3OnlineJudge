@@ -12,34 +12,39 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using PBL3.Features.ArticleManagement;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.TopicManagement
 {
     [Authorize(Roles ="Admin, Author")]
     public class TopicsController : Controller
     {
-        private readonly PBL3Context _context;
+        private readonly PBL3Context _context; // nho bo di
+        private readonly ITopicService _topicService;
+        private readonly IArticleService _articleService;
         private IWebHostEnvironment _hostEnvironment;
-        public TopicsController(PBL3Context context, IWebHostEnvironment env)
+        public TopicsController(PBL3Context context, IWebHostEnvironment env, ITopicService topicService, IArticleService articleService)
         {
             _context = context;
             _hostEnvironment = env;
+            _topicService = topicService;
+            _articleService = articleService;
         }
         public IActionResult AddTopic()
         {
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTopic([Bind("name")]Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
         {
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
             ViewData["ListChosenArticleIDs"] = reqListArticleIds;
 
             if(ModelState.IsValid)
             {
-                var topic = _context.Topics.FirstOrDefault(p => p.name.ToLower().Contains(reqTopic.name.ToLower()));
+                var topic = _topicService.GetAllTopics().FirstOrDefault(p => p.name.ToLower().Contains(reqTopic.name.ToLower()));
 
                 if(topic != null)
                 {
@@ -47,45 +52,34 @@ namespace PBL3.Controllers
                     return View();
                 }
 
-                if(describeImage != null && describeImage.Length > 0)
+                if (describeImage != null && describeImage.Length > 0)
                 {
                     var InputFileName = Utility.CreateMD5(reqTopic.name);
-
                     var fileInfor = new FileInfo(describeImage.FileName);
-
                     if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png" && fileInfor.Extension != ".svg")
                     {
                         ModelState.AddModelError("", "File ảnh không đúng định dạng");
                         return View(reqTopic);
                     }
-
                     InputFileName += fileInfor.Extension;
-
                     var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Images/" + InputFileName);
-
                     var stream = new FileStream(ServerSavePath, FileMode.Create);
-
                     await describeImage.CopyToAsync(stream);
-
                     stream.Close();
-
                     reqTopic.describeImage = "/UploadedFiles/Images/" + InputFileName;
                 }
 
-                _context.Add(reqTopic);
-
-                await _context.SaveChangesAsync();
-
+                _topicService.AddTopic(reqTopic);
                 foreach(int id in reqListArticleIds)
                 {
-                    var article = _context.Articles.FirstOrDefault(p => p.ID == id);
+                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == id);
                     article.topicID = reqTopic.ID;
-                    _context.Update(article);
+                    _articleService.UpdateArticle(article);
                 }
 
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
-                _context.Add(new PBL3.Models.Action()
+                /*_context.Add(new PBL3.Models.Action()
                 {
                     account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
                     objectID = reqTopic.ID,
@@ -94,7 +88,7 @@ namespace PBL3.Controllers
                     typeObject = Convert.ToInt32(TypeObject.Topic)
                 });
 
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();*/
 
                 return RedirectToAction("Topics", "Admin");
             }
@@ -102,67 +96,59 @@ namespace PBL3.Controllers
         }
         public IActionResult EditTopic(int id)
         {
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
-
-            ViewData["ListChosenArticleIds"] = _context.Articles.Where(p => p.topicID == id && p.isDeleted == false).Select(p => p.ID).ToList();
-
-            var topic = _context.Topics.FirstOrDefault(p =>p .ID == id);
-
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
+            ViewData["ListChosenArticleIds"] = _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
+            var topic = _topicService.GetAllTopics().FirstOrDefault(p =>p .ID == id);
             return View(topic);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTopic(int id, [Bind("name", "describeImage")] Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
         {
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
-
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
             ViewData["ListChosenArticleIds"] = reqListArticleIds;
-
             if(ModelState.IsValid)
             {
-                var topic = _context.Topics.FirstOrDefault(cate => cate.ID == id);
+                Topic topic = _topicService.GetTopicByID(id);
                 if(topic == null)
-                {
                     return NotFound();
-                }
 
-                if(topic.name != reqTopic.name && _context.Topics.FirstOrDefault(p => p.name == reqTopic.name) != null)
+                if(topic.name != reqTopic.name && _topicService.GetAllTopics().FirstOrDefault(p => p.name == reqTopic.name) != null)
                 {
                     ModelState.AddModelError("", "Chủ đề đã tồn tại");
                     return View(reqTopic);
                 }
 
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+                var listArticleIDs =  _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
 
-                var listArticleIDs = _context.Articles.Where(p => p.topicID == id && p.isDeleted == false).Select(p => p.ID).ToList();
-
-                if(Utility.DifferentList(listArticleIDs, reqListArticleIds))
+                /* if(Utility.DifferentList(listArticleIDs, reqListArticleIds))
                 {
                     _context.Add(new PBL3.Models.Action()
                     {
                         accountID = accountID,
-                        objectID = id,
+                        objectID = topicID,
                         dateTime = DateTime.Now,
                         action = "Sửa danh sách bài viết",
                         typeObject = Convert.ToInt32(TypeObject.Topic)
                     });
-                }
+                } */
 
-                foreach(var item in listArticleIDs)
+                foreach (var item in listArticleIDs)
                 {
-                    var article = _context.Articles.FirstOrDefault(p => p.ID == item);
+                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == item);
                     article.topicID = null;
-                    _context.Update(article);
+                   _articleService.UpdateArticle(article);
                 }
 
                 foreach(var item in reqListArticleIds)
                 {
-                    var article = _context.Articles.FirstOrDefault(p => p.ID == item);
+                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == item);
                     article.topicID = id;
-                    _context.Update(article);
+                   _articleService.UpdateArticle(article);
                 }
 
-                if(topic.name != reqTopic.name)
+                /*if(topic.name != reqTopic.name)
                 {
                     topic.name = reqTopic.name;
                     _context.Add(new PBL3.Models.Action()
@@ -173,37 +159,26 @@ namespace PBL3.Controllers
                         action = "Sửa tên chủ đề",
                         typeObject = Convert.ToInt32(TypeObject.Topic)
                     });
-                }
+                }*/
 
                 if(describeImage != null && describeImage.Length > 0)
                 {
                     var InputFileName = Utility.CreateMD5(reqTopic.name);
-
                     var fileInfor = new FileInfo(describeImage.FileName);
-
                     if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png" && fileInfor.Extension != ".svg")
                     {
                         ModelState.AddModelError("", "File ảnh không đúng định dạng");
                         return View(reqTopic);
                     }
-
                     InputFileName += fileInfor.Extension;
-
                     var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Images/" + InputFileName);
-
                     var stream = new FileStream(ServerSavePath, FileMode.Create);
-
                     await describeImage.CopyToAsync(stream);
-
                     stream.Close();
-
                     topic.describeImage = "/UploadedFiles/Images/" + InputFileName;
                 }
 
-                _context.Update(topic);
-
-                await _context.SaveChangesAsync();
-
+                _topicService.UpdateTopic(topic);
                 return RedirectToAction("Topics", "Admin");
             }
 
@@ -211,42 +186,31 @@ namespace PBL3.Controllers
         }
         public IActionResult History(int id)
         {
-            var topic = _context.Topics.FirstOrDefault(p => p.ID == id);
+            var topic = _topicService.GetAllTopics().FirstOrDefault(p => p.ID == id);
             if(topic == null)
-            {
                 return NotFound();
-            }
             var listActions = _context.Actions.Where(p => p.objectID == topic.ID && p.typeObject == Convert.ToInt32(TypeObject.Topic)).Include(p => p.account).OrderByDescending(p => p.dateTime).ToList();
             return View(listActions);
         }
         public IActionResult DeleteTopic(int id)
         {
-            var topic = _context.Topics.Where(p => p.ID == id).FirstOrDefault();
+            var topic = _topicService.GetAllTopics().Where(p => p.ID == id).FirstOrDefault();
             if(topic == null)
-            {
                 return NotFound();
-            }
-
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
-
-            ViewData["ListChosenArticleIds"] = _context.Articles.Where(p => p.topicID == id && p.isDeleted == false).Select(p => p.ID).ToList();
-
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
+            ViewData["ListChosenArticleIds"] =  _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
             return View(topic);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteTopic(int? id)
         {
-            var topic = _context.Topics.Where(p => p.ID == id).FirstOrDefault();
+            var topic = _topicService.GetTopicByID((int)id);
             if(topic == null)
-            {
                 return NotFound();
-            }
+            _topicService.ChangeIsDeletedTopic((int)id);
 
-            topic.isDeleted = true;
-            
-            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
+            /*var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
             _context.Add(new PBL3.Models.Action()
             {
                 account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
@@ -256,16 +220,17 @@ namespace PBL3.Controllers
                 typeObject = Convert.ToInt32(TypeObject.Topic)
             });
 
-            _context.SaveChanges();
+            _context.SaveChanges(); */
 
             return RedirectToAction("Topics", "Admin");
         }
         public IActionResult DeletedTopics()
         {
+            
+            var deletedTopics = _topicService.GetAllDeletedTopics();
+            
+            /*------------*/
             var listDates = new List<DateTime>();
-
-            var deletedTopics = _context.Topics.Where(p => p.isDeleted == true).ToList();
-
             foreach(var item in deletedTopics)
             {
                 var action = _context.Actions.Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Topic).OrderByDescending(p => p.dateTime).First();
@@ -273,39 +238,29 @@ namespace PBL3.Controllers
             }
             
             ViewBag.deleteDates = listDates;
+            /*-----*/
 
             return View(deletedTopics);
         }
         public IActionResult RestoreTopic(int id)
         {
-            var topic = _context.Topics.FirstOrDefault(p => p.ID == id);
-
+            var topic = _topicService.GetTopicByID(id);
             if(topic == null)
-            {
                 return NotFound();
-            }
-            ViewData["ListArticles"] = _context.Articles.Where(p => p.isDeleted == false).ToList();
-
-            ViewData["ListChosenArticleIds"] = _context.Articles.Where(p => p.topicID == id && p.isDeleted == false).Select(p => p.ID).ToList();
-
+            ViewData["ListArticles"] = _articleService.GetAllArticles();
+            ViewData["ListChosenArticleIds"] = _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
             return View(topic); 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RestoreTopic(int? id)
         {
-            var topic = _context.Topics.FirstOrDefault(p => p.ID == id);
-
+            var topic = _topicService.GetTopicByID((int)id);
             if(topic == null)
-            {
                 return NotFound();
-            }
-            topic.isDeleted = false;
+            _topicService.ChangeIsDeletedTopic((int)id);
 
-            _context.Update(topic);
-
-            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
+            /*var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
             _context.Add(new PBL3.Models.Action()
             {
                 account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
@@ -316,6 +271,7 @@ namespace PBL3.Controllers
             });
 
             _context.SaveChanges();
+            */
 
             return RedirectToAction("Topics", "Admin");
         }
