@@ -11,83 +11,53 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using PBL3.General;
 using Microsoft.AspNetCore.Authorization;
+using PBL3.Features.ProblemManagement;
+using PBL3.Features.CategoryManagement;
+using PBL3.Features.SubmissionManagement;
 
 namespace PBL3.Controllers
 {
     public class ProblemsController : Controller
     {
-        private readonly PBL3Context _context;
-        public ProblemsController(PBL3Context context)
+        private readonly PBL3Context _context; // nho bo di
+        private readonly IProblemService _problemService;
+        private readonly ICategoryService _categoryService;
+        private readonly ISubmissionService _submissionService;
+        public ProblemsController(IProblemService problemService, ICategoryService categoryService, ISubmissionService submissionService, PBL3Context context)
         {
             _context = context;
+            _problemService = problemService;
+            _categoryService = categoryService;
+            _submissionService = submissionService;
         }
         public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> categoryIds, int? minDifficult, int? maxDifficult)
         {
-            ViewData["ListCategories"] = _context.Categories.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListCategories"] = _categoryService.GetAllCategories();
 
             ViewData["ListChosenCategoryIds"] = categoryIds;
-            
+
+            var listProblems = _problemService.GetListProblems(problemName, categoryIds, minDifficult, maxDifficult);
+
+
             var paramater = new Dictionary<string, string>();
-
-            var listProblems = _context.Problems.Include(p => p.submissions)
-                                                .Include(p => p.problemClassifications)
-                                                .ThenInclude(p => p.category)
-                                                .AsSplitQuery()
-                                                .OrderByDescending(p => p.timeCreate)
-                                                .Where(p => p.isDeleted == false)
-                                                .ToList();
             
-            if(!String.IsNullOrEmpty(problemName))
-            {
-                listProblems = listProblems.Where(p => p.title.ToLower().Contains(problemName.ToLower())).ToList();
+            if(!string.IsNullOrEmpty(problemName))
                 paramater.Add("problemName", problemName);
-            }
-            
-            if(categoryIds.Count > 0)
-            {
-                var lstTmpt = new List<Problem>();
-                foreach(var item in listProblems)
-                {
-                    var tmpt = item.problemClassifications.Where(p => p.category.isDeleted == false && p.isDeleted == false).Select(p => p.category.ID).ToList();
-                    bool check = true;
-                    foreach(int Id in categoryIds)
-                    {
-                        if(tmpt.IndexOf(Id) == -1)
-                        {
-                            check = false;
-                            break;
-                        }
-                    }
-                    if(check)
-                    {
-                        lstTmpt.Add(item);
-                    }
-                }
-                listProblems = lstTmpt;
-            }
 
-            if(minDifficult != null || maxDifficult != null)
-            {
-                if(minDifficult != null)
-                {
-                    listProblems = listProblems.Where(p => p.difficulty >= minDifficult).ToList();
-                    paramater.Add("minDifficult", minDifficult.ToString());
-                }
-                if(maxDifficult != null)
-                {
-                    listProblems = listProblems.Where(p => p.difficulty <= maxDifficult).ToList();
-                    paramater.Add("maxDifficult", maxDifficult.ToString());
-                }
-            }
+            if(minDifficult != null)
+                paramater.Add("minDifficult", minDifficult.ToString());
+            
+            if(maxDifficult != null)
+                paramater.Add("maxDifficult", maxDifficult.ToString());
+            
             var accountID = 0;
+
             if(HttpContext.User.Identity.IsAuthenticated)
-            {
                 accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-            }
 
             if(hideSolvedProblem)
             {
-                listProblems = listProblems.Where(p => p.submissions.Where(s => s.status == "Accepted" && (s.accountID == accountID || accountID == 0)).ToList().Count() == 0).ToList();
+                listProblems = _problemService.GetUnsolvedProblemsByAccountID(listProblems, accountID);
                 paramater.Add("hideSolvedProblem", hideSolvedProblem.ToString());
             }
 
@@ -100,7 +70,6 @@ namespace PBL3.Controllers
                 maxDifficult = maxDifficult,
                 hideSolvedProblem = hideSolvedProblem
             };
-
 
             if(!HttpContext.User.Identity.IsAuthenticated || HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "User")
             {
@@ -120,9 +89,33 @@ namespace PBL3.Controllers
 
             ViewBag.totalPage = (int)Math.Ceiling((float)listProblems.Count/limit);
 
-            listProblems = listProblems.Skip(start).Take(limit).ToList();
+            listProblems = listProblems.Skip(start).Take(limit).OrderByDescending(p => p.timeCreate).ToList();
 
-            return View(listProblems.ToList());
+            var problemSubmssions = new List<int>();
+
+            var problemACSubmissionsByAccount = new List<int>();
+
+            var problemSubmissionsByAccount = new List<int>();
+
+            foreach(var item in listProblems)
+            {
+                problemSubmssions.Add(_submissionService.GetProblemSubmissions(item.ID).Count());
+                if(accountID != 0)
+                {
+                    problemACSubmissionsByAccount.Add(_submissionService.GetProblemACSubmissionsByAccountID(item.ID, accountID).Count());
+                    problemSubmissionsByAccount.Add(_submissionService.GetProblemSubmissionsByAccountID(item.ID, accountID).Count());
+                }
+            }
+
+            ViewData["ProblemSubmissions"] = problemSubmssions;
+
+            ViewData["ProblemACSubmissionsByAccount"] = problemACSubmissionsByAccount;
+
+            ViewData["ProblemSubmissionsByAccount"] = problemSubmissionsByAccount;
+
+                        List<Problem> debugPro = _problemService.GetAllProblems();
+            List<Problem> debug2 = _problemService.GetListProblems(problemName, categoryIds, minDifficult, maxDifficult);
+            return View(debugPro);
         }
         [Authorize(Roles ="Admin, Author")]
         public IActionResult AddProblem()

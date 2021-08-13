@@ -2,7 +2,9 @@
 @using PBL3.General
 @{
     ViewData["Title"] = "Danh sách bài tập";
-    var listCategories = (List<Category>)ViewData["ListCategories"];
+    var problemSubmissions = (List<int>)ViewData["ProblemSubmissions"];
+    var problemACSubmissionsByAccount = (List<int>)ViewData["ProblemACSubmissionsByAccount"];
+    var problemSubmissionsByAccount = (List<int>)ViewData["ProblemSubmissionsByAccount"];
 }
 @model List<Problem>;
 <div class="listProblemsPage">
@@ -35,10 +37,9 @@
                                     <tr class= "listProblemRow">
                                         @if(Context.User.Identity.IsAuthenticated)
                                         {
-                                            var accountID = Convert.ToInt32(Context.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-                                            if(Model[i].submissions.Where(s => s.accountID == accountID).ToList().Count > 0)
+                                            if(problemSubmissionsByAccount[i] > 0)
                                             {
-                                                if(Model[i].submissions.Where(s => s.accountID == accountID && s.status == "Accepted").Select(s => s).ToList().Count > 0)
+                                                if(problemACSubmissionsByAccount[i] > 0)
                                                 {
                                                     if(Model[i].isPublic == false)
                                                     {

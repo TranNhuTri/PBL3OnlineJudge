@@ -76,7 +76,7 @@ namespace PBL3.Controllers
         {
             var article = _context.Articles.FirstOrDefault(p => p.ID == id);
 
-            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false)
+            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false && p.typePost == 2)
                                                         .Include(p => p.account)
                                                         .Include(p => p.child)
                                                         .Include(p => p.likes)

@@ -9,6 +9,10 @@ using PBL3.Data;
 using Microsoft.EntityFrameworkCore;
 using PBL3.CustomHandler;
 using Microsoft.AspNetCore.Authorization;
+using PBL3.Features.ProblemManagement;
+using PBL3.Repositories;
+using PBL3.Features.SubmissionManagement;
+using PBL3.Features.CategoryManagement;
 
 namespace PBL3
 {
@@ -35,6 +39,14 @@ namespace PBL3
             services.AddAuthorization();
 
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+
+            services.AddTransient(typeof(IRepository<>),typeof(GenericRepository<>));
+
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddScoped<IProblemService, ProblemService>();
+
+            services.AddScoped<ISubmissionService, SubmissionService>();
 
             services.AddDistributedMemoryCache();
 

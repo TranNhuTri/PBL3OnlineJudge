@@ -7,9 +7,10 @@ namespace PBL3.Data
 {
     public class PBL3Context : DbContext
     {
-        public PBL3Context (DbContextOptions<PBL3Context> options)
+        public PBL3Context (DbContextOptions<PBL3Context> options = null)
             : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
         public DbSet<Problem> Problems { get; set; }
         public DbSet<Account> Accounts { get; set; }
