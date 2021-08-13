@@ -10,8 +10,8 @@ namespace PBL3.Features.ProblemManagement
         List<Problem> GetAllProblems();
         Problem GetProblemByID(int problemID);
         void AddProblem(Problem problem);
-        void UpdateProblem(Problem problem);
-        void DeleteProblem(int problemID);
+        void UpdateProblem(int problemID, Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, int accountID);
+        void ChangeIsDeleted(int problemID);
         List<Problem> GetListSearchProblem(string problemName, List<int> categoryIDs, int? minDifficult, int? maxDifficult);
     }
 }

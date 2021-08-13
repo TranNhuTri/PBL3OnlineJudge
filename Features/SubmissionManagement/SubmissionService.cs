@@ -26,8 +26,22 @@ namespace PBL3.Features.SubmissionManagement
         }
         public List<Submission> GetSubmissionsByAccountProblemID(int accountID, int problemID, bool? AC)
         {
-            return _submissionRepo.GetAll().Where(p => p.problemID == problemID && p.accountID == accountID 
-            && (AC == null || (AC == true ? p.status == "Accepted" : p.status == "Wrong Answer"))).ToList();
+            return _submissionRepo.GetAll().Where(p => p.problemID == problemID && p.accountID == accountID
+            && (AC == null || AC == true ? p.status == "Accepted" : p.status == "Wrong Answer")).ToList();
+        }
+        public void ChangeIsDeletedSubmissionsByProblemID(int problemID)
+        {
+            foreach(var item in this.GetAllSubmissionsByProblemID(problemID))
+            {
+                ChangeIsDeleted(item.ID);
+            }
+        }
+        public void ChangeIsDeleted(int submissionID)
+        {
+            var submission = _submissionRepo.GetById(submissionID);
+            submission.isDeleted = true;
+            _submissionRepo.Update(submission);
+            _submissionRepo.Save();
         }
         public Submission GetSubmissionByID(int submissionID)
         {

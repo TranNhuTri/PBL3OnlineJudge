@@ -9,6 +9,8 @@ namespace PBL3.Features.SubmissionManagement
         List<Submission> GetAllSubmissionsByProblemID(int problemID);
         List<Submission> GetAllSubmissionsByAccountID(int accountID);
         List<Submission> GetSubmissionsByAccountProblemID(int accountID, int problemID, bool? AC);
+        void ChangeIsDeletedSubmissionsByProblemID(int problemID);
+        void ChangeIsDeleted(int submissionID);
         Submission GetSubmissionByID(int submissionID);
         void AddSubmission(Submission submission);
         void UpdateSubmission(Submission submission);

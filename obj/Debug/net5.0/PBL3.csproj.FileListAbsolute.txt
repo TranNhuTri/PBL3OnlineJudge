@@ -684,4 +684,4 @@ D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Submissions\DeleteSubmi
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Account\ChangePassword.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Accounts\ChangePassword.cshtml.g.cs
 D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\Razor\Views\Shared\_SearchArticleForm2.cshtml.g.cs
-D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\PBL3.csprojAssemblyReference.cache
+D:\Web\PBL3\PBL3OnlineJudge\obj\Debug\net5.0\PBL3.csproj.AssemblyReference.cache
