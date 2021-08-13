@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Data;
 using PBL3.Models;
+using System.Linq.Expressions;
 
 namespace PBL3.Repositories
 {
@@ -26,10 +27,8 @@ namespace PBL3.Repositories
         }
         public IEnumerable<T> GetAll()
         {
-             
             return table;
         }
- 
         public T GetById(int id)
         {
             return table.Find(id);

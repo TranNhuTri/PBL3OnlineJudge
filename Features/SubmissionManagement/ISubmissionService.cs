@@ -5,9 +5,13 @@ namespace PBL3.Features.SubmissionManagement
 {
     public interface ISubmissionService
     {
-        List<Submission> GetProblemSubmissions(int problemID);
-        List<Submission> GetProblemSubmissionsByAccountID(int problemID, int accoutID);
-        List<Submission> GetProblemACSubmissions(int problemID);
-        List<Submission> GetProblemACSubmissionsByAccountID(int problemID, int accountID);
+        List<Submission> GetAllSubmissions();
+        List<Submission> GetAllSubmissionsByProblemID(int problemID);
+        List<Submission> GetAllSubmissionsByAccountID(int accountID);
+        List<Submission> GetSubmissionsByAccountProblemID(int accountID, int problemID, bool? AC);
+        Submission GetSubmissionByID(int submissionID);
+        void AddSubmission(Submission submission);
+        void UpdateSubmission(Submission submission);
+        void DeleteSubmission(int submissionID);
     }
 }

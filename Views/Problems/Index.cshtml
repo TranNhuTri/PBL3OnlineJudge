@@ -3,8 +3,9 @@
 @{
     ViewData["Title"] = "Danh sách bài tập";
     var problemSubmissions = (List<int>)ViewData["ProblemSubmissions"];
-    var problemACSubmissionsByAccount = (List<int>)ViewData["ProblemACSubmissionsByAccount"];
+    var problemACSubmissions = (List<int>)ViewData["ProblemACSubmissions"];
     var problemSubmissionsByAccount = (List<int>)ViewData["ProblemSubmissionsByAccount"];
+    var problemSubmissionsACByAccount = (List<int>)ViewData["ProblemSubmissionsACByAccount"];
 }
 @model List<Problem>;
 <div class="listProblemsPage">
@@ -39,7 +40,7 @@
                                         {
                                             if(problemSubmissionsByAccount[i] > 0)
                                             {
-                                                if(problemACSubmissionsByAccount[i] > 0)
+                                                if(problemSubmissionsACByAccount[i] > 0)
                                                 {
                                                     if(Model[i].isPublic == false)
                                                     {

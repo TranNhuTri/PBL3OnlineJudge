@@ -9,30 +9,33 @@ namespace PBL3.Features.CategoryManagement
     public class CategoryService: ICategoryService
     {
         private readonly IRepository<Category> _categoryRepo;
-        private readonly IRepository<ProblemClassification> _problemClassificationRepo;
-        public CategoryService(IRepository<Category> categoryRepo, IRepository<ProblemClassification> problemClassificationRepo) 
+        public CategoryService(IRepository<Category> categoryRepo) 
         {
             _categoryRepo = categoryRepo;
-            _problemClassificationRepo = problemClassificationRepo;
         }
        
         public List<Category> GetAllCategories()
         {
             return _categoryRepo.GetAll().ToList();
         }
-        public List<Category> GetAllDeletedCategories()
+        
+        public Category GetCategoryByID(int categoryID)
         {
-            return _categoryRepo.GetAll().Where(p => p.isDeleted == true).ToList();
+            return _categoryRepo.GetById(categoryID);
         }
-        public List<int> GetListCategoriesByProblemID(int problemID)
+        public void AddCategory(Category category)
         {
-            return _problemClassificationRepo.GetAll().Where(p => p.problemID == problemID).Select(p => p.categoryID).ToList();
+            _categoryRepo.Insert(category);
+            _categoryRepo.Save();
         }
-        public void ChangeIsDeletedCategory(int categoryID)
+        public void UpdateCategory(Category category)
         {
-            Category category = _categoryRepo.GetById(categoryID);
-            category.isDeleted = !category.isDeleted;
             _categoryRepo.Update(category);
+            _categoryRepo.Save();
+        }
+        public void DeleteCategory(int categoryID)
+        {
+            _categoryRepo.Delete(categoryID);
             _categoryRepo.Save();
         }
     }

@@ -32,36 +32,59 @@ namespace PBL3.Controllers
         }
         public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> categoryIds, int? minDifficult, int? maxDifficult)
         {
-            ViewData["ListCategories"] = _categoryService.GetAllCategories();
-
-            ViewData["ListChosenCategoryIds"] = categoryIds;
-
-            var listProblems = _problemService.GetListProblems(problemName, categoryIds, minDifficult, maxDifficult);
-
-
-            var paramater = new Dictionary<string, string>();
-            
-            if(!string.IsNullOrEmpty(problemName))
+            // set paramater page
+            var paramater = new Dictionary<string, string>();  
+            if (!string.IsNullOrEmpty(problemName))
                 paramater.Add("problemName", problemName);
-
-            if(minDifficult != null)
+            if (minDifficult != null)
                 paramater.Add("minDifficult", minDifficult.ToString());
-            
-            if(maxDifficult != null)
+            if (maxDifficult != null)
                 paramater.Add("maxDifficult", maxDifficult.ToString());
-            
             var accountID = 0;
-
-            if(HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext.User.Identity.IsAuthenticated)
                 accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+            if (hideSolvedProblem) 
+                paramater.Add("hideSolvedProblem", hideSolvedProblem.ToString()); 
+            ViewBag.paginationParams = paramater;
 
-            if(hideSolvedProblem)
-            {
-                listProblems = _problemService.GetUnsolvedProblemsByAccountID(listProblems, accountID);
-                paramater.Add("hideSolvedProblem", hideSolvedProblem.ToString());
+            
+            var listProblems = _problemService.GetListSearchProblem(problemName, categoryIds, minDifficult, maxDifficult);
+            if(!HttpContext.User.Identity.IsAuthenticated || HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "User")
+                listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
+            if (hideSolvedProblem) {
+                listProblems = listProblems
+                .Where(p => _submissionService.GetSubmissionsByAccountProblemID(p.ID, accountID, true).Count == 0).ToList();
             }
 
-            ViewBag.paginationParams = paramater;
+            
+            //pagination
+            if(page == null) page = 1;
+            int limit = Utility.limitData;
+            int start = (int)(page - 1)*limit;
+            ViewBag.currentPage = page;
+            ViewBag.totalPage = (int)Math.Ceiling((float)listProblems.Count/limit);
+            listProblems = listProblems.Skip(start).Take(limit).OrderByDescending(p => p.timeCreate).ToList();
+
+
+
+            var problemSubmssions = new List<int>();
+            var problemACSubmissions = new List<int>();
+            var problemSubmissionsByAccount = new List<int>();
+            var problemSubmissionsACByAccount = new List<int>();
+
+            foreach(var item in listProblems)
+            {
+                item.submissions = _submissionService.GetAllSubmissionsByProblemID(item.ID);
+                problemSubmssions.Add(item.submissions.Count);
+                problemACSubmissions.Add(item.submissions.Where(p => p.status == "Accepted").Count());
+                if (accountID > 0) 
+                {
+                    problemSubmissionsByAccount.Add(item.submissions.Where(p => p.accountID == accountID).Count());
+                    problemSubmissionsACByAccount.Add(item.submissions.Where(p => p.accountID == accountID && p.status == "Accepted").Count());
+                }
+            }
+
+
 
             ViewData["SearchProblemInfor"] = new SearchProblemInfor
             {
@@ -70,52 +93,14 @@ namespace PBL3.Controllers
                 maxDifficult = maxDifficult,
                 hideSolvedProblem = hideSolvedProblem
             };
-
-            if(!HttpContext.User.Identity.IsAuthenticated || HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "User")
-            {
-                listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
-            }
-
-            //pagination
-            if(page == null)
-            {
-                page = 1;
-            }
-
-            int limit = Utility.limitData;
-            int start = (int)(page - 1)*limit;
-
-            ViewBag.currentPage = page;
-
-            ViewBag.totalPage = (int)Math.Ceiling((float)listProblems.Count/limit);
-
-            listProblems = listProblems.Skip(start).Take(limit).OrderByDescending(p => p.timeCreate).ToList();
-
-            var problemSubmssions = new List<int>();
-
-            var problemACSubmissionsByAccount = new List<int>();
-
-            var problemSubmissionsByAccount = new List<int>();
-
-            foreach(var item in listProblems)
-            {
-                problemSubmssions.Add(_submissionService.GetProblemSubmissions(item.ID).Count());
-                if(accountID != 0)
-                {
-                    problemACSubmissionsByAccount.Add(_submissionService.GetProblemACSubmissionsByAccountID(item.ID, accountID).Count());
-                    problemSubmissionsByAccount.Add(_submissionService.GetProblemSubmissionsByAccountID(item.ID, accountID).Count());
-                }
-            }
-
+            ViewData["ListCategories"] = _categoryService.GetAllCategories();
+            ViewData["ListChosenCategoryIds"] = categoryIds;
             ViewData["ProblemSubmissions"] = problemSubmssions;
-
-            ViewData["ProblemACSubmissionsByAccount"] = problemACSubmissionsByAccount;
-
+            ViewData["ProblemACSubmissions"] = problemACSubmissions;
             ViewData["ProblemSubmissionsByAccount"] = problemSubmissionsByAccount;
+            ViewData["ProblemSubmissionsACByAccount"] = problemSubmissionsACByAccount;
 
-                        List<Problem> debugPro = _problemService.GetAllProblems();
-            List<Problem> debug2 = _problemService.GetListProblems(problemName, categoryIds, minDifficult, maxDifficult);
-            return View(debugPro);
+            return View(listProblems);
         }
         [Authorize(Roles ="Admin, Author")]
         public IActionResult AddProblem()

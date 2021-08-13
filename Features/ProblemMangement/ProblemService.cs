@@ -1,72 +1,75 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using PBL3.Features.CategoryManagement;
 using PBL3.Features.SubmissionManagement;
 using PBL3.Models;
 using PBL3.Repositories;
+using System;
+
 
 namespace PBL3.Features.ProblemManagement
 {
     public class ProblemService: IProblemService
     {
         private readonly IRepository<Problem> _problemRepo;
-        private readonly ISubmissionService _submissionService;
-        private readonly ICategoryService _categoryService;
-        public ProblemService(IRepository<Problem> problemRepo, ISubmissionService submissionService, ICategoryService categoryService)
+        public ProblemService(IRepository<Problem> problemRepo)
         {
             _problemRepo = problemRepo;
-            _submissionService = submissionService;
-            _categoryService = categoryService;
         }
-        public List<Problem> GetAllProblems() // get all non deleted problems
+        public List<Problem> GetAllProblems() 
         {
-            return _problemRepo.GetAll().Where(p => p.isDeleted == false).ToList();
+            return _problemRepo.GetAll().ToList();
         }
-        public List<Problem> GetAllDeletedProblems()
+        public Problem GetProblemByID(int problemID)
         {
-            return this.GetAllProblems().Where(p => p.isDeleted == true).ToList();
+            return _problemRepo.GetById(problemID);
         }
-        public List<Problem> GetUnsolvedProblemsByAccountID(List<Problem> problems, int accountID)
-        {
-            return problems.Where(p => _submissionService.GetProblemACSubmissionsByAccountID(p.ID, accountID).Count == 0).ToList();
-        }
-        public List<Problem> GetListProblems(string problemName, List<int> categoryIds, int? minDifficult, int? maxDifficult)
-        {
-            return _problemRepo.GetAll().Where(p => p.isDeleted == false).ToList();
-            var problems =  _problemRepo.GetAll().Where(p => p.isDeleted == false).ToList();
-            
-            return problems;
-            problems = problems.Where(p => string.IsNullOrEmpty(problemName) || p.title.ToLower().Contains(problemName.ToLower())).ToList();
-            
-            var tmptProblems = new List<Problem>();
-            foreach(Problem item in problems)
-            {
-                List<int> lstCategoryIDs = _categoryService.GetListCategoriesByProblemID(item.ID);
-                
-                bool check = false;
 
-                foreach (int iter in lstCategoryIDs)
-                    if (categoryIds.Contains(iter)) check = true;
-                
-                if(minDifficult == null)
-                    minDifficult = 0;
-
-                if(maxDifficult == null)
-                    maxDifficult = (int)1e9;
-                
-                if (check || lstCategoryIDs.Count == 0 || categoryIds.Count == 0)
-                    if (item.difficulty >= minDifficult && item.difficulty <= maxDifficult)
-                        tmptProblems.Add(item);
-            }
-
-            return tmptProblems; 
-        }
-        public void ChangeIsDeletedProblem(int problemID)
+        public void AddProblem(Problem problem)
         {
-            Problem problem = _problemRepo.GetById(problemID);
-            problem.isDeleted = !problem.isDeleted;
+            _problemRepo.Insert(problem);
+            _problemRepo.Save();
+        }
+
+        public void UpdateProblem(Problem problem)
+        {
             _problemRepo.Update(problem);
             _problemRepo.Save();
+        }
+
+        public void DeleteProblem(int problemID)
+        {
+            _problemRepo.Delete(problemID);
+            _problemRepo.Save();
+        }
+
+        public List<Problem> GetListSearchProblem(string problemName, List<int> categoryIDs, int? minDifficult, int? maxDifficult)
+        {
+            List<Problem> problems = new List<Problem>();
+            foreach(Problem item in _problemRepo.GetAll().ToList())
+            {
+                List<int> categoriesIDsOfProblem = item.problemClassifications.Select(p => p.categoryID).ToList();
+                if (problemName != null && !item.title.Contains(problemName)) continue;
+                bool checkCategory = false;
+                if (categoryIDs.Count == 0)
+                    checkCategory = true;
+                else 
+                {
+                    foreach(int i in categoriesIDsOfProblem) 
+                        if (categoryIDs.Contains(i))
+                            checkCategory = true;
+                }
+                bool checkDifficult = false;
+                if (minDifficult == null) minDifficult = 0;
+                if (maxDifficult == null) maxDifficult = (int)1e9;
+                if (item.difficulty >= minDifficult && item.difficulty <= maxDifficult)
+                    checkDifficult = true;
+                if (checkCategory && checkDifficult)
+                    problems.Add(item);
+                
+            }
+            return problems;
         }
     }
 }

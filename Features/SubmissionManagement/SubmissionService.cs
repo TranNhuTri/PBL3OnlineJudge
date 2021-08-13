@@ -12,23 +12,41 @@ namespace PBL3.Features.SubmissionManagement
         {
             _submissionRepo = submissionRepo;
         }
-        public List<Submission> GetProblemSubmissions(int problemID)
+        public List<Submission> GetAllSubmissions()
+        {
+            return _submissionRepo.GetAll().ToList();
+        }
+        public List<Submission> GetAllSubmissionsByProblemID(int problemID)
         {
             return _submissionRepo.GetAll().Where(p => p.problemID == problemID).ToList();
         }
-        public List<Submission> GetProblemSubmissionsByAccountID(int problemID, int accountID)
+        public List<Submission> GetAllSubmissionsByAccountID(int accountID)
         {
-            return _submissionRepo.GetAll().Where(p => p.problemID == problemID && p.accountID == accountID).ToList();
+            return _submissionRepo.GetAll().Where(p => p.accountID == accountID).ToList();
         }
-        public List<Submission> GetProblemACSubmissions(int problemID)
+        public List<Submission> GetSubmissionsByAccountProblemID(int accountID, int problemID, bool? AC)
         {
-            var problemSubmissions = this.GetProblemSubmissions(problemID);
-            return problemSubmissions.Where(p => p.status == "Accepted").ToList();
+            return _submissionRepo.GetAll().Where(p => p.problemID == problemID && p.accountID == accountID 
+            && (AC == null || (AC == true ? p.status == "Accepted" : p.status == "Wrong Answer"))).ToList();
         }
-        public List<Submission> GetProblemACSubmissionsByAccountID(int problemID, int accountID)
+        public Submission GetSubmissionByID(int submissionID)
         {
-            var problemSubmissions = this.GetProblemSubmissionsByAccountID(problemID, accountID);
-            return problemSubmissions.Where(p => p.status == "Accepted").ToList();
+            return _submissionRepo.GetById(submissionID);
+        }
+        public void AddSubmission(Submission submission)
+        {
+            _submissionRepo.Insert(submission);
+            _submissionRepo.Save();
+        }
+        public void UpdateSubmission(Submission submission)
+        {
+            _submissionRepo.Update(submission);
+            _submissionRepo.Save();
+        }
+        public void DeleteSubmission(int submissionID)
+        {
+            _submissionRepo.Delete(submissionID);
+            _submissionRepo.Save();
         }
     }
 }

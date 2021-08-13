@@ -5,9 +5,10 @@ namespace PBL3.Features.CategoryManagement
 {
     public interface ICategoryService
     {
-        List<Category> GetAllCategories(); // get all non deleted categories
-        List<Category> GetAllDeletedCategories();
-        List<int> GetListCategoriesByProblemID(int problemID);
-        void ChangeIsDeletedCategory(int categoryID); // hard delete
+        List<Category> GetAllCategories();
+        Category GetCategoryByID(int categoryID);
+        void AddCategory(Category category);
+        void UpdateCategory(Category category);
+        void DeleteCategory(int categoryID);
     }
 }
