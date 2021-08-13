@@ -11,13 +11,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using PBL3.General;
 using Microsoft.AspNetCore.Authorization;
-using PBL3.Features.ProblemManagement;
 using PBL3.Features.CategoryManagement;
 using PBL3.Features.SubmissionManagement;
 using PBL3.Features.AccountManagement;
 using PBL3.Repositories;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.ProblemManagement
 {
     public class ProblemsController : Controller
     {
@@ -57,8 +56,10 @@ namespace PBL3.Controllers
             var listProblems = _problemService.GetListSearchProblem(problemName, categoryIds, minDifficult, maxDifficult);
             if(!HttpContext.User.Identity.IsAuthenticated || HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "User")
                 listProblems = listProblems.Where(p => p.isPublic == true).Select(p => p).ToList();
-            if (hideSolvedProblem)
-                listProblems = listProblems.Where(p => _submissionService.GetSubmissionsByAccountProblemID(accountID, p.ID, true).Count() == 0).ToList();
+            if (hideSolvedProblem) {
+                listProblems = listProblems
+                .Where(p => _submissionService.GetSubmissionsByAccountProblemID(accountID, p.ID, true).Count == 0).ToList();
+            }
 
             //pagination
             if(page == null) page = 1;

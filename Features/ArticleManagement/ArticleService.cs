@@ -14,9 +14,18 @@ namespace PBL3.Features.ArticleManagement
         }
         public List<Article> GetAllArticles()
         {
-            return _articleRepo.GetAll().ToList();
+            return _articleRepo.GetAll().Where(p => p.isDeleted == false).ToList();
         }
 
+        public List<Article> GetAllDeletedArticles()
+        {
+            return _articleRepo.GetAll().Where(p => p.isDeleted == true).ToList();
+        }
+
+        public List<Article> GetArticlesByTopicID(int topicID, bool IsPublic)
+        {
+            return _articleRepo.GetAll().Where(p => p.isDeleted == false && p.topicID == topicID && p.IsPublic == IsPublic).ToList();
+        }
         public Article GetArticleByID(int articleID)
         {
             return _articleRepo.GetById(articleID);
@@ -35,6 +44,12 @@ namespace PBL3.Features.ArticleManagement
         public void DeleteArticle(int articleID)
         {
             _articleRepo.Delete(articleID);
+            _articleRepo.Save();
+        }
+        public void ChangeIsDeletedArticle(int articleID)
+        {
+            var article = GetArticleByID(articleID);
+            article.isDeleted = !article.isDeleted;
             _articleRepo.Save();
         }
     }

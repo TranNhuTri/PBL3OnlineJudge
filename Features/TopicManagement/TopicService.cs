@@ -14,9 +14,12 @@ namespace PBL3.Features.TopicManagement
         }
         public List<Topic> GetAllTopics() 
         {
-            return _topicRepo.GetAll().ToList();
+            return _topicRepo.GetAll().Where(p => p.isDeleted == false).ToList();
         }
-
+        public List<Topic> GetAllDeletedTopics()
+        {
+            return _topicRepo.GetAll().Where(p => p.isDeleted == true).ToList();
+        }
         public Topic GetTopicByID(int topicID)
         {
             return _topicRepo.GetById(topicID);
@@ -31,10 +34,10 @@ namespace PBL3.Features.TopicManagement
             _topicRepo.Update(topic);
             _topicRepo.Save();
         }
-
-        public void DeleteTopic(int topicID)
+        public void ChangeIsDeletedTopic(int topicID)
         {
-            _topicRepo.Delete(topicID);
+            Topic topic = GetTopicByID(topicID);
+            topic.isDeleted = !topic.isDeleted;
             _topicRepo.Save();
         }
     }

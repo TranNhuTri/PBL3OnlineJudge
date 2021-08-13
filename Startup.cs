@@ -14,6 +14,8 @@ using PBL3.Repositories;
 using PBL3.Features.SubmissionManagement;
 using PBL3.Features.CategoryManagement;
 using PBL3.Features.AccountManagement;
+using PBL3.Features.TopicManagement;
+using PBL3.Features.ArticleManagement;
 
 namespace PBL3
 {
@@ -50,6 +52,10 @@ namespace PBL3
             services.AddScoped<ISubmissionService, SubmissionService>();
 
             services.AddScoped<IAccountService, AccountService>();
+
+            services.AddScoped<ITopicService, TopicService>();
+
+            services.AddScoped<IArticleService, ArticleService>();
 
             services.AddDistributedMemoryCache();
 
