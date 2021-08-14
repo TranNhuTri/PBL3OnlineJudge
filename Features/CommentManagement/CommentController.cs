@@ -9,37 +9,49 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using PBL3.General;
+using PBL3.Features.AccountManagement;
+using PBL3.Features.ArticleManagement;
+using PBL3.Features.ProblemManagement;
+using PBL3.Features.LikeManagement;
+using PBL3.Features.NotificationManagement;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.CommentManagement
 {
     [Authorize]
-    public class CommentsController : Controller
+    public class CommentController : Controller
     {
         private readonly PBL3Context _context;
-        public CommentsController(PBL3Context context)
+        private readonly ICommentService _commentService;
+        private readonly IAccountService _accountService;
+        private readonly IArticleService _articleService;
+        private readonly IProblemService _problemService;
+        private readonly ILikeService _likeService;
+        private readonly INotificationService _notificationService;
+
+        public CommentController(PBL3Context context, ICommentService commentService, IAccountService accountService, 
+        IArticleService articleService, IProblemService problemService, ILikeService likeService, INotificationService notificationService)
         {
             _context = context;
+            _commentService = commentService;
+            _accountService = accountService;
+            _articleService = articleService;
+            _problemService = problemService;
+            _likeService = likeService;
+            _notificationService = notificationService;
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Index(int? page, int? isHidden, string searchText)
         {
-            var listComments = _context.Comments.Where(p => p.isDeleted == false).Include(p => p.account).ToList();
+            var listComments = _commentService.GetAllComments();
 
             var paramater = new Dictionary<string, string>();
 
             if(isHidden != null)
             {
                 if(isHidden == 1)
-                {
-                    listComments =  listComments.Where(p => p.isHidden == true)
-                                                .ToList();
-                }
+                    listComments =  listComments.Where(p => p.isHidden == true).ToList();
                 else
-                    if(isHidden == 0)
-                    {
-                        listComments =  listComments.Where(problem => problem.isHidden == false)
-                                                    .ToList();
-                    }
+                    listComments =  listComments.Where(p => p.isHidden == false).ToList();
                 paramater.Add("isHidden", isHidden.ToString());
             }
 
@@ -50,56 +62,36 @@ namespace PBL3.Controllers
                 var tmpt = new List<Comment>();
                 foreach(var item in listComments)
                 {
-                    var postName = item.typePost == 1 ? _context.Problems.FirstOrDefault(p => p.ID == item.postID).title : _context.Articles.FirstOrDefault(p => p.ID == item.postID).title;
-                    if(item.account.accountName.ToLower().Contains(searchText) || item.content.ToLower().Contains(searchText) || postName.ToLower().Contains(searchText))
-                    {
+                    var postName = item.typePost == 1 ? _problemService.GetProblemByID(item.postID).title : _articleService.GetArticleByID(item.postID).title;
+                    if(_accountService.GetAccountByID(item.accountID).accountName.ToLower().Contains(searchText) 
+                    || item.content.ToLower().Contains(searchText) || postName.ToLower().Contains(searchText))
                         tmpt.Add(item);
-                    }
                 }
                 listComments = tmpt;
             }
 
-
-            if(page == null)
-            {
-                page = 1;
-            }
-
+            if(page == null) page = 1;
             int limit = Utility.limitData;
             int start = (int)(page - 1)*limit;
-
             ViewBag.currentPage = page;
-
             ViewBag.totalPage = (int)Math.Ceiling((float)listComments.Count/limit);
-
             listComments = listComments.Skip(start).Take(limit).ToList();
-
             ViewBag.postName = new List<string>();
 
             foreach(var item in listComments)
             {
                 if(item.typePost == 1)
-                {
-                    ViewBag.postName.Add(_context.Problems.FirstOrDefault(p => p.ID == item.postID).title);
-                }
+                    ViewBag.postName.Add(_problemService.GetProblemByID(item.postID).title);
                 else
-                {
-                    ViewBag.postName.Add(_context.Articles.FirstOrDefault(p => p.ID == item.postID).title);
-                }
+                    ViewBag.postName.Add(_articleService.GetArticleByID(item.postID).title);
             }
 
             return View(listComments);
         }
         public IActionResult GetComment(int id)
         {
-            var comment = _context.Comments.Where(p => p.ID == id)
-                                            .Include(p => p.account)
-                                            .Include(p => p.child)
-                                            .Include(p => p.likes)
-                                            .ThenInclude(p => p.account)
-                                            .FirstOrDefault(p => p.ID == id);
-            if(comment == null)
-                return NotFound();
+            var comment = _commentService.GetCommentByID(id);
+            if(comment == null) return NotFound();
             return View(comment);
         }
         [HttpPost]
@@ -107,15 +99,8 @@ namespace PBL3.Controllers
         {
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
-            int typePost = 0;
-            if(_context.Problems.FirstOrDefault(p => p.ID == postID) != null)
-            {
-                typePost = 1;
-            }
-            else
-            {
-                typePost = 2;
-            }
+            int typePost = _problemService.GetProblemByID(postID).title != null ? 1 : 2;
+
             var comment = new Comment()
             {
                 content = content,
@@ -125,13 +110,11 @@ namespace PBL3.Controllers
                 typePost = typePost
             };
 
-            _context.Add(comment);
-
-            _context.SaveChanges();
+            _commentService.AddComment(comment);
 
             if(rootCommentID != null)
             {
-                var parentComment = _context.Comments.Include(p => p.account).FirstOrDefault(p => p.ID == rootCommentID);
+                var parentComment = _commentService.GetAllComments().FirstOrDefault(p => p.ID == rootCommentID);
                 if(parentComment != null)
                 {
                     if(parentComment.level < 3)
@@ -156,8 +139,6 @@ namespace PBL3.Controllers
                         objectID = comment.ID,
                         typeNotification = Convert.ToInt32(TypeNotification.NewCommentReply)
                     };
-
-                    _context.Update(parentComment.account);
 
                     _context.Add(noti);
                 }
@@ -213,24 +194,14 @@ namespace PBL3.Controllers
         [Authorize(Roles ="Admin")]
         public IActionResult EditComment(int id)
         {
-            var comment = _context.Comments.Where(p => p.ID == id).Include(p => p.account).FirstOrDefault();
-
+            var comment =_commentService.GetCommentByID(id);
             if(comment == null)
-            {
                 return NotFound();
-            }
-
             if(comment.typePost == 1)
-            {
-                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
+                ViewBag.postName = _problemService.GetProblemByID(comment.postID).title;
             else
-            {
-                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
-
-            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
-
+                ViewBag.postName = _articleService.GetArticleByID(comment.postID).title;
+            ViewBag.commentLikes = _likeService.GetAllLikes().Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
             return View(comment);
         }
         [Authorize(Roles ="Admin")]
@@ -239,44 +210,30 @@ namespace PBL3.Controllers
         public IActionResult EditComment(int? id, [Bind("content", "isHidden")]Comment reqComment, string next)
         {
             if(id == null)
-            {
                 return NotFound();
-            }
 
-            var comment = _context.Comments.Where(p => p.ID == id).FirstOrDefault();
+            var comment = _commentService.GetCommentByID((int)id);
             if(comment == null)
-            {
                 return NotFound();
-            }
 
-            comment.account = _context.Accounts.FirstOrDefault(p => p.ID == comment.accountID);
 
+            comment.account = _accountService.GetAccountByID(comment.accountID);
             if(string.IsNullOrEmpty(reqComment.content))
-            {
                 return View(comment);
-            }
 
             comment.isHidden = reqComment.isHidden;
-
             comment.content = reqComment.content;
 
-            _context.Update(comment);
-
-            _context.SaveChanges();
+            _commentService.UpdateComment(comment);
 
             if(comment.typePost == 1)
-            {
-                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
+                ViewBag.postName = _problemService.GetProblemByID(comment.postID).title;
             else
-            {
-                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
+                ViewBag.postName =  _articleService.GetArticleByID(comment.postID).title;
 
-            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
+            ViewBag.commentLikes = _likeService.GetAllLikes().Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
             
-            if(next == "edit")
-                return View(comment);
+            if(next == "edit") return View(comment);
             return RedirectToAction("Index");
         }
         public void DeleteListComments(List<int> listCommentIds)
@@ -345,10 +302,8 @@ namespace PBL3.Controllers
         public void LikeComment(int commentID)
         {
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
             var accountName = HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserName").Value;
-
-            var accountReceiveNotiID = _context.Comments.FirstOrDefault(p => p.ID == commentID).accountID;
+            var accountReceiveNotiID = _commentService.GetCommentByID(commentID).accountID;
 
             var like = _context.Likes.FirstOrDefault(p => p.commentID == commentID && p.accountID == accountID);
             if(like != null)
@@ -419,16 +374,12 @@ namespace PBL3.Controllers
 
             ViewBag.postName = new List<string>();
 
-            foreach(var item in listComments)
+            foreach(var comment in listComments)
             {
-                if(item.typePost == 1)
-                {
-                    ViewBag.postName.Add(_context.Problems.FirstOrDefault(p => p.ID == item.postID).title);
-                }
+                if(comment.typePost == 1)
+                    ViewBag.postName =  _problemService.GetProblemByID(comment.postID).title;
                 else
-                {
-                    ViewBag.postName.Add(_context.Articles.FirstOrDefault(p => p.ID == item.postID).title);
-                }
+                    ViewBag.postName =  _articleService.GetArticleByID(comment.postID).title;
             }
 
             return View(listComments);
@@ -441,15 +392,12 @@ namespace PBL3.Controllers
                 return NotFound();
                 
             if(comment.typePost == 1)
-            {
-                ViewBag.postName = _context.Problems.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
+                ViewBag.postName =  _problemService.GetProblemByID(comment.postID).title;
             else
-            {
-                ViewBag.postName = _context.Articles.FirstOrDefault(p => p.ID == comment.postID).title;
-            }
+                ViewBag.postName =  _articleService.GetArticleByID(comment.postID).title;
 
-            ViewBag.commentLikes = _context.Likes.Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
+
+            ViewBag.commentLikes = _likeService.GetAllLikes().Where(p => p.commentID == comment.ID && p.status == true).ToList().Count;
 
             return View(comment);
         }

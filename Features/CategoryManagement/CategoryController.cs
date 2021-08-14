@@ -11,13 +11,13 @@ using PBL3.General;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-namespace PBL3.Controllers
+namespace PBL3.Features.CategoryManagement
 {
     [Authorize(Roles ="Admin, Author")]
-    public class ProblemCategoriesController : Controller
+    public class CategoryController : Controller
     {
         private readonly PBL3Context _context;
-        public ProblemCategoriesController(PBL3Context context)
+        public CategoryController(PBL3Context context)
         {
             _context = context;
         }
