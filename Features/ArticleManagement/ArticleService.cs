@@ -22,9 +22,9 @@ namespace PBL3.Features.ArticleManagement
             return _articleRepo.GetAll().Where(p => p.isDeleted == true).ToList();
         }
 
-        public List<Article> GetArticlesByTopicID(int topicID, bool IsPublic)
+        public List<Article> GetArticlesByTopicID(int topicID)
         {
-            return _articleRepo.GetAll().Where(p => p.isDeleted == false && p.topicID == topicID && p.IsPublic == IsPublic).ToList();
+            return _articleRepo.GetAll().Where(p => p.isDeleted == false && p.topicID == topicID).ToList();
         }
         public Article GetArticleByID(int articleID)
         {

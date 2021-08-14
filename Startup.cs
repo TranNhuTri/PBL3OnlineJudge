@@ -19,7 +19,7 @@ using PBL3.Features.ArticleManagement;
 using PBL3.Features.CommentManagement;
 using PBL3.Features.LikeManagement;
 using PBL3.Features.NotificationManagement;
-
+using PBL3.Features.ActionManagemant;
 namespace PBL3
 {
     public class Startup
@@ -65,6 +65,9 @@ namespace PBL3
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddScoped<ICommentService, CommentService>();
+            
+            services.AddScoped<IActionService, ActionService>();
+            
 
             services.AddDistributedMemoryCache();
 

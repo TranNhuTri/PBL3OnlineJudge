@@ -6,9 +6,12 @@ namespace PBL3.Features.CategoryManagement
     public interface ICategoryService
     {
         List<Category> GetAllCategories();
+        List<Category> GetAllDeletedCategories();
+        List<Category> GetCategoriesByName(string txt);
+        Category GetCategoryByName(string txt);
         Category GetCategoryByID(int categoryID);
         void AddCategory(Category category);
         void UpdateCategory(Category category);
-        void DeleteCategory(int categoryID);
+        void ChangeIsDeletedCategory(int categoryID);
     }
 }

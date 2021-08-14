@@ -18,7 +18,20 @@ namespace PBL3.Features.CategoryManagement
         {
             return _categoryRepo.GetAll().Where(p => p.isDeleted == false).ToList();
         }
+        public List<Category> GetAllDeletedCategories()
+        {
+            return _categoryRepo.GetAll().Where(p => p.isDeleted == true).ToList();
+        }
         
+        public List<Category> GetCategoriesByName(string txt)
+        {
+            return _categoryRepo.GetAll().Where(p => p.name.ToLower().Contains(txt.ToLower())).ToList();
+        }
+
+        public Category GetCategoryByName(string txt)
+        {
+            return _categoryRepo.GetAll().FirstOrDefault(p => p.name == txt);
+        }
         public Category GetCategoryByID(int categoryID)
         {
             return _categoryRepo.GetById(categoryID);
@@ -33,9 +46,10 @@ namespace PBL3.Features.CategoryManagement
             _categoryRepo.Update(category);
             _categoryRepo.Save();
         }
-        public void DeleteCategory(int categoryID)
+        public void ChangeIsDeletedCategory(int categoryID)
         {
-            _categoryRepo.Delete(categoryID);
+            Category category = _categoryRepo.GetById(categoryID);
+            category.isDeleted = !category.isDeleted;
             _categoryRepo.Save();
         }
     }

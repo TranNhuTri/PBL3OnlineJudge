@@ -13,22 +13,27 @@ using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using PBL3.Features.ArticleManagement;
+using PBL3.Features.ActionManagemant;
+using PBL3.Features.AccountManagement;
 
 namespace PBL3.Features.TopicManagement
 {
     [Authorize(Roles ="Admin, Author")]
     public class TopicsController : Controller
     {
-        private readonly PBL3Context _context; // nho bo di
         private readonly ITopicService _topicService;
         private readonly IArticleService _articleService;
+        private readonly IActionService _actionService;
+        private readonly IAccountService _accountService;
         private IWebHostEnvironment _hostEnvironment;
-        public TopicsController(PBL3Context context, IWebHostEnvironment env, ITopicService topicService, IArticleService articleService)
+        public TopicsController(IWebHostEnvironment env, ITopicService topicService, 
+        IArticleService articleService, IActionService actionService, IAccountService accountService)
         {
-            _context = context;
             _hostEnvironment = env;
             _topicService = topicService;
             _articleService = articleService;
+            _actionService = actionService;
+            _accountService = accountService;
         }
         public IActionResult AddTopic()
         {
@@ -79,16 +84,14 @@ namespace PBL3.Features.TopicManagement
 
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
-                /*_context.Add(new PBL3.Models.Action()
+                _actionService.AddAction(new PBL3.Models.Action()
                 {
-                    account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                    account = _accountService.GetAccountByID(accountID),
                     objectID = reqTopic.ID,
                     dateTime = DateTime.Now,
                     action = "Tạo mới",
                     typeObject = Convert.ToInt32(TypeObject.Topic)
                 });
-
-                await _context.SaveChangesAsync();*/
 
                 return RedirectToAction("Topics", "Admin");
             }
@@ -122,17 +125,17 @@ namespace PBL3.Features.TopicManagement
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
                 var listArticleIDs =  _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
 
-                /* if(Utility.DifferentList(listArticleIDs, reqListArticleIds))
+                if(Utility.DifferentList(listArticleIDs, reqListArticleIds))
                 {
-                    _context.Add(new PBL3.Models.Action()
+                    _actionService.AddAction(new PBL3.Models.Action()
                     {
                         accountID = accountID,
-                        objectID = topicID,
+                        objectID = id,
                         dateTime = DateTime.Now,
                         action = "Sửa danh sách bài viết",
                         typeObject = Convert.ToInt32(TypeObject.Topic)
                     });
-                } */
+                } 
 
                 foreach (var item in listArticleIDs)
                 {
@@ -148,10 +151,10 @@ namespace PBL3.Features.TopicManagement
                    _articleService.UpdateArticle(article);
                 }
 
-                /*if(topic.name != reqTopic.name)
+                if(topic.name != reqTopic.name)
                 {
                     topic.name = reqTopic.name;
-                    _context.Add(new PBL3.Models.Action()
+                    _actionService.AddAction(new PBL3.Models.Action()
                     {
                         accountID = accountID,
                         objectID = id,
@@ -159,7 +162,7 @@ namespace PBL3.Features.TopicManagement
                         action = "Sửa tên chủ đề",
                         typeObject = Convert.ToInt32(TypeObject.Topic)
                     });
-                }*/
+                }
 
                 if(describeImage != null && describeImage.Length > 0)
                 {
@@ -189,8 +192,15 @@ namespace PBL3.Features.TopicManagement
             var topic = _topicService.GetAllTopics().FirstOrDefault(p => p.ID == id);
             if(topic == null)
                 return NotFound();
-            var listActions = _context.Actions.Where(p => p.objectID == topic.ID && p.typeObject == Convert.ToInt32(TypeObject.Topic)).Include(p => p.account).OrderByDescending(p => p.dateTime).ToList();
-            return View(listActions);
+            var listActions = _actionService.GetAllActions()
+            .Where(p => p.objectID == topic.ID && p.typeObject == Convert.ToInt32(TypeObject.Topic)).OrderByDescending(p => p.dateTime).ToList();
+            List<PBL3.Models.Action> listActionsIncludeAccount = new List<PBL3.Models.Action>();
+            foreach(PBL3.Models.Action action in listActions) 
+            {
+                action.account = _accountService.GetAccountByID(action.accountID);
+                listActionsIncludeAccount.Add(action);
+            }
+            return View(listActionsIncludeAccount);
         }
         public IActionResult DeleteTopic(int id)
         {
@@ -210,17 +220,16 @@ namespace PBL3.Features.TopicManagement
                 return NotFound();
             _topicService.ChangeIsDeletedTopic((int)id);
 
-            /*var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-            _context.Add(new PBL3.Models.Action()
+            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+            _actionService.AddAction(new PBL3.Models.Action()
             {
-                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                account = _accountService.GetAccountByID(accountID),
                 objectID = topic.ID,
                 dateTime = DateTime.Now,
                 action = "Xóa chủ đề",
                 typeObject = Convert.ToInt32(TypeObject.Topic)
             });
 
-            _context.SaveChanges(); */
 
             return RedirectToAction("Topics", "Admin");
         }
@@ -229,17 +238,14 @@ namespace PBL3.Features.TopicManagement
             
             var deletedTopics = _topicService.GetAllDeletedTopics();
             
-            /*------------*/
             var listDates = new List<DateTime>();
             foreach(var item in deletedTopics)
             {
-                var action = _context.Actions.Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Topic).OrderByDescending(p => p.dateTime).First();
+                var action = _actionService.GetAllActions().
+                Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Topic).OrderByDescending(p => p.dateTime).First();
                 listDates.Add(action.dateTime);
             }
-            
             ViewBag.deleteDates = listDates;
-            /*-----*/
-
             return View(deletedTopics);
         }
         public IActionResult RestoreTopic(int id)
@@ -260,18 +266,15 @@ namespace PBL3.Features.TopicManagement
                 return NotFound();
             _topicService.ChangeIsDeletedTopic((int)id);
 
-            /*var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-            _context.Add(new PBL3.Models.Action()
+            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
+            _actionService.AddAction(new PBL3.Models.Action()
             {
-                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                account = _accountService.GetAccountByID(accountID),
                 objectID = topic.ID,
                 dateTime = DateTime.Now,
                 action = "Khôi phục chủ đề",
                 typeObject = Convert.ToInt32(TypeObject.Topic)
             });
-
-            _context.SaveChanges();
-            */
 
             return RedirectToAction("Topics", "Admin");
         }

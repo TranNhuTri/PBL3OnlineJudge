@@ -11,7 +11,7 @@
             {
                 <div class="grid_row topic_row">
                     <div class="grid_column-3"> 
-                        <a asp-action="Index" asp-route-topic="@Model[i].name"  class="topic-item">
+                        <a asp-action="Index" asp-route-topicName="@Model[i].name"  class="topic-item">
                             <div class="topic-item__img">
                                 <img src="@Model[i].describeImage" alt="">
                             </div>
@@ -26,7 +26,7 @@
                     @while(i < Model.Count && i % 4 != 0)
                     {
                         <div class="grid_column-3"> 
-                            <a asp-action="Index" asp-route-topic="@Model[i].name"  class="topic-item">
+                            <a asp-action="Index" asp-route-topicName="@Model[i].name"  class="topic-item">
                                 <div class="topic-item__img">
                                     <img src="@Model[i].describeImage" alt="">
                                 </div>

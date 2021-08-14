@@ -10,42 +10,50 @@ using PBL3.Data;
 using PBL3.General;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-
+using PBL3.Features.ProblemManagement;
+using PBL3.Features.ActionManagemant;
+using PBL3.Features.AccountManagement;
+using PBL3.Repositories;
 namespace PBL3.Features.CategoryManagement
 {
     [Authorize(Roles ="Admin, Author")]
-    public class CategoryController : Controller
+    public class CategoriesController : Controller
     {
-        private readonly PBL3Context _context;
-        public CategoryController(PBL3Context context)
+        private readonly ICategoryService _categoryService;
+        private readonly IProblemService _problemService;
+        private readonly IActionService _actionService;
+        private readonly IAccountService _accountService;
+        private readonly IRepository<ProblemClassification> _problemClassficationRepo;
+        public CategoriesController(ICategoryService categoryService, IProblemService problemService, IActionService actionService,
+            IAccountService accountService, IRepository<ProblemClassification> problemClassficationRepo)
         {
-            _context = context;
+            _categoryService = categoryService;
+            _problemService = problemService;
+            _actionService = actionService;
+            _accountService = accountService;
+            _problemClassficationRepo = problemClassficationRepo;
         }
         public IActionResult AddProblemCategory()
         {
-            ViewData["ListProblems"] = _context.Problems.ToList();
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProblemCategory([Bind("name")] Category reqCategory, List<int> reqListProblemIds)
         {
-            ViewData["ListProblems"] = _context.Problems.ToList();
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
             ViewData["ListChosenProblemIDs"] = reqListProblemIds;
 
             if(ModelState.IsValid)
             {
-                var category = _context.Categories.FirstOrDefault(p => p.name.ToLower().Contains(reqCategory.name.ToLower()));
-
+                var category = _categoryService.GetCategoriesByName(reqCategory.name).FirstOrDefault();
                 if(category != null)
                 {
                     ModelState.AddModelError("", "Dạng bài đã tồn tại !");
                     return View();
                 }
-
-                _context.Add(reqCategory);
-
-                await _context.SaveChangesAsync();
+                _categoryService.AddCategory(category);
 
                 foreach(int id in reqListProblemIds)
                 {
@@ -54,61 +62,54 @@ namespace PBL3.Features.CategoryManagement
                         problemID = id,
                         category = reqCategory
                     };
-                    _context.Add(problemClassification);
+                    _problemClassficationRepo.Insert(problemClassification);
                 }
 
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
-                _context.Add(new PBL3.Models.Action()
+                _actionService.AddAction(new PBL3.Models.Action()
                 {
-                    account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                    account = _accountService.GetAccountByID(accountID),
                     objectID = reqCategory.ID,
                     dateTime = DateTime.Now,
                     action = "Tạo mới",
                     typeObject = Convert.ToInt32(TypeObject.ProblemCategory)
                 });
-
-                await _context.SaveChangesAsync();
-
                 return RedirectToAction("ProblemCategories", "Admin");
             }
             return View();
         }
         public IActionResult EditProblemCategory(int id)
         {
-            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
 
-            ViewData["ListChosenProblemIds"] = _context.ProblemClassifications.Where(p => p.categoryID == id && p.isDeleted == false).Select(p => p.problemID).ToList();
+            ViewData["ListChosenProblemIds"] = _problemClassficationRepo.GetAll()
+            .Where(p => p.categoryID == id && p.isDeleted == false)
+            .Select(p => p.problemID).ToList();
 
-            var problemCategory = _context.Categories.FirstOrDefault(p =>p .ID == id);
-
+            var problemCategory = _categoryService.GetCategoryByID(id);
             return View(problemCategory);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProblemCategory(int id, [Bind("name")] Category reqCategory, List<int> reqListProblemIds)
         {
-            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
-
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
             ViewData["ListChosenProblemIds"] = reqListProblemIds.ToList();
 
             if(ModelState.IsValid)
             {
-                var problemCategory = _context.Categories.FirstOrDefault(cate => cate.ID == id);
+                var problemCategory = _categoryService.GetCategoryByID(id);
                 if(problemCategory == null)
-                {
                     return NotFound();
-                }
-
-                if(problemCategory.name != reqCategory.name && _context.Categories.FirstOrDefault(p => p.name == reqCategory.name) != null)
+                if(problemCategory.name != reqCategory.name && _categoryService.GetCategoryByName(reqCategory.name) != null)
                 {
                     ModelState.AddModelError("", "Dạng bài đã tồn tại");
                     return View(reqCategory);
                 }
 
                 var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
-                var listProblemClassifications = _context.ProblemClassifications.Where(pc => pc.categoryID == id && pc.isDeleted == false).ToList();
+                var listProblemClassifications = _problemClassficationRepo.GetAll()
+                .Where(pc => pc.categoryID == id && pc.isDeleted == false).ToList();
 
                 // var lstTmpt = new List<ProblemClassification>();
 
@@ -116,7 +117,7 @@ namespace PBL3.Features.CategoryManagement
 
                 if(Utility.DifferentList(reqListProblemIds, listProblemClassifications.Select(p => p.problemID).ToList()))
                 {
-                    _context.Add(new PBL3.Models.Action()
+                    _actionService.AddAction(new PBL3.Models.Action()
                     {
                         accountID = accountID,
                         objectID = id,
@@ -132,7 +133,7 @@ namespace PBL3.Features.CategoryManagement
                     if(reqListProblemIds.Any(p => p == item.problemID) == false)
                     {
                         item.isDeleted = true;
-                        _context.Update(item);
+                        _problemClassficationRepo.Update(item);
                     }
                 }
                 foreach(var item in reqListProblemIds)
@@ -140,7 +141,7 @@ namespace PBL3.Features.CategoryManagement
                     //them
                     if(listProblemClassifications.Any(p => p.problemID == item) == false)
                     {
-                        _context.Add(new ProblemClassification()
+                        _problemClassficationRepo.Insert(new ProblemClassification()
                         {
                             problemID = item,
                             categoryID = id
@@ -150,14 +151,14 @@ namespace PBL3.Features.CategoryManagement
                     {
                         var tmpt = listProblemClassifications.FirstOrDefault(p => p.problemID == item);
                         tmpt.isDeleted = false;
-                        _context.Update(tmpt);
+                        _problemClassficationRepo.Update(tmpt);
                     }
                 }
 
                 if(problemCategory.name != reqCategory.name)
                 {
                     problemCategory.name = reqCategory.name;
-                    _context.Add(new PBL3.Models.Action()
+                    _actionService.AddAction(new PBL3.Models.Action()
                     {
                         accountID = accountID,
                         objectID = id,
@@ -166,14 +167,10 @@ namespace PBL3.Features.CategoryManagement
                         typeObject = Convert.ToInt32(TypeObject.ProblemCategory)
                     });
                 }
-                _context.Update(problemCategory);
+                _categoryService.UpdateCategory(problemCategory);
 
                 // _context.ProblemClassifications.RemoveRange(listProblemClassifications);
-
                 // _context.AddRange(lstTmpt);
-
-                await _context.SaveChangesAsync();
-
                 return RedirectToAction("ProblemCategories", "Admin");
             }
 
@@ -181,25 +178,34 @@ namespace PBL3.Features.CategoryManagement
         }
         public IActionResult History(int id)
         {
-            var problemCategory = _context.Categories.FirstOrDefault(p => p.ID == id);
+            var problemCategory = _categoryService.GetCategoryByID(id);
             if(problemCategory == null)
             {
                 return NotFound();
             }
-            var listActions = _context.Actions.Where(p => p.objectID == problemCategory.ID && p.typeObject == Convert.ToInt32(TypeObject.ProblemCategory)).Include(p => p.account).OrderByDescending(p => p.dateTime).ToList();
-            return View(listActions);
+            var listActions = _actionService.GetActionsByObject(problemCategory.ID, (int)TypeObject.ProblemCategory)
+            .OrderByDescending(p => p.dateTime).ToList();
+            List<PBL3.Models.Action> listActionsIncludeAccount = new List<PBL3.Models.Action>();
+            foreach(PBL3.Models.Action item in listActions)
+            {
+                item.account = _accountService.GetAccountByID(item.accountID);
+                listActionsIncludeAccount.Add(item);
+            }
+            return View(listActionsIncludeAccount);
         }
         public IActionResult DeleteProblemCategory(int id)
         {
-            var problemCategory = _context.Categories.Where(p => p.ID == id).FirstOrDefault();
+            var problemCategory = _categoryService.GetCategoryByID(id);
             if(problemCategory == null)
             {
                 return NotFound();
             }
 
-            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
 
-            ViewData["ListChosenProblemIds"] = _context.ProblemClassifications.Where(p => p.categoryID == id && p.isDeleted == false).Select(p => p.problemID).ToList();
+            ViewData["ListChosenProblemIds"] = _problemClassficationRepo.GetAll()
+            .Where(p => p.categoryID == id && p.isDeleted == false)
+            .Select(p => p.problemID).ToList();
 
             return View(problemCategory);
         }
@@ -207,7 +213,7 @@ namespace PBL3.Features.CategoryManagement
         [ValidateAntiForgeryToken]
         public IActionResult DeleteProblemCategory(int? id)
         {
-            var problemCategory = _context.Categories.Where(p => p.ID == id).FirstOrDefault();
+            var problemCategory = _categoryService.GetCategoryByID((int)id);
             if(problemCategory == null)
             {
                 return NotFound();
@@ -217,76 +223,64 @@ namespace PBL3.Features.CategoryManagement
             
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
 
-            _context.Add(new PBL3.Models.Action()
+            _actionService.AddAction(new PBL3.Models.Action()
             {
-                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                account = _accountService.GetAccountByID(accountID),
                 objectID = problemCategory.ID,
                 dateTime = DateTime.Now,
                 action = "Xóa dạng bài",
                 typeObject = Convert.ToInt32(TypeObject.ProblemCategory)
             });
-
-            _context.SaveChanges();
-
             return RedirectToAction("ProblemCategories", "Admin");
         }
         public IActionResult DeletedProblemCategories()
         {
             var listDates = new List<DateTime>();
-
-            var deletedCategories = _context.Categories.Where(p => p.isDeleted == true).ToList();
-
+            var deletedCategories = _categoryService.GetAllDeletedCategories().ToList();
             foreach(var item in deletedCategories)
             {
-                var action = _context.Actions.Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.ProblemCategory).OrderByDescending(p => p.dateTime).First();
+                var action = _actionService.GetActionsByObject(item.ID, (int)TypeObject.ProblemCategory)
+                .OrderByDescending(p => p.dateTime).First();
                 listDates.Add(action.dateTime);
             }
-            
             ViewBag.deleteDates = listDates;
-
             return View(deletedCategories);
         }
         public IActionResult RestoreProblemCategory(int id)
         {
-            var category = _context.Categories.FirstOrDefault(p => p.ID == id);
+            var category = _categoryService.GetCategoryByID(id);
 
             if(category == null)
             {
                 return NotFound();
             }
-            ViewData["ListProblems"] = _context.Problems.Where(p => p.isDeleted == false).ToList();
+            ViewData["ListProblems"] = _problemService.GetAllProblems().ToList();
 
-            ViewData["ListChosenProblemIds"] = _context.ProblemClassifications.Where(p => p.categoryID == id && p.isDeleted == false).Select(p => p.problemID).ToList();
-
+            ViewData["ListChosenProblemIds"] = _problemClassficationRepo.GetAll()
+            .Where(p => p.categoryID == id && p.isDeleted == false).Select(p => p.problemID).ToList();
             return View(category); 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RestoreProblemCategory(int? id)
         {
-            var category = _context.Categories.FirstOrDefault(p => p.ID == id);
+            var category = _categoryService.GetCategoryByID((int)id);
 
             if(category == null)
             {
                 return NotFound();
             }
             category.isDeleted = false;
-
-            _context.Update(category);
-
+            _categoryService.UpdateCategory(category);
             var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
-            _context.Add(new PBL3.Models.Action()
+            _actionService.AddAction(new PBL3.Models.Action()
             {
-                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
+                account = _accountService.GetAccountByID(accountID),
                 objectID = category.ID,
                 dateTime = DateTime.Now,
                 action = "Khôi phục dạng bài",
                 typeObject = Convert.ToInt32(TypeObject.ProblemCategory)
             });
-
-            _context.SaveChanges();
-
             return RedirectToAction("ProblemCategories", "Admin");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
