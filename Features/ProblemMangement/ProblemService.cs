@@ -239,7 +239,7 @@ namespace PBL3.Features.ProblemManagement
             foreach(Problem item in this.GetAllProblems().ToList())
             {
                 List<int> categoriesIDsOfProblem = item.problemClassifications.Select(p => p.categoryID).ToList();
-                if (problemName != null && !item.title.Contains(problemName)) continue;
+                if (problemName != null && (!string.IsNullOrEmpty(problemName) || !item.title.ToLower().Contains(problemName.ToLower()))) continue;
                 bool checkCategory = false;
                 if (categoryIDs.Count == 0)
                     checkCategory = true;

@@ -64,6 +64,8 @@ namespace PBL3.Features.CategoryManagement
                 action = "Tạo mới",
                 typeObject = Convert.ToInt32(TypeObject.ProblemCategory)
             });
+            _categoryRepo.Insert(category);
+            _categoryRepo.Save();
         }
         public void UpdateCategory(int id, Category category, List<int> reqListProblemIds, int accountID)
         {

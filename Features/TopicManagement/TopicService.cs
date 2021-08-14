@@ -97,6 +97,8 @@ namespace PBL3.Features.TopicManagement
 
             if(topic.name != reqTopic.name)
                 action.action += "tên chủ đề, ";
+            
+            action.action = action.action.Substring(0, action.action.Length - 2);
 
             _actionService.AddAction(action);
 

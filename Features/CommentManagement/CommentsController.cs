@@ -93,6 +93,10 @@ namespace PBL3.Features.CommentManagement
         public IActionResult GetComment(int id)
         {
             var comment = _commentService.GetCommentByID(id);
+            comment.account = _accountService.GetAccountByID(comment.accountID);
+            comment.child = _commentService.GetListCommentsByRootCommentID(id);
+            comment.likes = _likeService.GetLikesByCommentID(id);
+            
             if(comment == null) return NotFound();
             return View(comment);
         }

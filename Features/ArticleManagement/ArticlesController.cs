@@ -47,7 +47,7 @@ namespace PBL3.Features.ArticleManagement
                 return NotFound();
 
             ViewData["ListAuthors"] = _accountService.GetAllAuthor();
-            ViewBag.topic = topic;
+            ViewBag.topic = topic.name;
 
             var listArt = _articleService.GetArticlesByTopicID(topic.ID)
             .OrderByDescending(p => p.timeCreate).ToList();
@@ -64,6 +64,8 @@ namespace PBL3.Features.ArticleManagement
                 if (checkAuthor && checkTitle)
                 listArticles.Add(article);
             }
+            if(!HttpContext.User.Identity.IsAuthenticated || HttpContext.User.Claims.FirstOrDefault(p => p.Type == "Role").Value == "User")
+                listArticles = listArticles.Where(p => p.IsPublic == true).Select(p => p).ToList();
 
             var paramater = new Dictionary<string, string>();
             paramater.Add("topic", topicName);
