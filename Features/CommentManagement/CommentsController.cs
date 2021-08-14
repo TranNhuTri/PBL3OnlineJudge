@@ -18,7 +18,7 @@ using PBL3.Features.NotificationManagement;
 namespace PBL3.Features.CommentManagement
 {
     [Authorize]
-    public class CommentController : Controller
+    public class CommentsController : Controller
     {
         private readonly PBL3Context _context;
         private readonly ICommentService _commentService;
@@ -28,7 +28,7 @@ namespace PBL3.Features.CommentManagement
         private readonly ILikeService _likeService;
         private readonly INotificationService _notificationService;
 
-        public CommentController(PBL3Context context, ICommentService commentService, IAccountService accountService, 
+        public CommentsController(PBL3Context context, ICommentService commentService, IAccountService accountService, 
         IArticleService articleService, IProblemService problemService, ILikeService likeService, INotificationService notificationService)
         {
             _context = context;

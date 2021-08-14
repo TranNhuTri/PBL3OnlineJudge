@@ -16,7 +16,7 @@ namespace PBL3.Features.CategoryManagement
        
         public List<Category> GetAllCategories()
         {
-            return _categoryRepo.GetAll().ToList();
+            return _categoryRepo.GetAll().Where(p => p.isDeleted == false).ToList();
         }
         
         public Category GetCategoryByID(int categoryID)

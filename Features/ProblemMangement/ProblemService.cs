@@ -16,26 +16,72 @@ namespace PBL3.Features.ProblemManagement
         private readonly IRepository<PBL3.Models.Action> _actionRepo;
         private readonly IRepository<ProblemAuthor> _problemAuthorRepo;
         private readonly IRepository<ProblemClassification> _problemClassificationRepo;
-        public ProblemService(IRepository<Problem> problemRepo, IRepository<PBL3.Models.Action> actionRepo, IRepository<ProblemAuthor> problemAuthor, IRepository<ProblemClassification> problemClassificationRepo)
+        private readonly ISubmissionService _submissionService;
+        public ProblemService(IRepository<Problem> problemRepo, IRepository<PBL3.Models.Action> actionRepo, IRepository<ProblemAuthor> problemAuthor, IRepository<ProblemClassification> problemClassificationRepo, ISubmissionService submissionService)
         {
             _problemRepo = problemRepo;
             _actionRepo = actionRepo;
             _problemAuthorRepo = problemAuthor;
             _problemClassificationRepo = problemClassificationRepo;
+            _submissionService = submissionService;
         }
         public List<Problem> GetAllProblems() 
         {
-            return _problemRepo.GetAll().ToList();
+            return _problemRepo.GetAll().Where(p => p.isDeleted == false).ToList();
+        }
+        public List<Problem> GetAllDeletedProblems()
+        {
+            return _problemRepo.GetAll().Where(p => p.isDeleted == true).ToList();
         }
         public Problem GetProblemByID(int problemID)
         {
             return _problemRepo.GetById(problemID);
         }
-
-        public void AddProblem(Problem problem)
+        public Problem GetNonDeletedProblemByCode(string problemCode)
         {
-            _problemRepo.Insert(problem);
+            return _problemRepo.GetAll().Where(p => p.isDeleted == false && p.code == problemCode).FirstOrDefault();
+        }
+        public Problem GetNonDeletedProblemByTitle(string problemTitle)
+        {
+            return _problemRepo.GetAll().Where(p => p.isDeleted == false && p.title == problemTitle).FirstOrDefault();
+        }
+        public void AddProblem(Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, int accountID)
+        {
+            reqProblem.timeCreate = DateTime.Now;
+
+            _problemRepo.Insert(reqProblem);
             _problemRepo.Save();
+
+            foreach(var item in reqListAuthorIds)
+            {
+                _problemAuthorRepo.Insert(new ProblemAuthor()
+                {
+                    problem = reqProblem,
+                    authorID = item
+                });
+            }
+            _problemAuthorRepo.Save();
+
+            foreach(int id in reqListCategoryIds)
+            { 
+                _problemClassificationRepo.Insert(new ProblemClassification()
+                {
+                    problem = reqProblem,
+                    categoryID = id
+                });
+            }
+            _problemClassificationRepo.Save();
+
+            _actionRepo.Insert(new PBL3.Models.Action()
+            {
+                accountID = accountID,
+                objectID = reqProblem.ID,
+                dateTime = DateTime.Now,
+                action = "Tạo mới",
+                typeObject = Convert.ToInt32(TypeObject.Problem)
+            });
+
+            _actionRepo.Save();
         }
 
         public void UpdateProblem(int problemID, Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, int accountID)
@@ -157,18 +203,39 @@ namespace PBL3.Features.ProblemManagement
             _problemRepo.Save();
         }
 
-        public void ChangeIsDeleted(int problemID)
+        public void ChangeIsDeleted(int problemID, int accountID)
         {
             var problem = _problemRepo.GetById(problemID);
-            problem.isDeleted = true;
+
+            var action = new PBL3.Models.Action()
+            {
+                accountID = (int)accountID,
+                objectID = problem.ID,
+                dateTime = DateTime.Now,
+                typeObject = Convert.ToInt32(TypeObject.Problem)
+            };
+
+            if(problem.isDeleted == false)
+            {
+                _submissionService.ChangeIsDeletedSubmissionsByProblemID(problemID);
+                action.action = "Xóa bài tập";
+                _actionRepo.Insert(action);
+            }
+            else
+            {
+                action.action = "Khôi phục bài tập";
+                _actionRepo.Insert(action);
+            }
+
+            _actionRepo.Save();
+            problem.isDeleted = !problem.isDeleted;
             _problemRepo.Update(problem);
-            _problemRepo.Save();
         }
 
         public List<Problem> GetListSearchProblem(string problemName, List<int> categoryIDs, int? minDifficult, int? maxDifficult)
         {
             List<Problem> problems = new List<Problem>();
-            foreach(Problem item in _problemRepo.GetAll().ToList())
+            foreach(Problem item in this.GetAllProblems().ToList())
             {
                 List<int> categoriesIDsOfProblem = item.problemClassifications.Select(p => p.categoryID).ToList();
                 if (problemName != null && !item.title.Contains(problemName)) continue;

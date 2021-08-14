@@ -12,7 +12,6 @@ namespace PBL3.Features.CommentManagement
         List<Comment> GetCommentsByProblemID(int problemID);
         void AddComment(Comment comment);
         void UpdateComment(Comment comment);
-        void DeleteComment(int commentID);
         void ChangeIsDeletedComment(int commentID);
     }
 }

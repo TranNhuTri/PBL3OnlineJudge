@@ -12,14 +12,8 @@ namespace PBL3.Repositories
     public class GenericRepository<T> : IRepository<T> where T: class
     {
         
-        public PBL3Context _context = null;
-        public DbSet<T> table = null;
-        public GenericRepository()
-        {
- 
-            this._context = new PBL3Context();
-            this.table = _context.Set<T>();
-        }
+        private readonly PBL3Context _context = null;
+        private readonly DbSet<T> table = null;
         public GenericRepository(PBL3Context _context)
         {
             this._context = _context;

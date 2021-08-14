@@ -16,6 +16,9 @@ using PBL3.Features.CategoryManagement;
 using PBL3.Features.AccountManagement;
 using PBL3.Features.TopicManagement;
 using PBL3.Features.ArticleManagement;
+using PBL3.Features.CommentManagement;
+using PBL3.Features.LikeManagement;
+using PBL3.Features.NotificationManagement;
 
 namespace PBL3
 {
@@ -56,6 +59,12 @@ namespace PBL3
             services.AddScoped<ITopicService, TopicService>();
 
             services.AddScoped<IArticleService, ArticleService>();
+
+            services.AddScoped<ILikeService, LikeService>();
+
+            services.AddScoped<INotificationService, NotificationService>();
+
+            services.AddScoped<ICommentService, CommentService>();
 
             services.AddDistributedMemoryCache();
 

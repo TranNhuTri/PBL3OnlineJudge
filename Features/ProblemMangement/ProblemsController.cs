@@ -20,20 +20,26 @@ namespace PBL3.Features.ProblemManagement
 {
     public class ProblemsController : Controller
     {
-        private readonly PBL3Context _context; // nho bo di
         private readonly IRepository<PBL3.Models.Action> _actionRepo;
+        private readonly IRepository<ProblemAuthor> _problemAuthorRepo;
+        private readonly IRepository<ProblemClassification> _problemClassificationRepo;
+        private readonly IRepository<TestCase> _testCaseRepo;
         private readonly IProblemService _problemService;
         private readonly ICategoryService _categoryService;
         private readonly ISubmissionService _submissionService;
         private readonly IAccountService _accountService;
-        public ProblemsController(IRepository<PBL3.Models.Action> actionRepo, IProblemService problemService, ICategoryService categoryService, ISubmissionService submissionService, IAccountService accountService, PBL3Context context)
+        private readonly PBL3Context _context;
+        public ProblemsController(IRepository<PBL3.Models.Action> actionRepo, IRepository<ProblemAuthor> problemAuthorRepo,IRepository<ProblemClassification> problemClassificationRepo, IRepository<TestCase> testCaseRepo, IProblemService problemService, ICategoryService categoryService, ISubmissionService submissionService, IAccountService accountService, PBL3Context context)
         {
-            _context = context;
             _actionRepo = actionRepo;
+            _problemAuthorRepo = problemAuthorRepo;
+            _problemClassificationRepo = problemClassificationRepo;
+            _testCaseRepo = testCaseRepo;
             _problemService = problemService;
             _categoryService = categoryService;
             _submissionService = submissionService;
             _accountService = accountService;
+            _context = context;
         }
         public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> categoryIds, int? minDifficult, int? maxDifficult)
         {
@@ -95,6 +101,7 @@ namespace PBL3.Features.ProblemManagement
                 maxDifficult = maxDifficult,
                 hideSolvedProblem = hideSolvedProblem
             };
+
             ViewData["ListCategories"] = _categoryService.GetAllCategories();
             ViewData["ListChosenCategoryIds"] = categoryIds;
             ViewData["ProblemSubmissions"] = problemSubmssions;
@@ -107,7 +114,7 @@ namespace PBL3.Features.ProblemManagement
         [Authorize(Roles ="Admin, Author")]
         public IActionResult AddProblem()
         {
-            ViewData["listAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isActived == true && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
+            ViewData["listAuthors"] = _accountService.GetAllAuthor().OrderBy(p => p.accountName).ToList();
 
             ViewData["listCategories"] = _categoryService.GetAllCategories();
 
@@ -118,7 +125,7 @@ namespace PBL3.Features.ProblemManagement
         [ValidateAntiForgeryToken]
         public IActionResult AddProblem([Bind("code, title, content, difficulty, timeLimit, memoryLimit, isPublic")] Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, string next)
         {
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isActived == true && p.isDeleted == false).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _accountService.GetAllAuthor().OrderBy(p => p.accountName).ToList();
 
             ViewData["ListCategories"] = _categoryService.GetAllCategories();
 
@@ -128,47 +135,18 @@ namespace PBL3.Features.ProblemManagement
 
             if (ModelState.IsValid)
             {
-                if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.code == reqProblem.code) != null)
+                if(_problemService.GetNonDeletedProblemByCode(reqProblem.code) != null)
                 {
                     ModelState.AddModelError("", "Mã bài đã tồn tại");
                     return View();
                 }
-                if(_context.Problems.Where(p => p.isDeleted == false).FirstOrDefault(p => p.title == reqProblem.title) != null)
+                if(_problemService.GetNonDeletedProblemByTitle(reqProblem.title) != null)
                 {
                     ModelState.AddModelError("", "Tên bài đã tồn tại");
                     return View();
                 }
-                reqProblem.timeCreate = DateTime.Now;
 
-                foreach(var item in reqListAuthorIds)
-                {
-                    _context.Add(new ProblemAuthor()
-                    {
-                        problem = reqProblem,
-                        authorID = item
-                    });
-                }
-                foreach(int id in reqListCategoryIds)
-                { 
-                    _context.Add(new ProblemClassification()
-                    {
-                        problem = reqProblem,
-                        categoryID = id
-                    });
-                }
-
-                _problemService.AddProblem(reqProblem);
-
-                _actionRepo.Insert(new PBL3.Models.Action()
-                {
-                    accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value),
-                    objectID = reqProblem.ID,
-                    dateTime = DateTime.Now,
-                    action = "Tạo mới",
-                    typeObject = Convert.ToInt32(TypeObject.Problem)
-                });
-
-                _actionRepo.Save();
+                _problemService.AddProblem(reqProblem, reqListAuthorIds, reqListCategoryIds, Convert.ToInt32(HttpContext.User.Claims.Where(p => p.Type == "UserID")));
 
                 if(next == "edit")
                 {
@@ -181,18 +159,18 @@ namespace PBL3.Features.ProblemManagement
         }
         public IActionResult Problem(int id)
         {
-            var problem = _context.Problems.Where(p => p.ID == id)
-                                            .Include(p => p.problemAuthors)
-                                            .ThenInclude(p => p.author)
-                                            .Include(p => p.problemClassifications)
-                                            .ThenInclude(p => p.category)
-                                            .Include(p => p.submissions)
-                                            .ThenInclude(s => s.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
-                                            .FirstOrDefault();
+            var problem = _problemService.GetProblemByID(id);
             if(problem == null || problem.isDeleted == true)
             {
                 return NotFound();
             }
+
+            problem.problemAuthors = _problemAuthorRepo.GetAll().Where(p => p.problemID == id).ToList();
+            problem.problemClassifications = _problemClassificationRepo.GetAll().Where(p => p.problemID == id).ToList();
+            foreach(var item in problem.problemAuthors)
+                item.author = _accountService.GetAccountByID(item.authorID);
+            foreach(var item in problem.problemClassifications)
+                item.category = _categoryService.GetCategoryByID(item.categoryID);
 
             ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false)
                                                         .Include(p => p.account)
@@ -206,14 +184,10 @@ namespace PBL3.Features.ProblemManagement
         [Authorize(Roles ="Admin, Author")]
         public IActionResult DeleteProblem(int? id)
         {
-            var problem = _context.Problems.Where(p => p.ID == id)
-                                            .Include(p => p.submissions)
-                                            .ThenInclude(p => p.account)
-                                            .Include(p => p.testCases)
-                                            .AsSplitQuery().OrderByDescending(p => p.timeCreate)
-                                            .FirstOrDefault();
-            
-            ViewBag.listComments = _context.Comments.Where(p => p.postID == id).Include(p => p.account).ToList();
+            var problem = _problemService.GetProblemByID((int)id);
+            problem.submissions = _submissionService.GetAllSubmissionsByProblemID((int)id);
+            foreach(var item in problem.submissions)
+                item.account = _accountService.GetAccountByID(item.accountID);
 
             return View(problem);
         }
@@ -222,45 +196,29 @@ namespace PBL3.Features.ProblemManagement
         [ValidateAntiForgeryToken]
         public IActionResult DeleteProblem(int id)
         {
-            var problem = _context.Problems.Where(p => p.ID == id).FirstOrDefault();
+            var problem = _problemService.GetProblemByID(id);
 
             if(problem == null)
                 return NotFound();
-
-            _problemService.ChangeIsDeleted(id);
-
-            _submissionService.ChangeIsDeletedSubmissionsByProblemID(id);
-
-            _actionRepo.Insert(new PBL3.Models.Action()
-            {
-                accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value),
-                objectID = problem.ID,
-                dateTime = DateTime.Now,
-                action = "Xóa bài tập",
-                typeObject = Convert.ToInt32(TypeObject.Problem)
-            });
-
-            _actionRepo.Save();
             
+            _problemService.ChangeIsDeleted(id, Convert.ToInt32(HttpContext.User.Claims.Where(p => p.Type == "UserID")));
+
             return RedirectToAction("Problems", "Admin");
         }
         [Authorize(Roles ="Admin, Author")]
         public IActionResult EditProblem(int id)
         {
-            var problem = _context.Problems.Include(p => p.problemAuthors)
-                                            .Include(problem => problem.problemClassifications)
-                                            .AsSplitQuery().OrderBy(p => p.title)
-                                            .FirstOrDefault(p => p.ID == id);
+            var problem = _problemService.GetProblemByID(id);
             
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isDeleted == false && p.isActived == true).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _accountService.GetAllAuthor().OrderBy(p => p.accountName).ToList();
 
             ViewData["ListCategories"] = _categoryService.GetAllCategories();
 
-            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
+            ViewData["ListChosenAuthorIds"] = _problemAuthorRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).Select(p => p.authorID).ToList();
 
-            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
+            ViewData["ListChosenCategoryIds"] = _problemClassificationRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).Select(p => p.categoryID).ToList();
 
-            ViewBag.problemTestCases = _context.TestCases.Where(p => p.problemID == id && p.isDeleted == false).ToList();
+            ViewBag.problemTestCases = _testCaseRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).ToList();
 
             return View(problem);
         }
@@ -269,11 +227,11 @@ namespace PBL3.Features.ProblemManagement
         [ValidateAntiForgeryToken]
         public IActionResult EditProblem(int id, [Bind("code, title, content, difficulty, isPublic, timeLimit, memoryLimit")] Problem reqProblem, List<int> reqListAuthorIds, List<int> reqListCategoryIds, string next)
         {
-            if(_context.Problems.FirstOrDefault(p => p.ID == id) == null)
+            if(_problemService.GetProblemByID(id) == null)
             {
                 return NotFound();
             }
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => (p.roleID == 2 || p.roleID == 1) && p.isDeleted == false && p.isActived == true).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _accountService.GetAllAuthor().OrderBy(p => p.accountName).ToList();
 
             ViewData["ListCategories"] = _categoryService.GetAllCategories();
 
@@ -281,7 +239,7 @@ namespace PBL3.Features.ProblemManagement
 
             ViewData["ListChosenCategoryIds"] = reqListCategoryIds;
 
-            ViewBag.problemTestCases = _context.TestCases.Where(p => p.problemID == id && p.isDeleted == false).ToList();
+            ViewBag.problemTestCases = _testCaseRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).ToList();
 
             if(ModelState.IsValid)
             {
@@ -314,22 +272,19 @@ namespace PBL3.Features.ProblemManagement
         [Authorize(Roles ="Admin, Author")]
         public IActionResult DeletedProblems(int? page)
         {
-            var problems = _context.Problems.Where(p => p.isDeleted == true).ToList();
+            var problems = _problemService.GetAllDeletedProblems();
 
             var listDates = new List<DateTime>();
 
             foreach(var item in problems)
             {
-                var action = _context.Actions.Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Problem).OrderByDescending(p => p.dateTime).First();
+                var action = _actionRepo.GetAll().Where(p => p.objectID == item.ID && p.typeObject == (int)TypeObject.Problem).OrderByDescending(p => p.dateTime).First();
                 listDates.Add(action.dateTime);
             }
             
             ViewBag.deleteDates = listDates;
 
-            if(page == null)
-            {
-                page = 1;
-            }
+            if(page == null) page = 1;
 
             int limit = Utility.limitData;
             int start = (int)(page - 1)*limit;
@@ -345,18 +300,15 @@ namespace PBL3.Features.ProblemManagement
         [Authorize(Roles ="Admin, Author")]
         public IActionResult RestoreProblem(int id)
         {
-            var problem = _context.Problems.Include(p => p.problemAuthors)
-                                            .Include(problem => problem.problemClassifications)
-                                            .AsSplitQuery().OrderBy(p => p.title)
-                                            .FirstOrDefault(p => p.ID == id);
+            var problem = _problemService.GetProblemByID(id);
             
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.roleID == 2 || p.roleID == 1).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _accountService.GetAllAuthor();
 
-            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+            ViewData["ListCategories"] = _categoryService.GetAllCategories();
 
-            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
+            ViewData["ListChosenAuthorIds"] = _problemAuthorRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).Select(p => p.authorID).ToList();
 
-            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
+            ViewData["ListChosenCategoryIds"] = _problemClassificationRepo.GetAll().Where(p =>p.problemID == id &&  p.isDeleted == false).Select(p => p.categoryID).ToList();
 
             if(problem == null)
             {
@@ -369,47 +321,29 @@ namespace PBL3.Features.ProblemManagement
         [Authorize(Roles ="Admin, Author")]
         public IActionResult RestoreProblem(int? id)
         {
-            var problem = _context.Problems.Include(p => p.problemAuthors)
-                                            .Include(problem => problem.problemClassifications)
-                                            .Include(p => p.submissions)
-                                            .AsSplitQuery().OrderBy(p => p.title)
-                                            .FirstOrDefault(p => p.ID == id);
+            var problem = _problemService.GetProblemByID((int)id);
             
-            ViewData["ListAuthors"] = _context.Accounts.Where(p => p.roleID == 2 || p.roleID == 1).OrderBy(p => p.accountName).ToList();
+            ViewData["ListAuthors"] = _accountService.GetAllAuthor();
 
-            ViewData["ListCategories"] = _context.Categories.OrderBy(p => p.name).ToList();
+            ViewData["ListCategories"] = _categoryService.GetAllCategories().OrderBy(p => p.name).ToList();
 
-            ViewData["ListChosenAuthorIds"] = problem.problemAuthors.Where(p => p.isDeleted == false).Select(p => p.authorID).ToList();
+            ViewData["ListChosenAuthorIds"] = _problemAuthorRepo.GetAll().Where(p => p.problemID == id && p.isDeleted == false).Select(p => p.authorID).ToList();
 
-            ViewData["ListChosenCategoryIds"] = problem.problemClassifications.Where(p => p.isDeleted == false).Select(p => p.categoryID).ToList();
+            ViewData["ListChosenCategoryIds"] = _problemClassificationRepo.GetAll().Where(p =>p.problemID == id &&  p.isDeleted == false).Select(p => p.categoryID).ToList();
 
             if(problem == null)
             {
                 return NotFound();
             }
 
-            if(_context.Problems.FirstOrDefault(p => (p.title == problem.title || p.code == problem.code) && p.isDeleted == false) != null)
+            if(_problemService.GetNonDeletedProblemByTitle(problem.title) != null || _problemService.GetNonDeletedProblemByCode(problem.code) != null)
             {
                 ModelState.AddModelError("", "Không thể khôi phục bài vì đã có bài trùng tên hoặc mã bài");
                 return View(problem);
             }
 
-            problem.isDeleted = false;
-            _context.Update(problem);
+            _problemService.ChangeIsDeleted((int)id, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
 
-            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
-            var action = new PBL3.Models.Action()
-            {
-                account = _context.Accounts.FirstOrDefault(p => p.ID == accountID),
-                objectID = problem.ID,
-                dateTime = DateTime.Now,
-                action = "Khôi phục đề bài",
-                typeObject = Convert.ToInt32(TypeObject.Problem)
-            };
-            _context.Add(action);
-            
-            _context.SaveChanges();
             return RedirectToAction("Problems", "Admin");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
