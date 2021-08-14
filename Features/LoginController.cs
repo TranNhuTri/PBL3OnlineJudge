@@ -44,10 +44,9 @@ namespace PBL3.Controllers
                 var account = _accountService.GetAllAccounts().Where(p => p.accountName == requestAccount.accountName && p.passWord == Utility.CreateMD5(requestAccount.passWord) 
                                                                     && p.isActived == true && p.isDeleted == false).FirstOrDefault();
                 
-                account.role = _roleRepo.GetById(account.roleID);
-
                 if(account != null)
                 {
+                    account.role = _roleRepo.GetById(account.roleID);
                     var userClaims = new List<Claim>()
                     {
                         new Claim("UserID", account.ID.ToString()),
