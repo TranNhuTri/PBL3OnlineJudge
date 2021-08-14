@@ -147,7 +147,7 @@ namespace PBL3.Features.ArticleManagement
 
             if(ModelState.IsValid)
             {
-
+                _articleService.UpdateArticle((int)id, reqArticle, topicID, reqListAuthorIds, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
                 if(next == "edit") return RedirectToAction("EditArticle", "Articles", new {id = article.ID});
                 return RedirectToAction("Articles", "Admin");
             }
