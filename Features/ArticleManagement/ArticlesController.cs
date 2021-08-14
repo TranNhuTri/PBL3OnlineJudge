@@ -101,7 +101,7 @@ namespace PBL3.Features.ArticleManagement
         [Authorize(Roles ="Admin, Author")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddArticle([Bind("title, content", "IsPublic")]Article article, int? topicID, List<int> reqListAuthorIds, string next)
+        public IActionResult AddArticle(int? topicID, [Bind("title, content", "IsPublic")]Article article, List<int> reqListAuthorIds, string next)
         {
             ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
 
@@ -109,41 +109,19 @@ namespace PBL3.Features.ArticleManagement
 
             if(ModelState.IsValid)
             {
-                if(topicID != 0)
-                    article.topicID = topicID;
-                article.timeCreate = DateTime.Now;
-               _articleService.AddArticle(article);
-
-                foreach(int id in reqListAuthorIds)
-                { 
-                    _articleAuthorRepo.Insert(new ArticleAuthor()
-                    {
-                        article = article,
-                        authorID = id
-                    });
-                }
-
-                var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-                var action = new PBL3.Models.Action()
-                {
-                    account = _accountService.GetAccountByID(accountID),
-                    objectID = article.ID,
-                    dateTime = DateTime.Now,
-                    action = "Tạo mới",
-                    typeObject = Convert.ToInt32(TypeObject.Article)
-                };
-
-                _actionService.AddAction(action);
 
                 if(next == "edit") return RedirectToAction("EditArticle", "Articles", new {id = article.ID});
                 return RedirectToAction("Articles", "Admin");
             }
+
+            _articleService.AddArticle(topicID, article, reqListAuthorIds, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
+            
             return View(article);
         }
         [Authorize(Roles ="Admin, Author")]
         public IActionResult EditArticle(int id)
         {
-            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name).ToList();
             ViewData["ListAuthors"] = _accountService.GetAllAuthor();
             ViewData["ListChosenAuthorIds"] = _articleAuthorRepo.GetAll().Where(p => p.articleID == id && p.isDeleted == false)
             .Select(p => p.authorID).ToList();
@@ -162,91 +140,13 @@ namespace PBL3.Features.ArticleManagement
             ViewData["ListChosenAuthorIds"] = reqListAuthorIds;
 
             var article = _articleService.GetArticleByID((int)id);
-            article.articleAuthors = _articleAuthorRepo.GetAll().Where(p => p.articleID == article.ID).ToList();
+
             if(article == null) return NotFound();
+
+            article.articleAuthors = _articleAuthorRepo.GetAll().Where(p => p.articleID == article.ID).ToList();
 
             if(ModelState.IsValid)
             {
-                var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-                var account = _accountService.GetAccountByID(accountID);
-                if(article.content != reqArticle.content)
-                {
-                    article.content = reqArticle.content;
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        account = account,
-                        objectID = (int)id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa nội dung",
-                        typeObject = Convert.ToInt32(TypeObject.Article)
-                    });
-                }
-                if(article.title != reqArticle.title)
-                {
-                    article.title = reqArticle.title;
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        account = account,
-                        objectID = (int)id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa tên bài viết",
-                        typeObject = Convert.ToInt32(TypeObject.Article)
-                    });
-                }
-                if(topicID != 0 && article.topicID != topicID)
-                {
-                    article.topicID = topicID;
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        account = account,
-                        objectID = (int)id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa chủ đề",
-                        typeObject = Convert.ToInt32(TypeObject.Article)
-                    });
-                }
-                if(article.IsPublic != reqArticle.IsPublic)
-                {
-                    article.IsPublic = reqArticle.IsPublic;
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        account = account,
-                        objectID = (int)id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa trạng thái",
-                        typeObject = Convert.ToInt32(TypeObject.Article)
-                    });
-                }
-                var listArticleAuthors = _articleAuthorRepo.GetAll().Where(p => p.articleID == (int)id && p.isDeleted == false);
-
-                foreach(var item in listArticleAuthors)// old listArticleAuthors     new reqListAuthorIds
-                {
-                    if(reqListAuthorIds.Any(p => p == item.authorID) == false)
-                    {
-                        item.isDeleted = true;
-                        _articleAuthorRepo.Update(item);
-                    }
-                }
-                foreach(var item in reqListAuthorIds)
-                {
-                    //add
-                    if(article.articleAuthors.Any(p => p.authorID == item) == false)
-                    {
-                        _articleAuthorRepo.Insert(new ArticleAuthor()
-                        {
-                            authorID = item,
-                            articleID = (int)id
-                        });
-                    }
-                    else
-                    {
-                        var tmpt = article.articleAuthors.FirstOrDefault(p => p.authorID == item);
-                        tmpt.isDeleted = false;
-                        _articleAuthorRepo.Update(tmpt);
-                    }
-                }
-
-                _articleService.UpdateArticle(article);
 
                 if(next == "edit") return RedirectToAction("EditArticle", "Articles", new {id = article.ID});
                 return RedirectToAction("Articles", "Admin");
@@ -303,26 +203,11 @@ namespace PBL3.Features.ArticleManagement
             var article = _articleService.GetArticleByID((int)id);
 
             if(article == null) return NotFound();
-            _articleService.ChangeIsDeletedArticle((int)id);
+
+            _articleService.ChangeIsDeletedArticle((int)id, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
 
             var listComments = _commentService.GetCommentsByArticleID((int)id).ToList();
-            List<Comment> listCommentsIncludeAccount = new List<Comment>();
-            foreach (Comment item in listComments)
-            {
-                item.account = _accountService.GetAccountByID(item.accountID);
-                listCommentsIncludeAccount.Add(item);
-            }
-            ViewBag.listComments = listCommentsIncludeAccount;
 
-            var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-            _actionService.AddAction(new PBL3.Models.Action()
-            {
-                account = _accountService.GetAccountByID(accountID),
-                objectID = (int)id,
-                dateTime = DateTime.Now,
-                action = "Xóa bài viết",
-                typeObject = Convert.ToInt32(TypeObject.Article)
-            });
             return RedirectToAction("Articles", "Admin");
         }
         [Authorize(Roles ="Admin, Author")]
@@ -344,7 +229,7 @@ namespace PBL3.Features.ArticleManagement
             var article = _articleService.GetArticleByID((int)id);
             if(article == null)
                 return NotFound();
-            _articleService.ChangeIsDeletedArticle((int)id);
+            _articleService.ChangeIsDeletedArticle((int)id, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
             return RedirectToAction("Articles", "Admin");
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

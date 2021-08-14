@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using PBL3.Models;
 
 namespace PBL3.Features.TopicManagement
@@ -8,8 +9,9 @@ namespace PBL3.Features.TopicManagement
         List<Topic> GetAllTopics();
         List<Topic> GetAllDeletedTopics();
         Topic GetTopicByID(int topicID);
-        void AddTopic(Topic topic);
-        void UpdateTopic(Topic topic);
+        Topic GetTopicByName(string topicName);
+        void AddTopic(Topic topic, List<int> reqListArticleIds, string inputFileName, int accountID);
+        void UpdateTopic(int id, Topic topic, List<int> reqListArticleIds, string inputFileName, int accountID);
         void ChangeIsDeletedTopic(int topicID);
     }
 }

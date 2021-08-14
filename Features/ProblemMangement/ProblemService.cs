@@ -230,6 +230,7 @@ namespace PBL3.Features.ProblemManagement
             _actionRepo.Save();
             problem.isDeleted = !problem.isDeleted;
             _problemRepo.Update(problem);
+            _problemRepo.Save();
         }
 
         public List<Problem> GetListSearchProblem(string problemName, List<int> categoryIDs, int? minDifficult, int? maxDifficult)

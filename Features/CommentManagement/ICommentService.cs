@@ -8,6 +8,8 @@ namespace PBL3.Features.CommentManagement
         List<Comment> GetAllComments();
         List<Comment> GetAllDeletedComments();
         Comment GetCommentByID(int commentID);
+        List<Comment> GetCommentsByAccountID(int accountID);
+        List<Comment> GetListCommentsByRootCommentID(int commetID);
         List<Comment> GetCommentsByArticleID(int articleID);
         List<Comment> GetCommentsByProblemID(int problemID);
         void AddComment(Comment comment);

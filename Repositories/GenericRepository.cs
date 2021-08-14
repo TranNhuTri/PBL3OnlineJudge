@@ -34,7 +34,6 @@ namespace PBL3.Repositories
         public void Update(T obj)
         {
             table.Update(obj);
-            _context.Entry(obj).State = EntityState.Modified;
         }
         public void Delete(int id)
         {

@@ -15,6 +15,8 @@ using PBL3.Features.CategoryManagement;
 using PBL3.Features.SubmissionManagement;
 using PBL3.Features.AccountManagement;
 using PBL3.Repositories;
+using PBL3.Features.CommentManagement;
+using PBL3.Features.LikeManagement;
 
 namespace PBL3.Features.ProblemManagement
 {
@@ -28,8 +30,9 @@ namespace PBL3.Features.ProblemManagement
         private readonly ICategoryService _categoryService;
         private readonly ISubmissionService _submissionService;
         private readonly IAccountService _accountService;
-        private readonly PBL3Context _context;
-        public ProblemsController(IRepository<PBL3.Models.Action> actionRepo, IRepository<ProblemAuthor> problemAuthorRepo,IRepository<ProblemClassification> problemClassificationRepo, IRepository<TestCase> testCaseRepo, IProblemService problemService, ICategoryService categoryService, ISubmissionService submissionService, IAccountService accountService, PBL3Context context)
+        private readonly ICommentService _commentService;
+        private readonly ILikeService _likeService;
+        public ProblemsController(IRepository<PBL3.Models.Action> actionRepo, IRepository<ProblemAuthor> problemAuthorRepo,IRepository<ProblemClassification> problemClassificationRepo, IRepository<TestCase> testCaseRepo, IProblemService problemService, ICategoryService categoryService, ISubmissionService submissionService, IAccountService accountService, ICommentService commentService, ILikeService likeService)
         {
             _actionRepo = actionRepo;
             _problemAuthorRepo = problemAuthorRepo;
@@ -39,7 +42,8 @@ namespace PBL3.Features.ProblemManagement
             _categoryService = categoryService;
             _submissionService = submissionService;
             _accountService = accountService;
-            _context = context;
+            _commentService = commentService;
+            _likeService = likeService;
         }
         public IActionResult Index(int? page, string problemName, bool hideSolvedProblem, List<int> categoryIds, int? minDifficult, int? maxDifficult)
         {
@@ -171,13 +175,16 @@ namespace PBL3.Features.ProblemManagement
                 item.author = _accountService.GetAccountByID(item.authorID);
             foreach(var item in problem.problemClassifications)
                 item.category = _categoryService.GetCategoryByID(item.categoryID);
+            
+            var comments = _commentService.GetCommentsByProblemID(id).Where(p => p.level == 1).ToList();
+            foreach(var item in comments)
+                item.account = _accountService.GetAccountByID(item.accountID);
+            foreach(var item in comments)
+                item.likes = _likeService.GetLikesByCommentID(item.ID);
+            foreach(var item in comments)
+                item.child = _commentService.GetListCommentsByRootCommentID(item.ID);
 
-            ViewData["ListComments"] = _context.Comments.Where(p => p.postID == id && p.level == 1 && p.isHidden == false && p.isDeleted == false)
-                                                        .Include(p => p.account)
-                                                        .Include(p => p.child)
-                                                        .Include(p => p.likes)
-                                                        .ThenInclude(p => p.account).AsSplitQuery().OrderByDescending(p => p.timeCreate)
-                                                        .ToList();
+            ViewData["ListComments"] = comments;
 
             return View(problem);
         }

@@ -9,9 +9,9 @@ namespace PBL3.Features.ArticleManagement
         List<Article> GetAllDeletedArticles();
         Article GetArticleByID(int articleID);
         List<Article> GetArticlesByTopicID(int topicID);
-        void AddArticle(Article article);
+        void AddArticle(int? topicID, Article article, List<int> reqListAuthorIds, int accountID);
+        void UpdateArticle(int id, Article reqArticle, int? topicID, List<int> reqListAuthorIds, int accountID);
         void UpdateArticle(Article article);
-        void DeleteArticle(int articleID);
-        void ChangeIsDeletedArticle(int articleID);
+        void ChangeIsDeletedArticle(int articleID, int accountID);
     }
 }

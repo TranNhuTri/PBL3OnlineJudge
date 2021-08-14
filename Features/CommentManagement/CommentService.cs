@@ -26,7 +26,10 @@ namespace PBL3.Features.CommentManagement
         {
             return _commentRepo.GetById(commentID);
         }
-
+        public List<Comment> GetCommentsByAccountID(int accountID)
+        {
+            return _commentRepo.GetAll().Where(p => p.accountID == accountID && p.isDeleted == false).ToList();
+        }
         public List<Comment> GetCommentsByArticleID(int articleID)
         {
             return _commentRepo.GetAll().Where(p => p.isDeleted == false && p.postID == articleID && p.typePost == 2)
@@ -34,10 +37,13 @@ namespace PBL3.Features.CommentManagement
         }
         public List<Comment> GetCommentsByProblemID(int problemID)
         {
-            return _commentRepo.GetAll().Where(p => p.isDeleted == false && p.postID == problemID && p.typePost == 1)
+            return _commentRepo.GetAll().Where(p => p.isHidden == false && p.isDeleted == false && p.postID == problemID && p.typePost == 1)
             .OrderByDescending(p => p.timeCreate).ToList();
         }
-
+        public List<Comment> GetListCommentsByRootCommentID(int commetID)
+        {
+            return _commentRepo.GetAll().Where(p => p.rootCommentID == commetID && p.isDeleted == false && p.isHidden == false).ToList();
+        }
         public void AddComment(Comment comment)
         {
             _commentRepo.Insert(comment);

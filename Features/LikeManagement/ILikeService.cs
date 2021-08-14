@@ -7,6 +7,7 @@ namespace PBL3.Features.LikeManagement
     {
         List<Like> GetAllLikes();
         Like GetLikeByID(int LikeID);
+        List<Like> GetLikesByCommentID(int commentID);
         void AddLike(Like Like);
         void UpdateLike(Like Like);
         void ChangeStatusLike(int LikeID);

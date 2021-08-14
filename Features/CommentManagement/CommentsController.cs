@@ -43,6 +43,8 @@ namespace PBL3.Features.CommentManagement
         public IActionResult Index(int? page, int? isHidden, string searchText)
         {
             var listComments = _commentService.GetAllComments();
+            foreach(var item in listComments)
+                item.account = _accountService.GetAccountByID(item.accountID);
 
             var paramater = new Dictionary<string, string>();
 

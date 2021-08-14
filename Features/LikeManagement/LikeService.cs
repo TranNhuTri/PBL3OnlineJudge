@@ -16,6 +16,10 @@ namespace PBL3.Features.LikeManagement
         {
             return _likeRepo.GetAll().ToList();
         }
+        public List<Like> GetLikesByCommentID(int commentID)
+        {
+            return _likeRepo.GetAll().Where(p => p.commentID == commentID && p.status == true).ToList();
+        }
         public Like GetLikeByID(int likeID)
         {
             return _likeRepo.GetById(likeID);

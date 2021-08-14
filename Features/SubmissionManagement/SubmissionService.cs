@@ -14,7 +14,7 @@ namespace PBL3.Features.SubmissionManagement
         }
         public List<Submission> GetAllSubmissions()
         {
-            return _submissionRepo.GetAll().ToList();
+            return _submissionRepo.GetAll().Where(p => p.isDeleted == false).ToList();
         }
         public List<Submission> GetAllSubmissionsByProblemID(int problemID)
         {
@@ -22,7 +22,7 @@ namespace PBL3.Features.SubmissionManagement
         }
         public List<Submission> GetAllSubmissionsByAccountID(int accountID)
         {
-            return _submissionRepo.GetAll().Where(p => p.accountID == accountID).ToList();
+            return _submissionRepo.GetAll().Where(p => p.accountID == accountID && p.isDeleted == false).ToList();
         }
         public List<Submission> GetSubmissionsByAccountProblemID(int accountID, int problemID, bool? AC)
         {
@@ -55,7 +55,6 @@ namespace PBL3.Features.SubmissionManagement
         public void UpdateSubmission(Submission submission)
         {
             _submissionRepo.Update(submission);
-            _submissionRepo.Save();
         }
         public void DeleteSubmission(int submissionID)
         {

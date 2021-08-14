@@ -3,12 +3,9 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using PBL3.Models;
-using PBL3.Data;
 using PBL3.General;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
@@ -42,7 +39,7 @@ namespace PBL3.Features.TopicManagement
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTopic([Bind("name")]Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
+        public IActionResult AddTopic([Bind("name")]Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
         {
             ViewData["ListArticles"] = _articleService.GetAllArticles();
             ViewData["ListChosenArticleIDs"] = reqListArticleIds;
@@ -57,9 +54,10 @@ namespace PBL3.Features.TopicManagement
                     return View();
                 }
 
+                string InputFileName = null;
                 if (describeImage != null && describeImage.Length > 0)
                 {
-                    var InputFileName = Utility.CreateMD5(reqTopic.name);
+                    InputFileName = Utility.CreateMD5(reqTopic.name);
                     var fileInfor = new FileInfo(describeImage.FileName);
                     if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png" && fileInfor.Extension != ".svg")
                     {
@@ -69,29 +67,11 @@ namespace PBL3.Features.TopicManagement
                     InputFileName += fileInfor.Extension;
                     var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Images/" + InputFileName);
                     var stream = new FileStream(ServerSavePath, FileMode.Create);
-                    await describeImage.CopyToAsync(stream);
+                    describeImage.CopyTo(stream);
                     stream.Close();
-                    reqTopic.describeImage = "/UploadedFiles/Images/" + InputFileName;
                 }
 
-                _topicService.AddTopic(reqTopic);
-                foreach(int id in reqListArticleIds)
-                {
-                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == id);
-                    article.topicID = reqTopic.ID;
-                    _articleService.UpdateArticle(article);
-                }
-
-                var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-
-                _actionService.AddAction(new PBL3.Models.Action()
-                {
-                    account = _accountService.GetAccountByID(accountID),
-                    objectID = reqTopic.ID,
-                    dateTime = DateTime.Now,
-                    action = "Tạo mới",
-                    typeObject = Convert.ToInt32(TypeObject.Topic)
-                });
+                _topicService.AddTopic(reqTopic, reqListArticleIds, InputFileName, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
 
                 return RedirectToAction("Topics", "Admin");
             }
@@ -106,7 +86,7 @@ namespace PBL3.Features.TopicManagement
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTopic(int id, [Bind("name", "describeImage")] Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
+        public IActionResult EditTopic(int id, [Bind("name", "describeImage")] Topic reqTopic, List<int> reqListArticleIds, IFormFile describeImage)
         {
             ViewData["ListArticles"] = _articleService.GetAllArticles();
             ViewData["ListChosenArticleIds"] = reqListArticleIds;
@@ -116,57 +96,15 @@ namespace PBL3.Features.TopicManagement
                 if(topic == null)
                     return NotFound();
 
-                if(topic.name != reqTopic.name && _topicService.GetAllTopics().FirstOrDefault(p => p.name == reqTopic.name) != null)
+                if(topic.name != reqTopic.name && _topicService.GetTopicByName(reqTopic.name) != null)
                 {
                     ModelState.AddModelError("", "Chủ đề đã tồn tại");
                     return View(reqTopic);
                 }
-
-                var accountID = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value);
-                var listArticleIDs =  _articleService.GetAllArticles().Where(p => p.topicID == id).Select(p => p.ID).ToList();
-
-                if(Utility.DifferentList(listArticleIDs, reqListArticleIds))
-                {
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        accountID = accountID,
-                        objectID = id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa danh sách bài viết",
-                        typeObject = Convert.ToInt32(TypeObject.Topic)
-                    });
-                } 
-
-                foreach (var item in listArticleIDs)
-                {
-                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == item);
-                    article.topicID = null;
-                   _articleService.UpdateArticle(article);
-                }
-
-                foreach(var item in reqListArticleIds)
-                {
-                    var article = _articleService.GetAllArticles().FirstOrDefault(p => p.ID == item);
-                    article.topicID = id;
-                   _articleService.UpdateArticle(article);
-                }
-
-                if(topic.name != reqTopic.name)
-                {
-                    topic.name = reqTopic.name;
-                    _actionService.AddAction(new PBL3.Models.Action()
-                    {
-                        accountID = accountID,
-                        objectID = id,
-                        dateTime = DateTime.Now,
-                        action = "Sửa tên chủ đề",
-                        typeObject = Convert.ToInt32(TypeObject.Topic)
-                    });
-                }
-
+                string InputFileName = null;
                 if(describeImage != null && describeImage.Length > 0)
                 {
-                    var InputFileName = Utility.CreateMD5(reqTopic.name);
+                    InputFileName = Utility.CreateMD5(reqTopic.name);
                     var fileInfor = new FileInfo(describeImage.FileName);
                     if(fileInfor.Extension != ".jpg" && fileInfor.Extension != ".png" && fileInfor.Extension != ".svg")
                     {
@@ -176,12 +114,12 @@ namespace PBL3.Features.TopicManagement
                     InputFileName += fileInfor.Extension;
                     var ServerSavePath = Path.Combine(_hostEnvironment.WebRootPath + "/UploadedFiles/Images/" + InputFileName);
                     var stream = new FileStream(ServerSavePath, FileMode.Create);
-                    await describeImage.CopyToAsync(stream);
+                    describeImage.CopyTo(stream);
                     stream.Close();
                     topic.describeImage = "/UploadedFiles/Images/" + InputFileName;
                 }
 
-                _topicService.UpdateTopic(topic);
+                _topicService.UpdateTopic(id, reqTopic, reqListArticleIds, InputFileName, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
                 return RedirectToAction("Topics", "Admin");
             }
 
@@ -189,7 +127,7 @@ namespace PBL3.Features.TopicManagement
         }
         public IActionResult History(int id)
         {
-            var topic = _topicService.GetAllTopics().FirstOrDefault(p => p.ID == id);
+            var topic = _topicService.GetTopicByID(id);
             if(topic == null)
                 return NotFound();
             var listActions = _actionService.GetAllActions()
@@ -204,7 +142,7 @@ namespace PBL3.Features.TopicManagement
         }
         public IActionResult DeleteTopic(int id)
         {
-            var topic = _topicService.GetAllTopics().Where(p => p.ID == id).FirstOrDefault();
+            var topic = _topicService.GetTopicByID(id);
             if(topic == null)
                 return NotFound();
             ViewData["ListArticles"] = _articleService.GetAllArticles();
@@ -229,7 +167,6 @@ namespace PBL3.Features.TopicManagement
                 action = "Xóa chủ đề",
                 typeObject = Convert.ToInt32(TypeObject.Topic)
             });
-
 
             return RedirectToAction("Topics", "Admin");
         }

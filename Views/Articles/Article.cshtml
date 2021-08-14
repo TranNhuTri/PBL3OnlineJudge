@@ -12,7 +12,10 @@
                 <div class="problemContent">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
                         <h1 class="problemPageHeader">@Model.title</h1>
-                        <a asp-action="EditArticle" asp-controller="Articles" asp-route-id="@Model.ID" class="link">[Chỉnh sửa]</a>
+                        @if(Context.User.Identity.IsAuthenticated)
+                        {
+                            <a asp-action="EditArticle" asp-controller="Articles" asp-route-id="@Model.ID" class="link">[Chỉnh sửa]</a>
+                        }
                     </div>
                     @Html.Raw(@Model.content)
                     @if(Context.User.Identity.IsAuthenticated)
