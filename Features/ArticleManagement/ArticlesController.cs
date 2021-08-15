@@ -216,7 +216,7 @@ namespace PBL3.Features.ArticleManagement
             var article = _articleService.GetArticleByID((int)id);
             if(article == null) return NotFound();
 
-            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name);
+            ViewData["ListTopics"] = _topicService.GetAllTopics().OrderBy(p => p.name).ToList();
             ViewData["ListAuthors"] = _accountService.GetAllAuthor();
             ViewData["ListChosenAuthorIds"] = _articleAuthorRepo.GetAll().Where(p => p.articleID == id && p.isDeleted == false).Select(p => p.authorID).ToList();
             return View(article);
