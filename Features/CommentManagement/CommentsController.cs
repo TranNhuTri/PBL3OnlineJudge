@@ -65,8 +65,9 @@ namespace PBL3.Features.CommentManagement
                 foreach(var item in listComments)
                 {
                     var postName = item.typePost == 1 ? _problemService.GetProblemByID(item.postID).title : _articleService.GetArticleByID(item.postID).title;
+                    var account = _accountService.GetAccountByID(item.accountID).accountName;
                     if(_accountService.GetAccountByID(item.accountID).accountName.ToLower().Contains(searchText) 
-                    || item.content.ToLower().Contains(searchText) || postName.ToLower().Contains(searchText))
+                    || (!string.IsNullOrEmpty(item.content) && item.content.ToLower().Contains(searchText)) || postName.ToLower().Contains(searchText))
                         tmpt.Add(item);
                 }
                 listComments = tmpt;
@@ -380,12 +381,12 @@ namespace PBL3.Features.CommentManagement
 
             ViewBag.postName = new List<string>();
 
-            foreach(var comment in listComments)
+            for(int i = 0; i < listComments.Count(); i ++)
             {
-                if(comment.typePost == 1)
-                    ViewBag.postName =  _problemService.GetProblemByID(comment.postID).title;
+                if(listComments[i].typePost == 1)
+                    ViewBag.postName.Add(_problemService.GetProblemByID(listComments[i].postID).title);
                 else
-                    ViewBag.postName =  _articleService.GetArticleByID(comment.postID).title;
+                    ViewBag.postName.Add(_articleService.GetArticleByID(listComments[i].postID).title);
             }
 
             return View(listComments);

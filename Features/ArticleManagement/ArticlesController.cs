@@ -111,12 +111,10 @@ namespace PBL3.Features.ArticleManagement
 
             if(ModelState.IsValid)
             {
-
+                _articleService.AddArticle(topicID, article, reqListAuthorIds, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
                 if(next == "edit") return RedirectToAction("EditArticle", "Articles", new {id = article.ID});
                 return RedirectToAction("Articles", "Admin");
             }
-
-            _articleService.AddArticle(topicID, article, reqListAuthorIds, Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(p => p.Type == "UserID").Value));
             
             return View(article);
         }

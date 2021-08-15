@@ -150,7 +150,7 @@ namespace PBL3.Features.ProblemManagement
                     return View();
                 }
 
-                _problemService.AddProblem(reqProblem, reqListAuthorIds, reqListCategoryIds, Convert.ToInt32(HttpContext.User.Claims.Where(p => p.Type == "UserID")));
+                _problemService.AddProblem(reqProblem, reqListAuthorIds, reqListCategoryIds, Convert.ToInt32(HttpContext.User.Claims.Where(p => p.Type == "UserID").FirstOrDefault().Value));
 
                 if(next == "edit")
                 {
